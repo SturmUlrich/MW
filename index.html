@@ -62,11 +62,11 @@
         }
 
         #counters {
-            display: none !important;
+            display: none;
         }
 
         #counters.active {
-            display: flex !important;
+            display: flex;
             justify-content: space-around;
             align-items: center;
             margin: 30px 0;
@@ -934,9 +934,19 @@
         }
 
         function updateCounters() {
-            document.getElementById('green-counter').textContent = gameState.greenCounter;
-            document.getElementById('black-counter').textContent = gameState.blackCounter;
-            document.getElementById('red-counter').textContent = gameState.redCounter;
+            const greenCounter = document.getElementById('green-counter');
+            const blackCounter = document.getElementById('black-counter');
+            const redCounter = document.getElementById('red-counter');
+
+            greenCounter.textContent = gameState.greenCounter;
+            blackCounter.textContent = gameState.blackCounter;
+            redCounter.textContent = gameState.redCounter;
+
+            // Animation
+            [greenCounter, blackCounter, redCounter].forEach(counter => {
+                counter.classList.add('updated');
+                setTimeout(() => counter.classList.remove('updated'), 500);
+            });
         }
 
         function updateRoundInfo() {
