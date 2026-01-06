@@ -135,210 +135,6 @@
             color: #999 !important;
         }
 
-        /* Поле ввода имени */
-        .name-input-container {
-            margin-bottom: 25px;
-            text-align: left;
-            max-width: 400px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .name-input-container label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: 600;
-            font-size: 1em;
-        }
-
-        .name-input-container input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 1em;
-            transition: all 0.3s ease;
-        }
-
-        .name-input-container input:focus {
-            border-color: #667eea;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        /* Кнопка статистики */
-        .stats-button {
-            display: block;
-            margin: 0 auto 30px auto;
-            padding: 12px 30px;
-            background: #28a745;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .stats-button:hover {
-            background: #218838;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
-        }
-
-        /* Модальное окно статистики */
-        .stats-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            animation: fadeIn 0.3s ease;
-            padding: 20px;
-        }
-
-        .stats-modal.active {
-            display: flex;
-        }
-
-        .stats-modal-content {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 700px;
-            width: 100%;
-            max-height: 80vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            animation: slideUp 0.4s ease;
-        }
-
-        .stats-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #e0e0e0;
-        }
-
-        .stats-header h2 {
-            color: #333;
-            font-size: 1.8em;
-            margin: 0;
-        }
-
-        .close-stats {
-            background: none;
-            border: none;
-            font-size: 2em;
-            color: #666;
-            cursor: pointer;
-            padding: 0;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-
-        .close-stats:hover {
-            background: #f0f0f0;
-            color: #333;
-        }
-
-        .stats-body {
-            margin-top: 20px;
-        }
-
-        .stats-empty {
-            text-align: center;
-            padding: 40px 20px;
-            color: #999;
-            font-size: 1.1em;
-        }
-
-        .stats-user {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-left: 4px solid #667eea;
-        }
-
-        .stats-user-name {
-            font-size: 1.3em;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 15px;
-        }
-
-        .stats-user-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-bottom: 10px;
-        }
-
-        .stats-detail-item {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .stats-detail-label {
-            font-size: 0.85em;
-            color: #666;
-            margin-bottom: 5px;
-        }
-
-        .stats-detail-value {
-            font-size: 1.2em;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .stats-detail-value.correct {
-            color: #28a745;
-        }
-
-        .stats-detail-value.incorrect {
-            color: #dc3545;
-        }
-
-        .stats-detail-value.total {
-            color: #667eea;
-        }
-
-        .stats-user-games {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #e0e0e0;
-        }
-
-        .stats-game-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            font-size: 0.9em;
-            color: #666;
-        }
-
-        .stats-game-date {
-            font-size: 0.85em;
-            color: #999;
-        }
-
         #counters {
             display: none !important;
         }
@@ -810,47 +606,6 @@
             .counter-value {
                 font-size: 1.8em;
             }
-
-            .name-input-container {
-                margin-bottom: 20px;
-            }
-
-            .name-input-container input {
-                padding: 10px 12px;
-                font-size: 0.95em;
-            }
-
-            .stats-button {
-                padding: 10px 25px;
-                font-size: 0.95em;
-                margin-bottom: 25px;
-            }
-
-            .stats-modal-content {
-                padding: 20px;
-                max-height: 90vh;
-            }
-
-            .stats-header h2 {
-                font-size: 1.5em;
-            }
-
-            .stats-user {
-                padding: 15px;
-            }
-
-            .stats-user-name {
-                font-size: 1.1em;
-            }
-
-            .stats-user-details {
-                grid-template-columns: 1fr 1fr;
-                gap: 10px;
-            }
-
-            .stats-detail-value {
-                font-size: 1.1em;
-            }
         }
 
         /* Горизонтальная ориентация для планшетов */
@@ -873,42 +628,19 @@
         <div class="course-selection-screen" id="course-selection-screen">
             <div class="course-selection-content">
                 <h2>Wählen Sie Ihren Kurs</h2>
-                
-                <!-- Поле ввода имени -->
-                <div class="name-input-container">
-                    <label for="player-name">Ihr Name:</label>
-                    <input type="text" id="player-name" placeholder="Geben Sie Ihren Namen ein" maxlength="50">
-                </div>
-                
-                <!-- Кнопка статистики -->
-                <button class="stats-button" onclick="showStatistics()">📊 Statistik</button>
-                
                 <div class="course-options">
                     <div class="course-card" onclick="selectCourse('basic')">
                         <div class="course-icon">📚</div>
                         <h3>Basis-Kurs</h3>
-                        <p>80 Fragen zu den 17 Fußballregeln</p>
+                        <p>60 Fragen zu den 17 Fußballregeln</p>
                         <p class="course-desc">Ideal für Anfänger und zur Auffrischung der Grundlagen</p>
                     </div>
                     <div class="course-card" onclick="selectCourse('advanced')">
                         <div class="course-icon">🎓</div>
                         <h3>Fortgeschrittenen-Kurs</h3>
-                        <p>150 Fragen zu den 17 Fußballregeln</p>
+                        <p>120 Fragen zu den 17 Fußballregeln</p>
                         <p class="course-desc">Vertiefte Kenntnisse für erfahrene Schiedsrichter</p>
                     </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Статистика модальное окно -->
-        <div class="stats-modal" id="stats-modal">
-            <div class="stats-modal-content">
-                <div class="stats-header">
-                    <h2>📊 Spielstatistik</h2>
-                    <button class="close-stats" onclick="closeStatistics()">&times;</button>
-                </div>
-                <div class="stats-body" id="stats-body">
-                    <!-- Статистика будет загружена здесь -->
                 </div>
             </div>
         </div>
@@ -1051,8 +783,8 @@
                 id: 12,
                 rule: 12,
                 ruleName: "Fouls und unsportliches Betragen",
-                question: "Was führt zu einem indirekten Freistoß?",
-                options: ["Gefährliches Spiel ohne Körperkontakt", "Handspiel im Strafraum", "Tritt gegen einen Gegner", "Stoß gegen einen Gegner"],
+                question: "Was ist ein indirekter Freistoß?",
+                options: ["Ein gefährliches Spiel", "Ein Handspiel", "Ein Tritt", "Ein Stoß"],
                 correctAnswer: 0
             },
             {
@@ -1195,87 +927,6 @@
                 question: "Was ist die Hauptaufgabe des Schiedsrichters?",
                 options: ["Die Regeln durchzusetzen", "Das Spiel zu leiten", "Fairness zu gewährleisten", "Alle genannten"],
                 correctAnswer: 3
-            },
-            // VAR-Fragen (Video Assistant Referee)
-            {
-                id: 61,
-                rule: 5,
-                ruleName: "Der Schiedsrichter",
-                question: "Was bedeutet VAR?",
-                options: ["Video Assistant Referee", "Video Analysis Review", "Verification Assistant Referee", "Video Assistant Review"],
-                correctAnswer: 0
-            },
-            {
-                id: 62,
-                rule: 5,
-                ruleName: "Der Schiedsrichter",
-                question: "Wann kann VAR eingesetzt werden?",
-                options: ["Nur bei Toren", "Nur bei Strafstößen", "Bei Toren, Strafstößen, roten Karten und Verwechslungen", "Nur bei roten Karten"],
-                correctAnswer: 2
-            },
-            {
-                id: 63,
-                rule: 5,
-                ruleName: "Der Schiedsrichter",
-                question: "Wer entscheidet über den Einsatz von VAR?",
-                options: ["Der VAR-Schiedsrichter allein", "Der Hauptschiedsrichter", "Der VAR-Schiedsrichter empfiehlt, der Hauptschiedsrichter entscheidet", "Der vierte Offizielle"],
-                correctAnswer: 2
-            },
-            {
-                id: 64,
-                rule: 5,
-                ruleName: "Der Schiedsrichter",
-                question: "Was ist ein 'clear and obvious error'?",
-                options: ["Ein kleiner Fehler", "Ein offensichtlicher Fehler, den jeder sehen kann", "Ein Fehler, der nur mit VAR sichtbar ist", "Ein Fehler des VAR-Schiedsrichters"],
-                correctAnswer: 1
-            },
-            {
-                id: 65,
-                rule: 5,
-                ruleName: "Der Schiedsrichter",
-                question: "Was bedeutet 'on-field review'?",
-                options: ["Der Schiedsrichter schaut sich das Video am Spielfeldrand an", "Der VAR-Schiedsrichter prüft die Situation", "Der Schiedsrichter entscheidet ohne Video", "Der vierte Offizielle prüft die Situation"],
-                correctAnswer: 0
-            },
-            {
-                id: 66,
-                rule: 5,
-                ruleName: "Der Schiedsrichter",
-                question: "Kann VAR eine Entscheidung rückgängig machen?",
-                options: ["Ja, immer", "Nein, nie", "Nur wenn es ein klarer Fehler war", "Nur bei Toren"],
-                correctAnswer: 2
-            },
-            {
-                id: 67,
-                rule: 5,
-                ruleName: "Der Schiedsrichter",
-                question: "Wie signalisiert der Schiedsrichter eine VAR-Überprüfung?",
-                options: ["Mit einem Pfiff", "Mit einem Rechteckzeichen", "Mit einem Kreiszeichen", "Mit einem Handzeichen"],
-                correctAnswer: 1
-            },
-            {
-                id: 68,
-                rule: 5,
-                ruleName: "Der Schiedsrichter",
-                question: "Was passiert, wenn VAR technisch ausfällt?",
-                options: ["Das Spiel wird abgebrochen", "Das Spiel wird ohne VAR fortgesetzt", "Es gibt einen Schiedsrichterball", "Das Spiel wird verschoben"],
-                correctAnswer: 1
-            },
-            {
-                id: 69,
-                rule: 5,
-                ruleName: "Der Schiedsrichter",
-                question: "Kann VAR bei Abseits eingesetzt werden?",
-                options: ["Ja, immer", "Nein, nie", "Nur bei Toren", "Nur bei Strafstößen"],
-                correctAnswer: 2
-            },
-            {
-                id: 70,
-                rule: 5,
-                ruleName: "Der Schiedsrichter",
-                question: "Wie lange dauert eine VAR-Überprüfung normalerweise?",
-                options: ["Sofort", "Bis zu 1 Minute", "Bis zu 3 Minuten", "Unbegrenzt"],
-                correctAnswer: 2
             },
             // Zusätzliche Fragen zu Regel 6: Die weiteren Spieloffiziellen
             {
@@ -1433,9 +1084,9 @@
                 id: 48,
                 rule: 13,
                 ruleName: "Freistöße",
-                question: "Wie schnell muss ein Freistoß nach den FIFA-Regeln ausgeführt werden?",
-                options: ["Sofort", "Innerhalb von 4 Sekunden", "Innerhalb von 6 Sekunden", "Es gibt keine feste Zeitbegrenzung"],
-                correctAnswer: 3
+                question: "Wie schnell muss ein Freistoß ausgeführt werden?",
+                options: ["Sofort", "Innerhalb von 4 Sekunden", "Innerhalb von 6 Sekunden", "Es gibt keine Zeitbegrenzung"],
+                correctAnswer: 2
             },
             {
                 id: 49,
@@ -1450,9 +1101,9 @@
                 id: 50,
                 rule: 14,
                 ruleName: "Strafstoß",
-                question: "Was darf der Torwart beim Elfmeter tun?",
-                options: ["Er darf sich nicht bewegen", "Er darf nur 1 Schritt machen", "Er darf sich auf der Torlinie bewegen, darf sie aber nicht verlassen", "Er darf sich frei im Torraum bewegen"],
-                correctAnswer: 2
+                question: "Wie viele Schritte darf der Torwart beim Elfmeter machen?",
+                options: ["Keine", "1 Schritt", "2 Schritte", "Unbegrenzt auf der Torlinie"],
+                correctAnswer: 3
             },
             {
                 id: 51,
@@ -1536,163 +1187,72 @@
                 question: "Wie weit müssen die Gegenspieler beim Eckstoß entfernt sein?",
                 options: ["5 Meter", "7 Meter", "9,15 Meter", "10 Meter"],
                 correctAnswer: 2
-            },
-            // Praktische Situationen
-            {
-                id: 71,
-                rule: 3,
-                ruleName: "Die Spieler",
-                question: "Was muss der Schiedsrichter tun, wenn ein Spieler verletzt ist?",
-                options: ["Das Spiel sofort unterbrechen", "Das Spiel weiterlaufen lassen", "Das Spiel unterbrechen, wenn der Ball im Spiel ist und der Spieler Hilfe braucht", "Nur bei schweren Verletzungen unterbrechen"],
-                correctAnswer: 2
-            },
-            {
-                id: 72,
-                rule: 3,
-                ruleName: "Die Spieler",
-                question: "Wie wird eine Auswechslung durchgeführt?",
-                options: ["Der Spieler läuft einfach aufs Feld", "Der Schiedsrichter muss informiert werden und die Auswechslung muss an der Mittellinie erfolgen", "Der Trainer entscheidet allein", "Der vierte Offizielle entscheidet"],
-                correctAnswer: 1
-            },
-            {
-                id: 73,
-                rule: 3,
-                ruleName: "Die Spieler",
-                question: "Was passiert, wenn ein Spieler ohne Erlaubnis das Spielfeld betritt?",
-                options: ["Gelbe Karte", "Rote Karte", "Verwarnung", "Spiel läuft weiter"],
-                correctAnswer: 0
-            },
-            {
-                id: 74,
-                rule: 12,
-                ruleName: "Fouls und unsportliches Betragen",
-                question: "Was passiert bei massiven Protesten gegen eine Entscheidung?",
-                options: ["Der Schiedsrichter ignoriert sie", "Gelbe Karte für den Kapitän", "Gelbe oder rote Karte je nach Schwere", "Das Spiel wird unterbrochen"],
-                correctAnswer: 2
-            },
-            {
-                id: 75,
-                rule: 5,
-                ruleName: "Der Schiedsrichter",
-                question: "Was muss der Schiedsrichter tun, wenn ein fremder Gegenstand auf dem Spielfeld liegt?",
-                options: ["Das Spiel sofort unterbrechen", "Das Spiel weiterlaufen lassen", "Den Gegenstand entfernen lassen, wenn er das Spiel beeinflusst", "Einen Freistoß geben"],
-                correctAnswer: 2
-            },
-            {
-                id: 76,
-                rule: 5,
-                ruleName: "Der Schiedsrichter",
-                question: "Was passiert, wenn der Ball während des Spiels platzt?",
-                options: ["Das Spiel läuft weiter", "Schiedsrichterball an der Stelle, wo der Ball platzt", "Abstoß", "Eckstoß"],
-                correctAnswer: 1
-            },
-            {
-                id: 77,
-                rule: 3,
-                ruleName: "Die Spieler",
-                question: "Was passiert, wenn ein Torwart verletzt ist und keine Auswechslung mehr möglich ist?",
-                options: ["Das Spiel wird abgebrochen", "Ein Feldspieler muss ins Tor", "Der Trainer muss ins Tor", "Es gibt einen Schiedsrichterball"],
-                correctAnswer: 1
-            },
-            {
-                id: 78,
-                rule: 12,
-                ruleName: "Fouls und unsportliches Betragen",
-                question: "Was passiert bei einer Simulation (Schwalbe)?",
-                options: ["Gelbe Karte", "Rote Karte", "Verwarnung", "Freistoß für die andere Mannschaft"],
-                correctAnswer: 0
-            },
-            {
-                id: 79,
-                rule: 5,
-                ruleName: "Der Schiedsrichter",
-                question: "Was muss der Schiedsrichter tun, wenn ein Spieler Blutungen hat?",
-                options: ["Das Spiel sofort unterbrechen", "Den Spieler das Spielfeld verlassen lassen, um die Blutung zu stoppen", "Das Spiel weiterlaufen lassen", "Gelbe Karte zeigen"],
-                correctAnswer: 1
-            },
-            {
-                id: 80,
-                rule: 3,
-                ruleName: "Die Spieler",
-                question: "Wie viele Auswechslungen sind bei Verlängerung erlaubt?",
-                options: ["3 zusätzliche", "5 zusätzliche", "Eine weitere Auswechslung", "Keine zusätzlichen"],
-                correctAnswer: 2
             }
         ];
 
-        // Zusätzliche Fragen für Fortgeschrittenen-Kurs (70 дополнительных вопросов)
+        // Zusätzliche Fragen für Fortgeschrittenen-Kurs (61 дополнительный вопрос)
         const advancedQuestions = [
-            { id: 131, rule: 1, ruleName: "Das Spielfeld", question: "Wie breit ist der Torraum?", options: ["5,5 Meter", "6 Meter", "6,5 Meter", "7 Meter"], correctAnswer: 0 },
-            { id: 132, rule: 1, ruleName: "Das Spielfeld", question: "Wie lang ist der Torraum?", options: ["16 Meter", "18 Meter", "20 Meter", "22 Meter"], correctAnswer: 1 },
-            { id: 133, rule: 1, ruleName: "Das Spielfeld", question: "Wie groß ist der Radius des Mittelkreises?", options: ["8 Meter", "9 Meter", "9,15 Meter", "10 Meter"], correctAnswer: 2 },
-            { id: 134, rule: 1, ruleName: "Das Spielfeld", question: "Wie weit ist der Elfmeterpunkt vom Tor entfernt?", options: ["9 Meter", "10 Meter", "11 Meter", "12 Meter"], correctAnswer: 2 },
-            { id: 135, rule: 2, ruleName: "Der Ball", question: "Wie hoch darf der Druck im Ball sein?", options: ["0,6-1,1 bar", "0,7-1,2 bar", "0,8-1,3 bar", "0,9-1,4 bar"], correctAnswer: 0 },
-            { id: 136, rule: 2, ruleName: "Der Ball", question: "Darf der Ball während des Spiels gewechselt werden?", options: ["Ja, jederzeit", "Nein, nie", "Nur bei Beschädigung", "Nur mit Zustimmung beider Mannschaften"], correctAnswer: 2 },
-            { id: 137, rule: 2, ruleName: "Der Ball", question: "Was passiert, wenn der Ball während eines Angriffs platzt?", options: ["Das Spiel läuft weiter", "Schiedsrichterball", "Abstoß", "Freistoß für die angreifende Mannschaft"], correctAnswer: 1 },
-            { id: 138, rule: 3, ruleName: "Die Spieler", question: "Wie viele Spieler müssen mindestens auf dem Feld sein?", options: ["5", "6", "7", "8"], correctAnswer: 2 },
-            { id: 139, rule: 3, ruleName: "Die Spieler", question: "Darf ein Spieler ohne Zustimmung des Schiedsrichters das Feld verlassen?", options: ["Ja, jederzeit", "Nein, nur mit Zustimmung", "Nur bei Verletzung", "Nur bei Auswechslung"], correctAnswer: 1 },
-            { id: 140, rule: 3, ruleName: "Die Spieler", question: "Was passiert, wenn ein Spieler das Feld ohne Erlaubnis verlässt?", options: ["Gelbe Karte", "Rote Karte", "Verwarnung", "Spiel läuft weiter"], correctAnswer: 0 },
-            { id: 141, rule: 3, ruleName: "Die Spieler", question: "Wie viele Ersatzspieler sind erlaubt?", options: ["5", "7", "9", "12"], correctAnswer: 1 },
-            { id: 142, rule: 4, ruleName: "Die Ausrüstung der Spieler", question: "Darf ein Spieler eine Kappe tragen?", options: ["Ja, immer", "Nein, nie", "Nur bei Sonnenschein", "Nur wenn sie sicher ist"], correctAnswer: 3 },
-            { id: 143, rule: 4, ruleName: "Die Ausrüstung der Spieler", question: "Was passiert, wenn ein Spieler gefährliche Ausrüstung trägt?", options: ["Gelbe Karte", "Muss die Ausrüstung entfernen", "Rote Karte", "Spiel läuft weiter"], correctAnswer: 1 },
-            { id: 144, rule: 4, ruleName: "Die Ausrüstung der Spieler", question: "Müssen die Trikots der Mannschaften unterschiedlich sein?", options: ["Ja, immer", "Nein, nicht notwendig", "Nur bei Heimspielen", "Nur bei internationalen Spielen"], correctAnswer: 0 },
-            { id: 145, rule: 5, ruleName: "Der Schiedsrichter", question: "Kann der Schiedsrichter das Spiel wegen schlechten Wetters abbrechen?", options: ["Ja, jederzeit", "Nein, nie", "Nur bei Gewitter", "Nur wenn es gefährlich ist"], correctAnswer: 3 },
-            { id: 146, rule: 5, ruleName: "Der Schiedsrichter", question: "Wer entscheidet über Spielabbruch?", options: ["Der Schiedsrichter", "Der Trainer", "Die Mannschaftskapitäne", "Der Veranstalter"], correctAnswer: 0 },
-            { id: 147, rule: 5, ruleName: "Der Schiedsrichter", question: "Kann der Schiedsrichter eine Entscheidung während des Spiels ändern?", options: ["Ja, jederzeit", "Nein, nie", "Nur vor Wiederaufnahme", "Nur mit VAR"], correctAnswer: 2 },
-            { id: 148, rule: 6, ruleName: "Die weiteren Spieloffiziellen", question: "Wie viele vierte Offizielle gibt es?", options: ["0", "1", "2", "3"], correctAnswer: 1 },
-            { id: 149, rule: 6, ruleName: "Die weiteren Spieloffiziellen", question: "Was ist die Aufgabe des vierten Offiziellen?", options: ["Auswechslungen überwachen", "Nachspielzeit anzeigen", "Technische Zone überwachen", "Alle genannten"], correctAnswer: 3 },
-            { id: 150, rule: 6, ruleName: "Die weiteren Spieloffiziellen", question: "Kann ein Assistent den Schiedsrichter ersetzen?", options: ["Ja, automatisch", "Nein, nie", "Nur bei Verletzung", "Nur mit Zustimmung"], correctAnswer: 2 },
-            { id: 151, rule: 7, ruleName: "Die Dauer des Spiels", question: "Wie lange dauert eine Halbzeitpause maximal?", options: ["10 Minuten", "15 Minuten", "20 Minuten", "Unbegrenzt"], correctAnswer: 1 },
-            { id: 152, rule: 7, ruleName: "Die Dauer des Spiels", question: "Wer bestimmt die Nachspielzeit?", options: ["Der Schiedsrichter", "Der vierte Offizielle", "Die Mannschaftskapitäne", "Der Veranstalter"], correctAnswer: 0 },
-            { id: 153, rule: 7, ruleName: "Die Dauer des Spiels", question: "Kann die Nachspielzeit verlängert werden?", options: ["Ja, wenn nötig", "Nein, nie", "Nur bei Verletzungen", "Nur bei VAR-Einsatz"], correctAnswer: 0 },
-            { id: 154, rule: 7, ruleName: "Die Dauer des Spiels", question: "Wie lange dauert eine Verlängerung?", options: ["2x10 Minuten", "2x15 Minuten", "2x20 Minuten", "2x25 Minuten"], correctAnswer: 1 },
-            { id: 155, rule: 8, ruleName: "Beginn und Fortsetzung des Spiels", question: "Muss der Ball beim Anstoß still liegen?", options: ["Ja, immer", "Nein", "Nur bei Spielbeginn", "Nur nach Toren"], correctAnswer: 0 },
-            { id: 156, rule: 8, ruleName: "Beginn und Fortsetzung des Spiels", question: "Wie weit müssen die Gegenspieler beim Anstoß entfernt sein?", options: ["7 Meter", "9 Meter", "9,15 Meter", "10 Meter"], correctAnswer: 2 },
-            { id: 157, rule: 8, ruleName: "Beginn und Fortsetzung des Spiels", question: "Was passiert bei einem falschen Anstoß?", options: ["Wiederholung", "Indirekter Freistoß", "Schiedsrichterball", "Spiel läuft weiter"], correctAnswer: 0 },
-            { id: 158, rule: 9, ruleName: "Ball im Spiel und außer Spiel", question: "Ist der Ball im Spiel, wenn er von einem Pfosten zurückkommt?", options: ["Ja, immer", "Nein, nie", "Nur wenn er im Spielfeld bleibt", "Nur wenn er nicht die Linie überschreitet"], correctAnswer: 2 },
-            { id: 159, rule: 9, ruleName: "Ball im Spiel und außer Spiel", question: "Was passiert, wenn der Ball die Querlatte berührt?", options: ["Ball bleibt im Spiel", "Abstoß", "Eckstoß", "Schiedsrichterball"], correctAnswer: 0 },
-            { id: 160, rule: 9, ruleName: "Ball im Spiel und außer Spiel", question: "Ist der Ball im Spiel, wenn er die Torlinie nicht vollständig überschreitet?", options: ["Ja", "Nein", "Nur wenn er ins Tor geht", "Nur wenn der Schiedsrichter es entscheidet"], correctAnswer: 0 },
-            { id: 161, rule: 10, ruleName: "Wie ein Tor erzielt wird", question: "Zählt ein Tor, wenn der Ball von einem Schiedsrichter-Assistenten ins Tor gelenkt wird?", options: ["Ja", "Nein", "Nur wenn es unbeabsichtigt war", "Nur bei VAR"], correctAnswer: 1 },
-            { id: 162, rule: 10, ruleName: "Wie ein Tor erzielt wird", question: "Kann ein Tor nach Abpfiff gegeben werden?", options: ["Ja, wenn der Ball vor dem Pfiff im Tor war", "Nein, nie", "Nur bei VAR", "Nur bei Elfmeter"], correctAnswer: 0 },
-            { id: 163, rule: 10, ruleName: "Wie ein Tor erzielt wird", question: "Zählt ein Tor, wenn der Ball die Torlinie überschreitet, aber dann zurückkommt?", options: ["Ja, wenn er vollständig überschritten hat", "Nein", "Nur wenn der Schiedsrichter es sieht", "Nur bei VAR"], correctAnswer: 0 },
-            { id: 164, rule: 11, ruleName: "Abseits", question: "Ist ein Spieler im Abseits, wenn er den Ball von einem Gegenspieler erhält?", options: ["Ja", "Nein", "Nur wenn er im Abseitsraum ist", "Nur wenn er aktiv am Spiel teilnimmt"], correctAnswer: 1 },
-            { id: 165, rule: 11, ruleName: "Abseits", question: "Was ist eine Abseitsfalle?", options: ["Ein Fehler des Schiedsrichters", "Eine taktische Maßnahme", "Ein Regelverstoß", "Ein VAR-Einsatz"], correctAnswer: 1 },
-            { id: 166, rule: 11, ruleName: "Abseits", question: "Kann Abseits bei einem Abstoß gegeben werden?", options: ["Ja", "Nein", "Nur wenn der Ball im Strafraum ist", "Nur bei internationalen Spielen"], correctAnswer: 1 },
-            { id: 167, rule: 11, ruleName: "Abseits", question: "Wie viele Gegenspieler müssen zwischen Angreifer und Tor sein, damit kein Abseits vorliegt?", options: ["1", "2", "3", "4"], correctAnswer: 1 },
-            { id: 168, rule: 11, ruleName: "Abseits", question: "Ist Abseits strafbar, wenn der Spieler den Ball nicht berührt?", options: ["Ja, wenn er aktiv am Spiel teilnimmt", "Nein", "Nur wenn er den Torwart behindert", "Nur wenn er im Abseitsraum ist"], correctAnswer: 0 },
-            { id: 169, rule: 12, ruleName: "Fouls und unsportliches Betragen", question: "Was ist eine Notbremse?", options: ["Ein Foul, das eine klare Torchance verhindert", "Ein gefährliches Spiel", "Ein Handspiel", "Ein unsportliches Verhalten"], correctAnswer: 0 },
-            { id: 170, rule: 12, ruleName: "Fouls und unsportliches Betragen", question: "Was passiert bei einer Notbremse?", options: ["Gelbe Karte", "Rote Karte", "Indirekter Freistoß", "Verwarnung"], correctAnswer: 1 },
-            { id: 171, rule: 12, ruleName: "Fouls und unsportliches Betragen", question: "Was ist ein indirekter Freistoß im Strafraum?", options: ["Strafstoß", "Indirekter Freistoß vom Strafraumrand", "Abstoß", "Schiedsrichterball"], correctAnswer: 1 },
-            { id: 172, rule: 12, ruleName: "Fouls und unsportliches Betragen", question: "Darf ein Spieler den Ball absichtlich mit der Hand spielen?", options: ["Ja, wenn es taktisch ist", "Nein, nie", "Nur im Strafraum", "Nur bei Notwehr"], correctAnswer: 1 },
-            { id: 173, rule: 12, ruleName: "Fouls und unsportliches Betragen", question: "Was passiert bei unsportlichem Verhalten?", options: ["Gelbe Karte", "Rote Karte", "Verwarnung", "Freistoß"], correctAnswer: 0 },
-            { id: 174, rule: 13, ruleName: "Freistöße", question: "Muss der Ball beim Freistoß still liegen?", options: ["Ja, immer", "Nein", "Nur bei direkten Freistößen", "Nur bei indirekten Freistößen"], correctAnswer: 0 },
-            { id: 175, rule: 13, ruleName: "Freistöße", question: "Was passiert, wenn ein Gegenspieler zu nah am Ball steht?", options: ["Gelbe Karte", "Freistoß wird wiederholt", "Spiel läuft weiter", "Indirekter Freistoß"], correctAnswer: 1 },
-            { id: 176, rule: 13, ruleName: "Freistöße", question: "Darf der Ball beim Freistoß direkt ins Tor gehen?", options: ["Ja, bei direktem Freistoß", "Nein, nie", "Nur außerhalb des Strafraums", "Nur bei indirektem Freistoß"], correctAnswer: 0 },
-            { id: 177, rule: 14, ruleName: "Strafstoß", question: "Wie viele Schritte darf der Schütze beim Elfmeter machen?", options: ["Unbegrenzt", "3 Schritte", "5 Schritte", "Keine Begrenzung"], correctAnswer: 0 },
-            { id: 178, rule: 14, ruleName: "Strafstoß", question: "Was passiert, wenn der Schütze den Ball zweimal berührt?", options: ["Indirekter Freistoß", "Wiederholung", "Abstoß", "Eckstoß"], correctAnswer: 0 },
-            { id: 179, rule: 14, ruleName: "Strafstoß", question: "Darf der Torwart beim Elfmeter die Torlinie verlassen?", options: ["Ja, nach dem Schuss", "Nein, nie", "Nur wenn der Ball im Spiel ist", "Nur wenn er springt"], correctAnswer: 2 },
-            { id: 180, rule: 14, ruleName: "Strafstoß", question: "Was passiert, wenn ein Mitspieler des Schützen zu früh in den Strafraum läuft?", options: ["Wiederholung", "Indirekter Freistoß", "Abstoß", "Spiel läuft weiter"], correctAnswer: 1 },
-            { id: 181, rule: 14, ruleName: "Strafstoß", question: "Wie viele Spieler dürfen beim Elfmeter im Strafraum sein?", options: ["Nur Schütze und Torwart", "Alle Spieler", "Maximal 5", "Maximal 10"], correctAnswer: 1 },
-            { id: 182, rule: 15, ruleName: "Einwurf", question: "Müssen beide Füße beim Einwurf am Boden sein?", options: ["Ja, beide Füße", "Nein", "Nur ein Fuß", "Nur die Fersen"], correctAnswer: 0 },
-            { id: 183, rule: 15, ruleName: "Einwurf", question: "Kann ein Spieler direkt aus einem Einwurf ein Tor erzielen?", options: ["Ja", "Nein", "Nur wenn der Torwart fehlt", "Nur bei Abstoß"], correctAnswer: 1 },
-            { id: 184, rule: 15, ruleName: "Einwurf", question: "Wie weit müssen die Gegenspieler beim Einwurf entfernt sein?", options: ["2 Meter", "3 Meter", "5 Meter", "Keine Regel"], correctAnswer: 3 },
-            { id: 185, rule: 16, ruleName: "Abstoß", question: "Muss der Ball beim Abstoß den Strafraum vollständig verlassen haben?", options: ["Ja, vollständig", "Nein", "Nur teilweise", "Nur wenn er ins Aus geht"], correctAnswer: 0 },
-            { id: 186, rule: 16, ruleName: "Abstoß", question: "Kann ein Spieler direkt aus einem Abstoß ein Tor erzielen?", options: ["Ja", "Nein", "Nur im eigenen Tor", "Nur bei internationalen Spielen"], correctAnswer: 0 },
-            { id: 187, rule: 16, ruleName: "Abstoß", question: "Was passiert, wenn der Ball beim Abstoß nicht den Strafraum verlässt?", options: ["Wiederholung", "Eckstoß", "Schiedsrichterball", "Spiel läuft weiter"], correctAnswer: 0 },
-            { id: 188, rule: 17, ruleName: "Eckstoß", question: "Muss der Ball beim Eckstoß im Viertelkreis liegen?", options: ["Ja, vollständig", "Nein", "Nur teilweise", "Nur bei internationalen Spielen"], correctAnswer: 0 },
-            { id: 189, rule: 17, ruleName: "Eckstoß", question: "Kann ein Spieler direkt aus einem Eckstoß ein Tor erzielen?", options: ["Ja", "Nein", "Nur im eigenen Tor", "Nur wenn der Torwart fehlt"], correctAnswer: 0 },
-            { id: 190, rule: 17, ruleName: "Eckstoß", question: "Was passiert, wenn der Ball beim Eckstoß nicht im Viertelkreis liegt?", options: ["Wiederholung", "Abstoß", "Schiedsrichterball", "Spiel läuft weiter"], correctAnswer: 0 },
-            { id: 191, rule: 17, ruleName: "Eckstoß", question: "Wie weit ist der Viertelkreisradius beim Eckstoß?", options: ["0,5 Meter", "1 Meter", "1,5 Meter", "2 Meter"], correctAnswer: 1 },
-            // Erweiterte VAR-Fragen für Fortgeschrittenen-Kurs
-            { id: 192, rule: 5, ruleName: "Der Schiedsrichter", question: "Was ist die 'checking phase' beim VAR?", options: ["Die Überprüfung durch den VAR-Schiedsrichter", "Die Entscheidung des Hauptschiedsrichters", "Die Kommunikation zwischen Schiedsrichtern", "Die Videoanalyse"], correctAnswer: 0 },
-            { id: 193, rule: 5, ruleName: "Der Schiedsrichter", question: "Wann muss der Schiedsrichter eine 'on-field review' durchführen?", options: ["Bei jeder VAR-Empfehlung", "Nur bei Toren", "Wenn der VAR-Schiedsrichter eine Überprüfung empfiehlt", "Nur bei Strafstößen"], correctAnswer: 2 },
-            { id: 194, rule: 5, ruleName: "Der Schiedsrichter", question: "Was passiert, wenn VAR ein Abseits übersieht?", options: ["Das Tor zählt", "VAR kann nachträglich eingreifen, wenn der Ball noch im Spiel ist", "Das Spiel läuft weiter", "Es gibt einen Schiedsrichterball"], correctAnswer: 1 },
-            { id: 195, rule: 5, ruleName: "Der Schiedsrichter", question: "Kann VAR bei einem Handspiel außerhalb des Strafraums eingesetzt werden?", options: ["Ja, immer", "Nein, nie", "Nur wenn es zu einem Tor führt", "Nur bei Strafstößen"], correctAnswer: 2 },
-            { id: 196, rule: 5, ruleName: "Der Schiedsrichter", question: "Was ist die maximale Zeit für eine VAR-Überprüfung?", options: ["30 Sekunden", "1 Minute", "3 Minuten", "Es gibt keine feste Zeitbegrenzung"], correctAnswer: 3 },
-            { id: 197, rule: 5, ruleName: "Der Schiedsrichter", question: "Kann der Schiedsrichter eine VAR-Entscheidung ablehnen?", options: ["Ja, er hat die alleinige Entscheidungsgewalt", "Nein, VAR-Entscheidungen sind bindend", "Nur bei Abseits", "Nur bei Toren"], correctAnswer: 0 },
-            { id: 198, rule: 5, ruleName: "Der Schiedsrichter", question: "Was passiert, wenn VAR während eines Angriffs eine Überprüfung durchführt?", options: ["Das Spiel wird sofort unterbrochen", "Das Spiel läuft weiter, bis der Ball aus ist", "VAR wartet auf eine Spielunterbrechung", "Es gibt einen Schiedsrichterball"], correctAnswer: 2 },
-            { id: 199, rule: 5, ruleName: "Der Schiedsrichter", question: "Wie kommuniziert der VAR-Schiedsrichter mit dem Hauptschiedsrichter?", options: ["Über Funk", "Über Handzeichen", "Über den vierten Offiziellen", "Über eine Leinwand"], correctAnswer: 0 },
-            { id: 200, rule: 5, ruleName: "Der Schiedsrichter", question: "Was ist ein 'VAR review area'?", options: ["Der Bereich, wo der Schiedsrichter das Video anschaut", "Der Bereich, den VAR überprüft", "Der Strafraum", "Die Mittellinie"], correctAnswer: 0 }
+            { id: 61, rule: 1, ruleName: "Das Spielfeld", question: "Wie breit ist der Torraum?", options: ["5,5 Meter", "6 Meter", "6,5 Meter", "7 Meter"], correctAnswer: 0 },
+            { id: 62, rule: 1, ruleName: "Das Spielfeld", question: "Wie lang ist der Torraum?", options: ["16 Meter", "18 Meter", "20 Meter", "22 Meter"], correctAnswer: 1 },
+            { id: 63, rule: 1, ruleName: "Das Spielfeld", question: "Wie groß ist der Radius des Mittelkreises?", options: ["8 Meter", "9 Meter", "9,15 Meter", "10 Meter"], correctAnswer: 2 },
+            { id: 64, rule: 1, ruleName: "Das Spielfeld", question: "Wie weit ist der Elfmeterpunkt vom Tor entfernt?", options: ["9 Meter", "10 Meter", "11 Meter", "12 Meter"], correctAnswer: 2 },
+            { id: 65, rule: 2, ruleName: "Der Ball", question: "Wie hoch darf der Druck im Ball sein?", options: ["0,6-1,1 bar", "0,7-1,2 bar", "0,8-1,3 bar", "0,9-1,4 bar"], correctAnswer: 0 },
+            { id: 66, rule: 2, ruleName: "Der Ball", question: "Darf der Ball während des Spiels gewechselt werden?", options: ["Ja, jederzeit", "Nein, nie", "Nur bei Beschädigung", "Nur mit Zustimmung beider Mannschaften"], correctAnswer: 2 },
+            { id: 67, rule: 2, ruleName: "Der Ball", question: "Was passiert, wenn der Ball während eines Angriffs platzt?", options: ["Das Spiel läuft weiter", "Schiedsrichterball", "Abstoß", "Freistoß für die angreifende Mannschaft"], correctAnswer: 1 },
+            { id: 68, rule: 3, ruleName: "Die Spieler", question: "Wie viele Spieler müssen mindestens auf dem Feld sein?", options: ["5", "6", "7", "8"], correctAnswer: 2 },
+            { id: 69, rule: 3, ruleName: "Die Spieler", question: "Darf ein Spieler ohne Zustimmung des Schiedsrichters das Feld verlassen?", options: ["Ja, jederzeit", "Nein, nur mit Zustimmung", "Nur bei Verletzung", "Nur bei Auswechslung"], correctAnswer: 1 },
+            { id: 70, rule: 3, ruleName: "Die Spieler", question: "Was passiert, wenn ein Spieler das Feld ohne Erlaubnis verlässt?", options: ["Gelbe Karte", "Rote Karte", "Verwarnung", "Spiel läuft weiter"], correctAnswer: 0 },
+            { id: 71, rule: 3, ruleName: "Die Spieler", question: "Wie viele Ersatzspieler sind erlaubt?", options: ["5", "7", "9", "12"], correctAnswer: 1 },
+            { id: 72, rule: 4, ruleName: "Die Ausrüstung der Spieler", question: "Darf ein Spieler eine Kappe tragen?", options: ["Ja, immer", "Nein, nie", "Nur bei Sonnenschein", "Nur wenn sie sicher ist"], correctAnswer: 3 },
+            { id: 73, rule: 4, ruleName: "Die Ausrüstung der Spieler", question: "Was passiert, wenn ein Spieler gefährliche Ausrüstung trägt?", options: ["Gelbe Karte", "Muss die Ausrüstung entfernen", "Rote Karte", "Spiel läuft weiter"], correctAnswer: 1 },
+            { id: 74, rule: 4, ruleName: "Die Ausrüstung der Spieler", question: "Müssen die Trikots der Mannschaften unterschiedlich sein?", options: ["Ja, immer", "Nein, nicht notwendig", "Nur bei Heimspielen", "Nur bei internationalen Spielen"], correctAnswer: 0 },
+            { id: 75, rule: 5, ruleName: "Der Schiedsrichter", question: "Kann der Schiedsrichter das Spiel wegen schlechten Wetters abbrechen?", options: ["Ja, jederzeit", "Nein, nie", "Nur bei Gewitter", "Nur wenn es gefährlich ist"], correctAnswer: 3 },
+            { id: 76, rule: 5, ruleName: "Der Schiedsrichter", question: "Wer entscheidet über Spielabbruch?", options: ["Der Schiedsrichter", "Der Trainer", "Die Mannschaftskapitäne", "Der Veranstalter"], correctAnswer: 0 },
+            { id: 77, rule: 5, ruleName: "Der Schiedsrichter", question: "Kann der Schiedsrichter eine Entscheidung während des Spiels ändern?", options: ["Ja, jederzeit", "Nein, nie", "Nur vor Wiederaufnahme", "Nur mit VAR"], correctAnswer: 2 },
+            { id: 78, rule: 6, ruleName: "Die weiteren Spieloffiziellen", question: "Wie viele vierte Offizielle gibt es?", options: ["0", "1", "2", "3"], correctAnswer: 1 },
+            { id: 79, rule: 6, ruleName: "Die weiteren Spieloffiziellen", question: "Was ist die Aufgabe des vierten Offiziellen?", options: ["Auswechslungen überwachen", "Nachspielzeit anzeigen", "Technische Zone überwachen", "Alle genannten"], correctAnswer: 3 },
+            { id: 80, rule: 6, ruleName: "Die weiteren Spieloffiziellen", question: "Kann ein Assistent den Schiedsrichter ersetzen?", options: ["Ja, automatisch", "Nein, nie", "Nur bei Verletzung", "Nur mit Zustimmung"], correctAnswer: 2 },
+            { id: 81, rule: 7, ruleName: "Die Dauer des Spiels", question: "Wie lange dauert eine Halbzeitpause maximal?", options: ["10 Minuten", "15 Minuten", "20 Minuten", "Unbegrenzt"], correctAnswer: 1 },
+            { id: 82, rule: 7, ruleName: "Die Dauer des Spiels", question: "Wer bestimmt die Nachspielzeit?", options: ["Der Schiedsrichter", "Der vierte Offizielle", "Die Mannschaftskapitäne", "Der Veranstalter"], correctAnswer: 0 },
+            { id: 83, rule: 7, ruleName: "Die Dauer des Spiels", question: "Kann die Nachspielzeit verlängert werden?", options: ["Ja, wenn nötig", "Nein, nie", "Nur bei Verletzungen", "Nur bei VAR-Einsatz"], correctAnswer: 0 },
+            { id: 84, rule: 7, ruleName: "Die Dauer des Spiels", question: "Wie lange dauert eine Verlängerung?", options: ["2x10 Minuten", "2x15 Minuten", "2x20 Minuten", "2x25 Minuten"], correctAnswer: 1 },
+            { id: 85, rule: 8, ruleName: "Beginn und Fortsetzung des Spiels", question: "Muss der Ball beim Anstoß still liegen?", options: ["Ja, immer", "Nein", "Nur bei Spielbeginn", "Nur nach Toren"], correctAnswer: 0 },
+            { id: 86, rule: 8, ruleName: "Beginn und Fortsetzung des Spiels", question: "Wie weit müssen die Gegenspieler beim Anstoß entfernt sein?", options: ["7 Meter", "9 Meter", "9,15 Meter", "10 Meter"], correctAnswer: 2 },
+            { id: 87, rule: 8, ruleName: "Beginn und Fortsetzung des Spiels", question: "Was passiert bei einem falschen Anstoß?", options: ["Wiederholung", "Indirekter Freistoß", "Schiedsrichterball", "Spiel läuft weiter"], correctAnswer: 0 },
+            { id: 88, rule: 9, ruleName: "Ball im Spiel und außer Spiel", question: "Ist der Ball im Spiel, wenn er von einem Pfosten zurückkommt?", options: ["Ja, immer", "Nein, nie", "Nur wenn er im Spielfeld bleibt", "Nur wenn er nicht die Linie überschreitet"], correctAnswer: 2 },
+            { id: 89, rule: 9, ruleName: "Ball im Spiel und außer Spiel", question: "Was passiert, wenn der Ball die Querlatte berührt?", options: ["Ball bleibt im Spiel", "Abstoß", "Eckstoß", "Schiedsrichterball"], correctAnswer: 0 },
+            { id: 90, rule: 9, ruleName: "Ball im Spiel und außer Spiel", question: "Ist der Ball im Spiel, wenn er die Torlinie nicht vollständig überschreitet?", options: ["Ja", "Nein", "Nur wenn er ins Tor geht", "Nur wenn der Schiedsrichter es entscheidet"], correctAnswer: 0 },
+            { id: 91, rule: 10, ruleName: "Wie ein Tor erzielt wird", question: "Zählt ein Tor, wenn der Ball von einem Schiedsrichter-Assistenten ins Tor gelenkt wird?", options: ["Ja", "Nein", "Nur wenn es unbeabsichtigt war", "Nur bei VAR"], correctAnswer: 1 },
+            { id: 92, rule: 10, ruleName: "Wie ein Tor erzielt wird", question: "Kann ein Tor nach Abpfiff gegeben werden?", options: ["Ja, wenn der Ball vor dem Pfiff im Tor war", "Nein, nie", "Nur bei VAR", "Nur bei Elfmeter"], correctAnswer: 0 },
+            { id: 93, rule: 10, ruleName: "Wie ein Tor erzielt wird", question: "Zählt ein Tor, wenn der Ball die Torlinie überschreitet, aber dann zurückkommt?", options: ["Ja, wenn er vollständig überschritten hat", "Nein", "Nur wenn der Schiedsrichter es sieht", "Nur bei VAR"], correctAnswer: 0 },
+            { id: 94, rule: 11, ruleName: "Abseits", question: "Ist ein Spieler im Abseits, wenn er den Ball von einem Gegenspieler erhält?", options: ["Ja", "Nein", "Nur wenn er im Abseitsraum ist", "Nur wenn er aktiv am Spiel teilnimmt"], correctAnswer: 1 },
+            { id: 95, rule: 11, ruleName: "Abseits", question: "Was ist eine Abseitsfalle?", options: ["Ein Fehler des Schiedsrichters", "Eine taktische Maßnahme", "Ein Regelverstoß", "Ein VAR-Einsatz"], correctAnswer: 1 },
+            { id: 96, rule: 11, ruleName: "Abseits", question: "Kann Abseits bei einem Abstoß gegeben werden?", options: ["Ja", "Nein", "Nur wenn der Ball im Strafraum ist", "Nur bei internationalen Spielen"], correctAnswer: 1 },
+            { id: 97, rule: 11, ruleName: "Abseits", question: "Wie viele Gegenspieler müssen zwischen Angreifer und Tor sein, damit kein Abseits vorliegt?", options: ["1", "2", "3", "4"], correctAnswer: 1 },
+            { id: 98, rule: 11, ruleName: "Abseits", question: "Ist Abseits strafbar, wenn der Spieler den Ball nicht berührt?", options: ["Ja, wenn er aktiv am Spiel teilnimmt", "Nein", "Nur wenn er den Torwart behindert", "Nur wenn er im Abseitsraum ist"], correctAnswer: 0 },
+            { id: 99, rule: 12, ruleName: "Fouls und unsportliches Betragen", question: "Was ist eine Notbremse?", options: ["Ein Foul, das eine klare Torchance verhindert", "Ein gefährliches Spiel", "Ein Handspiel", "Ein unsportliches Verhalten"], correctAnswer: 0 },
+            { id: 100, rule: 12, ruleName: "Fouls und unsportliches Betragen", question: "Was passiert bei einer Notbremse?", options: ["Gelbe Karte", "Rote Karte", "Indirekter Freistoß", "Verwarnung"], correctAnswer: 1 },
+            { id: 101, rule: 12, ruleName: "Fouls und unsportliches Betragen", question: "Was ist ein indirekter Freistoß im Strafraum?", options: ["Strafstoß", "Indirekter Freistoß vom Strafraumrand", "Abstoß", "Schiedsrichterball"], correctAnswer: 1 },
+            { id: 102, rule: 12, ruleName: "Fouls und unsportliches Betragen", question: "Darf ein Spieler den Ball absichtlich mit der Hand spielen?", options: ["Ja, wenn es taktisch ist", "Nein, nie", "Nur im Strafraum", "Nur bei Notwehr"], correctAnswer: 1 },
+            { id: 103, rule: 12, ruleName: "Fouls und unsportliches Betragen", question: "Was passiert bei unsportlichem Verhalten?", options: ["Gelbe Karte", "Rote Karte", "Verwarnung", "Freistoß"], correctAnswer: 0 },
+            { id: 104, rule: 13, ruleName: "Freistöße", question: "Muss der Ball beim Freistoß still liegen?", options: ["Ja, immer", "Nein", "Nur bei direkten Freistößen", "Nur bei indirekten Freistößen"], correctAnswer: 0 },
+            { id: 105, rule: 13, ruleName: "Freistöße", question: "Was passiert, wenn ein Gegenspieler zu nah am Ball steht?", options: ["Gelbe Karte", "Freistoß wird wiederholt", "Spiel läuft weiter", "Indirekter Freistoß"], correctAnswer: 1 },
+            { id: 106, rule: 13, ruleName: "Freistöße", question: "Darf der Ball beim Freistoß direkt ins Tor gehen?", options: ["Ja, bei direktem Freistoß", "Nein, nie", "Nur außerhalb des Strafraums", "Nur bei indirektem Freistoß"], correctAnswer: 0 },
+            { id: 107, rule: 14, ruleName: "Strafstoß", question: "Wie viele Schritte darf der Schütze beim Elfmeter machen?", options: ["Unbegrenzt", "3 Schritte", "5 Schritte", "Keine Begrenzung"], correctAnswer: 0 },
+            { id: 108, rule: 14, ruleName: "Strafstoß", question: "Was passiert, wenn der Schütze den Ball zweimal berührt?", options: ["Indirekter Freistoß", "Wiederholung", "Abstoß", "Eckstoß"], correctAnswer: 0 },
+            { id: 109, rule: 14, ruleName: "Strafstoß", question: "Darf der Torwart beim Elfmeter die Torlinie verlassen?", options: ["Ja, nach dem Schuss", "Nein, nie", "Nur wenn der Ball im Spiel ist", "Nur wenn er springt"], correctAnswer: 2 },
+            { id: 110, rule: 14, ruleName: "Strafstoß", question: "Was passiert, wenn ein Mitspieler des Schützen zu früh in den Strafraum läuft?", options: ["Wiederholung", "Indirekter Freistoß", "Abstoß", "Spiel läuft weiter"], correctAnswer: 1 },
+            { id: 111, rule: 14, ruleName: "Strafstoß", question: "Wie viele Spieler dürfen beim Elfmeter im Strafraum sein?", options: ["Nur Schütze und Torwart", "Alle Spieler", "Maximal 5", "Maximal 10"], correctAnswer: 1 },
+            { id: 112, rule: 15, ruleName: "Einwurf", question: "Müssen beide Füße beim Einwurf am Boden sein?", options: ["Ja, beide Füße", "Nein", "Nur ein Fuß", "Nur die Fersen"], correctAnswer: 0 },
+            { id: 113, rule: 15, ruleName: "Einwurf", question: "Kann ein Spieler direkt aus einem Einwurf ein Tor erzielen?", options: ["Ja", "Nein", "Nur wenn der Torwart fehlt", "Nur bei Abstoß"], correctAnswer: 1 },
+            { id: 114, rule: 15, ruleName: "Einwurf", question: "Wie weit müssen die Gegenspieler beim Einwurf entfernt sein?", options: ["2 Meter", "3 Meter", "5 Meter", "Keine Regel"], correctAnswer: 3 },
+            { id: 115, rule: 16, ruleName: "Abstoß", question: "Muss der Ball beim Abstoß den Strafraum vollständig verlassen haben?", options: ["Ja, vollständig", "Nein", "Nur teilweise", "Nur wenn er ins Aus geht"], correctAnswer: 0 },
+            { id: 116, rule: 16, ruleName: "Abstoß", question: "Kann ein Spieler direkt aus einem Abstoß ein Tor erzielen?", options: ["Ja", "Nein", "Nur im eigenen Tor", "Nur bei internationalen Spielen"], correctAnswer: 0 },
+            { id: 117, rule: 16, ruleName: "Abstoß", question: "Was passiert, wenn der Ball beim Abstoß nicht den Strafraum verlässt?", options: ["Wiederholung", "Eckstoß", "Schiedsrichterball", "Spiel läuft weiter"], correctAnswer: 0 },
+            { id: 118, rule: 17, ruleName: "Eckstoß", question: "Muss der Ball beim Eckstoß im Viertelkreis liegen?", options: ["Ja, vollständig", "Nein", "Nur teilweise", "Nur bei internationalen Spielen"], correctAnswer: 0 },
+            { id: 119, rule: 17, ruleName: "Eckstoß", question: "Kann ein Spieler direkt aus einem Eckstoß ein Tor erzielen?", options: ["Ja", "Nein", "Nur im eigenen Tor", "Nur wenn der Torwart fehlt"], correctAnswer: 0 },
+            { id: 120, rule: 17, ruleName: "Eckstoß", question: "Was passiert, wenn der Ball beim Eckstoß nicht im Viertelkreis liegt?", options: ["Wiederholung", "Abstoß", "Schiedsrichterball", "Spiel läuft weiter"], correctAnswer: 0 },
+            { id: 121, rule: 17, ruleName: "Eckstoß", question: "Wie weit ist der Viertelkreisradius beim Eckstoß?", options: ["0,5 Meter", "1 Meter", "1,5 Meter", "2 Meter"], correctAnswer: 1 }
         ];
 
         // Aktueller Kurs-Typ
@@ -1745,12 +1305,6 @@
         // Kurs auswählen
         function selectCourse(courseType) {
             currentCourseType = courseType;
-            
-            // Сохраняем имя игрока в localStorage для текущей сессии
-            const playerName = document.getElementById('player-name').value.trim();
-            if (playerName) {
-                sessionStorage.setItem('currentPlayerName', playerName);
-            }
             
             // Kursauswahl-Bildschirm verstecken
             document.getElementById('course-selection-screen').classList.add('hidden');
@@ -2038,189 +1592,8 @@
             }
         }
 
-        // Сохранение статистики пользователя на сервере
-        async function saveUserStatistics() {
-            // Пытаемся получить имя из поля ввода или из sessionStorage
-            let playerName = document.getElementById('player-name')?.value.trim();
-            if (!playerName) {
-                playerName = sessionStorage.getItem('currentPlayerName');
-            }
-            
-            // Если имя не введено, не сохраняем статистику
-            if (!playerName) {
-                return;
-            }
-            
-            // Подготавливаем данные для отправки
-            const gameStats = {
-                correct: gameState.totalCorrect,
-                incorrect: gameState.totalIncorrect,
-                courseType: currentCourseType,
-                rounds: gameState.roundStats
-            };
-            
-            try {
-                // Отправляем данные на сервер
-                const response = await fetch('/.netlify/functions/save-stats', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        playerName: playerName,
-                        gameStats: gameStats
-                    })
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Failed to save statistics');
-                }
-                
-                const result = await response.json();
-                console.log('Statistics saved successfully:', result);
-            } catch (error) {
-                console.error('Error saving statistics:', error);
-                // В случае ошибки можно сохранить в localStorage как fallback
-                // Но не будем это делать, чтобы не дублировать данные
-            }
-        }
-
-        // Показать статистику с сервера
-        async function showStatistics() {
-            const modal = document.getElementById('stats-modal');
-            const statsBody = document.getElementById('stats-body');
-            
-            // Показываем индикатор загрузки
-            statsBody.innerHTML = '<div class="stats-empty">Lade Statistiken...</div>';
-            modal.classList.add('active');
-            
-            try {
-                // Получаем статистику с сервера
-                const response = await fetch('/.netlify/functions/get-stats');
-                
-                if (!response.ok) {
-                    throw new Error('Failed to load statistics');
-                }
-                
-                const allStats = await response.json();
-                
-                // Если статистики нет
-                if (Object.keys(allStats).length === 0) {
-                    statsBody.innerHTML = '<div class="stats-empty">Noch keine Statistiken verfügbar.<br>Spielen Sie ein Spiel, um Statistiken zu sammeln!</div>';
-                    return;
-                }
-                
-                // Сортируем пользователей по общему количеству правильных ответов
-                const sortedUsers = Object.entries(allStats).sort((a, b) => {
-                    return b[1].totalCorrect - a[1].totalCorrect;
-                });
-                
-                // Формируем HTML для статистики
-                let html = '';
-                
-                sortedUsers.forEach(([name, stats]) => {
-                    const totalAnswers = stats.totalCorrect + stats.totalIncorrect;
-                    const successRate = totalAnswers > 0 ? Math.round((stats.totalCorrect / totalAnswers) * 100) : 0;
-                    
-                    html += `
-                        <div class="stats-user">
-                            <div class="stats-user-name">${escapeHtml(name)}</div>
-                            <div class="stats-user-details">
-                                <div class="stats-detail-item">
-                                    <div class="stats-detail-label">Richtige Antworten</div>
-                                    <div class="stats-detail-value correct">${stats.totalCorrect}</div>
-                                </div>
-                                <div class="stats-detail-item">
-                                    <div class="stats-detail-label">Falsche Antworten</div>
-                                    <div class="stats-detail-value incorrect">${stats.totalIncorrect}</div>
-                                </div>
-                                <div class="stats-detail-item">
-                                    <div class="stats-detail-label">Gesamt Spiele</div>
-                                    <div class="stats-detail-value total">${stats.totalGames}</div>
-                                </div>
-                                <div class="stats-detail-item">
-                                    <div class="stats-detail-label">Erfolgsquote</div>
-                                    <div class="stats-detail-value total">${successRate}%</div>
-                                </div>
-                            </div>
-                            ${stats.games && stats.games.length > 0 ? `
-                                <div class="stats-user-games">
-                                    <strong>Letzte Spiele:</strong>
-                                    ${stats.games.slice(-5).reverse().map(game => `
-                                        <div class="stats-game-item">
-                                            <span>${game.correct} richtig / ${game.incorrect} falsch (${game.courseType === 'advanced' ? 'Fortgeschrittenen' : 'Basis'})</span>
-                                            <span class="stats-game-date">${formatDate(game.date)}</span>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            ` : ''}
-                        </div>
-                    `;
-                });
-                
-                statsBody.innerHTML = html;
-            } catch (error) {
-                console.error('Error loading statistics:', error);
-                statsBody.innerHTML = '<div class="stats-empty">Fehler beim Laden der Statistiken.<br>Bitte versuchen Sie es später erneut.</div>';
-            }
-        }
-
-        // Закрыть статистику
-        function closeStatistics() {
-            document.getElementById('stats-modal').classList.remove('active');
-        }
-
-        // Закрыть статистику при клике вне модального окна
-        document.addEventListener('DOMContentLoaded', function() {
-            const statsModal = document.getElementById('stats-modal');
-            if (statsModal) {
-                statsModal.addEventListener('click', function(e) {
-                    if (e.target === statsModal) {
-                        closeStatistics();
-                    }
-                });
-            }
-            
-            // Загружаем сохраненное имя игрока
-            const savedName = sessionStorage.getItem('currentPlayerName');
-            const nameInput = document.getElementById('player-name');
-            if (savedName && nameInput) {
-                nameInput.value = savedName;
-            }
-        });
-
-        // Форматирование даты
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            const now = new Date();
-            const diffTime = Math.abs(now - date);
-            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-            
-            if (diffDays === 0) {
-                return 'Heute';
-            } else if (diffDays === 1) {
-                return 'Gestern';
-            } else if (diffDays < 7) {
-                return `vor ${diffDays} Tagen`;
-            } else {
-                return date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
-            }
-        }
-
-        // Экранирование HTML
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
         // Ergebnisse anzeigen
-        async function showResults() {
-            // Сохраняем статистику перед показом результатов (асинхронно, не блокируем UI)
-            saveUserStatistics().catch(error => {
-                console.error('Error saving statistics:', error);
-            });
-            
+        function showResults() {
             document.getElementById('game-screen').style.display = 'none';
             document.getElementById('results-screen').classList.add('active');
             

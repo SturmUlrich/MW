@@ -1,0 +1,9 @@
+{
+  "name": "football-quiz",
+  "version": "1.0.0",
+  "description": "Fußballregeln Quiz für Schiedsrichter",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.38.0"
+  }
+}
+

@@ -48,3 +48,5 @@ Nach der Installation funktioniert die App auch offline, da alle notwendigen Dat
 - Service Worker funktioniert nur über HTTPS oder localhost
 - Bei Problemen: Browser-Cache leeren und Seite neu laden
 
+
+
