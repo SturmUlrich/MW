@@ -2,7 +2,7 @@
 const CACHE_NAME = 'fußball-quiz-v1';
 const urlsToCache = [
   './',
-  './fußball-quiz.html',
+  './index.html',
   './manifest.json'
 ];
 
@@ -53,7 +53,7 @@ self.addEventListener('fetch', (event) => {
           .catch(() => {
             // Falls offline und nicht im Cache, zeige Offline-Seite
             if (event.request.headers.get('accept').includes('text/html')) {
-              return caches.match('./fußball-quiz.html');
+              return caches.match('./index.html');
             }
           });
       })

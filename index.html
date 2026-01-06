@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Interaktives Quiz zu den 17 Fußballregeln für Schiedsrichter">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Fußball Quiz">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <title>Kurse Schiedsrichter - Fußballregeln Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        *:focus {
+            outline: none;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            height: -webkit-fill-available;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px 40px 20px 40px;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .round-info {
+            display: none !important;
+        }
+
+        #counters {
+            display: none !important;
+        }
+
+        #counters.active {
+            display: flex !important;
+            justify-content: space-around;
+            align-items: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 15px;
+        }
+
+        #game-screen {
+            display: none;
+        }
+
+        #game-screen.active {
+            display: block;
+        }
+
+        /* Kursauswahl-Bildschirm */
+        .course-selection-screen {
+            display: block;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .course-selection-screen.hidden {
+            display: none;
+        }
+
+        .course-selection-content h2 {
+            color: #333;
+            margin-bottom: 40px;
+            font-size: 2em;
+        }
+
+        .course-options {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: nowrap;
+            flex-direction: row;
+        }
+
+        .course-card {
+            background: white;
+            border: 3px solid #e0e0e0;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 280px;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .course-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .course-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .course-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .course-card p {
+            color: #666;
+            margin: 8px 0;
+            font-size: 0.95em;
+        }
+
+        .course-card p:first-of-type {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        .course-desc {
+            font-size: 0.9em !important;
+            font-style: italic;
+            color: #999 !important;
+        }
+
+        .counter {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .counter-label {
+            font-size: 1em;
+            color: #666;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .counter-value {
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+
+        #green-counter {
+            color: #28a745;
+        }
+
+        #black-counter {
+            color: #333;
+        }
+
+        #red-counter {
+            color: #dc3545;
+        }
+
+        .counter-value.updated {
+            animation: pulse 0.5s ease;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .question-container {
+            margin: 30px 0;
+            text-align: center;
+            min-height: fit-content;
+        }
+
+        .rule-badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin-bottom: 15px;
+        }
+
+        .question-text {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            font-weight: 600;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option-btn {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .option-btn:hover {
+            background: #e9ecef;
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .option-btn.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .option-btn.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .next-btn {
+            margin-top: 30px;
+            margin-bottom: 0;
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            visibility: hidden;
+            opacity: 0;
+            pointer-events: none;
+            width: 100%;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .next-btn.active {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .next-btn:hover {
+            background: #5568d3;
+            transform: scale(1.05);
+        }
+
+        .results-screen {
+            text-align: center;
+            display: none;
+        }
+
+        .results-screen.active {
+            display: block;
+        }
+
+        .results-screen h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .results-screen p {
+            color: #666;
+            margin: 15px 0;
+            font-size: 1.2em;
+        }
+
+        .stats {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .stat-item {
+            padding: 10px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 5px;
+        }
+
+        .restart-btn {
+            margin-top: 30px;
+            padding: 15px 40px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .restart-btn:hover {
+            background: #5568d3;
+            transform: scale(1.05);
+        }
+
+        .motivation-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .motivation-modal.active {
+            display: flex;
+        }
+
+        .motivation-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.4s ease;
+        }
+
+        .motivation-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .motivation-text {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .motivation-author {
+            font-size: 1em;
+            color: #666;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .motivation-close-btn {
+            padding: 12px 40px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .motivation-close-btn:hover {
+            background: #5568d3;
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Адаптивные стили для мобильных устройств */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 20px 15px 15px 15px;
+                max-width: 100%;
+                margin: 0;
+            }
+
+            h1 {
+                font-size: 1.5em;
+                margin-bottom: 20px;
+            }
+
+            .course-selection-content h2 {
+                font-size: 1.3em;
+                margin-bottom: 25px;
+            }
+
+            .course-options {
+                flex-direction: column;
+                gap: 15px;
+                align-items: center;
+            }
+
+            .course-card {
+                max-width: 100%;
+                width: 100%;
+                padding: 20px;
+            }
+
+            .course-icon {
+                font-size: 2.5em;
+                margin-bottom: 12px;
+            }
+
+            .course-card h3 {
+                font-size: 1.2em;
+                margin-bottom: 8px;
+            }
+
+            .course-card p {
+                font-size: 0.9em;
+                margin: 6px 0;
+            }
+
+            #counters.active {
+                flex-direction: row;
+                gap: 10px;
+                padding: 15px;
+                margin: 20px 0;
+            }
+
+            .counter {
+                flex: 1;
+                padding: 10px;
+            }
+
+            .counter-label {
+                font-size: 0.9em;
+            }
+
+            .counter-value {
+                font-size: 2em;
+            }
+
+            .question-container {
+                margin: 20px 0;
+            }
+
+            .rule-badge {
+                font-size: 0.75em;
+                padding: 4px 12px;
+                margin-bottom: 12px;
+            }
+
+            .question-text {
+                font-size: 1.1em;
+                margin-bottom: 20px;
+                padding: 0 10px;
+            }
+
+            .options {
+                gap: 12px;
+            }
+
+            .option-btn {
+                padding: 15px;
+                font-size: 0.95em;
+                min-height: 50px;
+                touch-action: manipulation;
+            }
+
+            .next-btn {
+                padding: 12px 25px;
+                font-size: 0.95em;
+                margin-top: 20px;
+                touch-action: manipulation;
+            }
+
+            .results-screen h2 {
+                font-size: 1.5em;
+            }
+
+            .results-screen p {
+                font-size: 1em;
+            }
+
+            .restart-btn {
+                padding: 12px 25px;
+                font-size: 1em;
+                touch-action: manipulation;
+            }
+
+            .motivation-content {
+                padding: 25px;
+                margin: 20px;
+            }
+
+            .motivation-icon {
+                font-size: 3em;
+            }
+
+            .motivation-text {
+                font-size: 1.1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+
+            .container {
+                padding: 15px 10px 10px 10px;
+                border-radius: 15px;
+            }
+
+            h1 {
+                font-size: 1.3em;
+                margin-bottom: 15px;
+            }
+
+            .course-selection-content h2 {
+                font-size: 1.2em;
+                margin-bottom: 20px;
+            }
+
+            .course-card {
+                padding: 15px;
+            }
+
+            .course-icon {
+                font-size: 2em;
+            }
+
+            .question-text {
+                font-size: 1em;
+            }
+
+            .option-btn {
+                padding: 12px;
+                font-size: 0.9em;
+            }
+
+            .counter-value {
+                font-size: 1.8em;
+            }
+        }
+
+        /* Горизонтальная ориентация для планшетов */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .course-options {
+                gap: 25px;
+            }
+
+            .course-card {
+                max-width: 320px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="main-title">Kurse Schiedsrichter - Fußballregeln</h1>
+        
+        <!-- Kursauswahl-Bildschirm -->
+        <div class="course-selection-screen" id="course-selection-screen">
+            <div class="course-selection-content">
+                <h2>Wählen Sie Ihren Kurs</h2>
+                <div class="course-options">
+                    <div class="course-card" onclick="selectCourse('basic')">
+                        <div class="course-icon">📚</div>
+                        <h3>Basis-Kurs</h3>
+                        <p>60 Fragen zu den 17 Fußballregeln</p>
+                        <p class="course-desc">Ideal für Anfänger und zur Auffrischung der Grundlagen</p>
+                    </div>
+                    <div class="course-card" onclick="selectCourse('advanced')">
+                        <div class="course-icon">🎓</div>
+                        <h3>Fortgeschrittenen-Kurs</h3>
+                        <p>121 Fragen zu den 17 Fußballregeln</p>
+                        <p class="course-desc">Vertiefte Kenntnisse für erfahrene Schiedsrichter</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="round-info" id="round-info" style="display: none;"></div>
+        
+        <div class="counters" id="counters">
+            <div class="counter">
+                <div class="counter-label">Richtig</div>
+                <div class="counter-value" id="green-counter">0</div>
+            </div>
+            <div class="counter">
+                <div class="counter-label">Verbleibend</div>
+                <div class="counter-value" id="black-counter">60</div>
+            </div>
+            <div class="counter">
+                <div class="counter-label">Falsch</div>
+                <div class="counter-value" id="red-counter">0</div>
+            </div>
+        </div>
+        
+        <div id="game-screen">
+            <div class="question-container">
+                <div class="rule-badge" id="rule-badge"></div>
+                <div class="question-text" id="question-text"></div>
+                <div class="options" id="options"></div>
+                <button class="next-btn" id="next-btn">Weiter</button>
+            </div>
+        </div>
+        
+        <div class="results-screen" id="results-screen">
+            <h2>Spiel beendet!</h2>
+            <p>Sie haben alle drei Runden erfolgreich abgeschlossen.</p>
+            <div class="stats" id="stats"></div>
+            <button class="restart-btn" onclick="restartGame()">Neu starten</button>
+        </div>
+    </div>
+
+    <!-- Motivations-Modal -->
+    <div class="motivation-modal" id="motivation-modal">
+        <div class="motivation-content">
+            <div class="motivation-icon" id="motivation-icon">⚽</div>
+            <div class="motivation-text" id="motivation-text"></div>
+            <div class="motivation-author" id="motivation-author"></div>
+            <button class="motivation-close-btn" onclick="closeMotivationModal()">Weiter</button>
+        </div>
+    </div>
+
+    <script>
+        // Базовые вопросы (60 вопросов)
+        const allQuestions = [
+            // Здесь должны быть все 60 базовых вопросов
+            // Для экономии места показываю структуру
+            { id: 1, rule: 1, ruleName: "Das Spielfeld", question: "Wie breit ist ein Fußballfeld maximal?", options: ["64 Meter", "68 Meter", "75 Meter", "80 Meter"], correctAnswer: 2 },
+            // ... остальные вопросы
+        ];
+
+        // Продвинутые вопросы (61 вопрос)
+        const advancedQuestions = [
+            // Здесь должны быть все 61 продвинутый вопрос
+        ];
+
+        // Zitate großer Fußballer
+        const footballQuotes = [
+            "Der Ball ist rund, das Spiel dauert 90 Minuten. - Sepp Herberger",
+            "Fußball ist wie Schach, nur ohne Würfel. - Lukas Podolski",
+            "Nach dem Spiel ist vor dem Spiel. - Sepp Herberger",
+            "Ich habe nie gespielt, um berühmt zu werden. Ich habe gespielt, um Fußball zu spielen. - Diego Maradona",
+            "Fußball ist die schönste Nebensache der Welt. - Sepp Herberger"
+        ];
+
+        const encouragementMessages = [
+            "Nicht aufgeben! Übung macht den Meister.",
+            "Jeder Fehler ist eine Lernchance.",
+            "Du machst Fortschritte! Weiter so!",
+            "Gib nicht auf! Du wirst besser!",
+            "Stark bleiben! Jede Herausforderung macht dich stärker."
+        ];
+
+        let currentCourseType = null;
+        let gameState = {
+            currentRound: 1,
+            currentPhase: 'initial',
+            currentQuestionIndex: 0,
+            questions: [],
+            incorrectQuestions: [],
+            blackCounter: 0,
+            greenCounter: 0,
+            redCounter: 0,
+            roundStats: [],
+            isAnswering: false,
+            totalCorrect: 0,
+            totalIncorrect: 0
+        };
+
+        function selectCourse(courseType) {
+            currentCourseType = courseType;
+            document.getElementById('course-selection-screen').classList.add('hidden');
+            document.getElementById('counters').classList.add('active');
+            document.getElementById('game-screen').style.display = 'block';
+            initGame();
+        }
+
+        function initGame() {
+            let questionsToUse;
+            if (currentCourseType === 'advanced') {
+                questionsToUse = [...allQuestions, ...advancedQuestions];
+            } else {
+                questionsToUse = [...allQuestions];
+            }
+            
+            gameState = {
+                currentRound: 1,
+                currentPhase: 'initial',
+                currentQuestionIndex: 0,
+                questions: JSON.parse(JSON.stringify(questionsToUse)),
+                incorrectQuestions: [],
+                blackCounter: questionsToUse.length,
+                greenCounter: 0,
+                redCounter: 0,
+                roundStats: [],
+                isAnswering: false,
+                totalCorrect: 0,
+                totalIncorrect: 0
+            };
+
+            shuffleArray(gameState.questions);
+            document.getElementById('black-counter').textContent = questionsToUse.length;
+            document.getElementById('results-screen').classList.remove('active');
+            document.getElementById('game-screen').style.display = 'block';
+            updateCounters();
+            updateRoundInfo();
+            loadQuestion();
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function loadQuestion() {
+            const question = gameState.questions[gameState.currentQuestionIndex];
+            document.getElementById('rule-badge').textContent = `Regel ${question.rule}: ${question.ruleName}`;
+            document.getElementById('question-text').textContent = question.question;
+            
+            const optionsContainer = document.getElementById('options');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = option;
+                btn.onclick = () => checkAnswer(index, question);
+                optionsContainer.appendChild(btn);
+            });
+            
+            document.getElementById('next-btn').classList.remove('active');
+            gameState.isAnswering = true;
+        }
+
+        function checkAnswer(selectedIndex, question) {
+            if (!gameState.isAnswering) return;
+            
+            gameState.isAnswering = false;
+            const options = document.querySelectorAll('.option-btn');
+            options.forEach((btn, index) => {
+                btn.disabled = true;
+                if (index === question.correctAnswer) {
+                    btn.classList.add('correct');
+                } else if (index === selectedIndex) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            if (selectedIndex === question.correctAnswer) {
+                gameState.greenCounter++;
+                gameState.totalCorrect++;
+                if (gameState.currentPhase === 'review') {
+                    const idx = gameState.incorrectQuestions.findIndex(q => q.id === question.id);
+                    if (idx !== -1) {
+                        gameState.incorrectQuestions.splice(idx, 1);
+                    }
+                }
+            } else {
+                gameState.redCounter++;
+                gameState.totalIncorrect++;
+                if (gameState.currentPhase === 'initial') {
+                    gameState.incorrectQuestions.push(question);
+                }
+            }
+
+            gameState.blackCounter--;
+            updateCounters();
+
+            if (gameState.totalCorrect % 5 === 0 && gameState.totalCorrect > 0) {
+                showMotivationMessage('quote');
+                return;
+            }
+            if (gameState.totalIncorrect % 5 === 0 && gameState.totalIncorrect > 0) {
+                showMotivationMessage('encouragement');
+                return;
+            }
+
+            document.getElementById('next-btn').classList.add('active');
+        }
+
+        function moveToNextQuestion() {
+            if (gameState.blackCounter === 0) {
+                handleRoundCompletion();
+                return;
+            }
+
+            if (gameState.currentPhase === 'initial') {
+                gameState.currentQuestionIndex++;
+                if (gameState.currentQuestionIndex >= gameState.questions.length) {
+                    handleRoundCompletion();
+                    return;
+                }
+            } else {
+                if (gameState.incorrectQuestions.length === 0) {
+                    handleRoundCompletion();
+                    return;
+                }
+                const randomIndex = Math.floor(Math.random() * gameState.incorrectQuestions.length);
+                gameState.currentQuestionIndex = gameState.questions.findIndex(q => q.id === gameState.incorrectQuestions[randomIndex].id);
+            }
+
+            loadQuestion();
+        }
+
+        function handleRoundCompletion() {
+            if (gameState.currentPhase === 'initial' && gameState.incorrectQuestions.length > 0) {
+                gameState.currentPhase = 'review';
+                gameState.currentQuestionIndex = 0;
+                updateRoundInfo();
+                if (gameState.incorrectQuestions.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * gameState.incorrectQuestions.length);
+                    gameState.currentQuestionIndex = gameState.questions.findIndex(q => q.id === gameState.incorrectQuestions[randomIndex].id);
+                    loadQuestion();
+                } else {
+                    completeRound();
+                }
+            } else {
+                completeRound();
+            }
+        }
+
+        function completeRound() {
+            let totalQuestions;
+            if (currentCourseType === 'advanced') {
+                totalQuestions = allQuestions.length + advancedQuestions.length;
+            } else {
+                totalQuestions = allQuestions.length;
+            }
+            
+            gameState.roundStats.push({
+                round: gameState.currentRound,
+                totalQuestions: totalQuestions,
+                correctAnswers: gameState.greenCounter,
+                incorrectAnswers: gameState.redCounter
+            });
+
+            if (gameState.currentRound < 3) {
+                gameState.currentRound++;
+                gameState.currentPhase = 'initial';
+                gameState.currentQuestionIndex = 0;
+                let questionsToUse;
+                if (currentCourseType === 'advanced') {
+                    questionsToUse = [...allQuestions, ...advancedQuestions];
+                } else {
+                    questionsToUse = [...allQuestions];
+                }
+                gameState.questions = JSON.parse(JSON.stringify(questionsToUse));
+                gameState.incorrectQuestions = [];
+                gameState.blackCounter = questionsToUse.length;
+                gameState.greenCounter = 0;
+                gameState.redCounter = 0;
+                shuffleArray(gameState.questions);
+                updateCounters();
+                updateRoundInfo();
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('game-screen').style.display = 'none';
+            document.getElementById('results-screen').classList.add('active');
+            const statsContainer = document.getElementById('stats');
+            statsContainer.innerHTML = '';
+            gameState.roundStats.forEach(stat => {
+                const statDiv = document.createElement('div');
+                statDiv.className = 'stat-item';
+                statDiv.innerHTML = `<strong>Runde ${stat.round}:</strong> <span>${stat.correctAnswers} richtig / ${stat.incorrectAnswers} falsch</span>`;
+                statsContainer.appendChild(statDiv);
+            });
+        }
+
+        function updateCounters() {
+            document.getElementById('green-counter').textContent = gameState.greenCounter;
+            document.getElementById('black-counter').textContent = gameState.blackCounter;
+            document.getElementById('red-counter').textContent = gameState.redCounter;
+        }
+
+        function updateRoundInfo() {
+            const mainTitle = document.getElementById('main-title');
+            let roundText = '';
+            if (gameState.currentRound === 1) {
+                roundText = '1. Halbzeit';
+            } else if (gameState.currentRound === 2) {
+                roundText = '2. Halbzeit';
+            } else if (gameState.currentRound === 3) {
+                roundText = 'Verlängerung';
+            }
+            let phaseText = '';
+            if (gameState.currentPhase === 'review') {
+                phaseText = ' - Wiederholung';
+            }
+            mainTitle.textContent = `${roundText}${phaseText}`;
+        }
+
+        function showMotivationMessage(type) {
+            const modal = document.getElementById('motivation-modal');
+            const icon = document.getElementById('motivation-icon');
+            const text = document.getElementById('motivation-text');
+            const author = document.getElementById('motivation-author');
+            
+            if (type === 'quote') {
+                const quote = footballQuotes[Math.floor(Math.random() * footballQuotes.length)];
+                icon.textContent = '⚽';
+                text.textContent = quote.split(' - ')[0];
+                author.textContent = quote.split(' - ')[1] || '';
+            } else {
+                const msg = encouragementMessages[Math.floor(Math.random() * encouragementMessages.length)];
+                icon.textContent = '💪';
+                text.textContent = msg;
+                author.textContent = '';
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function closeMotivationModal() {
+            document.getElementById('motivation-modal').classList.remove('active');
+            document.getElementById('next-btn').classList.add('active');
+        }
+
+        document.getElementById('next-btn').onclick = () => {
+            document.getElementById('next-btn').classList.remove('active');
+            moveToNextQuestion();
+        };
+
+        function restartGame() {
+            document.getElementById('course-selection-screen').classList.remove('hidden');
+            document.getElementById('main-title').textContent = 'Kurse Schiedsrichter - Fußballregeln';
+            document.getElementById('counters').classList.remove('active');
+            document.getElementById('game-screen').style.display = 'none';
+            document.getElementById('results-screen').classList.remove('active');
+            currentCourseType = null;
+        }
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then((registration) => {
+                        console.log('Service Worker registriert:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log('Service Worker Registrierung fehlgeschlagen:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
+

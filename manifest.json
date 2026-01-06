@@ -2,7 +2,7 @@
   "name": "Fußballregeln Quiz - Kurse Schiedsrichter",
   "short_name": "Fußball Quiz",
   "description": "Interaktives Quiz zu den 17 Fußballregeln für Schiedsrichter",
-  "start_url": "./fußball-quiz.html",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#667eea",
   "theme_color": "#667eea",
