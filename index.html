@@ -135,6 +135,210 @@
             color: #999 !important;
         }
 
+        /* Поле ввода имени */
+        .name-input-container {
+            margin-bottom: 25px;
+            text-align: left;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .name-input-container label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 1em;
+        }
+
+        .name-input-container input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .name-input-container input:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Кнопка статистики */
+        .stats-button {
+            display: block;
+            margin: 0 auto 30px auto;
+            padding: 12px 30px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .stats-button:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        /* Модальное окно статистики */
+        .stats-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+            padding: 20px;
+        }
+
+        .stats-modal.active {
+            display: flex;
+        }
+
+        .stats-modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.4s ease;
+        }
+
+        .stats-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .stats-header h2 {
+            color: #333;
+            font-size: 1.8em;
+            margin: 0;
+        }
+
+        .close-stats {
+            background: none;
+            border: none;
+            font-size: 2em;
+            color: #666;
+            cursor: pointer;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-stats:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .stats-body {
+            margin-top: 20px;
+        }
+
+        .stats-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+            font-size: 1.1em;
+        }
+
+        .stats-user {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .stats-user-name {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .stats-user-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .stats-detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stats-detail-label {
+            font-size: 0.85em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .stats-detail-value {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .stats-detail-value.correct {
+            color: #28a745;
+        }
+
+        .stats-detail-value.incorrect {
+            color: #dc3545;
+        }
+
+        .stats-detail-value.total {
+            color: #667eea;
+        }
+
+        .stats-user-games {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .stats-game-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .stats-game-date {
+            font-size: 0.85em;
+            color: #999;
+        }
+
         #counters {
             display: none !important;
         }
@@ -606,6 +810,47 @@
             .counter-value {
                 font-size: 1.8em;
             }
+
+            .name-input-container {
+                margin-bottom: 20px;
+            }
+
+            .name-input-container input {
+                padding: 10px 12px;
+                font-size: 0.95em;
+            }
+
+            .stats-button {
+                padding: 10px 25px;
+                font-size: 0.95em;
+                margin-bottom: 25px;
+            }
+
+            .stats-modal-content {
+                padding: 20px;
+                max-height: 90vh;
+            }
+
+            .stats-header h2 {
+                font-size: 1.5em;
+            }
+
+            .stats-user {
+                padding: 15px;
+            }
+
+            .stats-user-name {
+                font-size: 1.1em;
+            }
+
+            .stats-user-details {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .stats-detail-value {
+                font-size: 1.1em;
+            }
         }
 
         /* Горизонтальная ориентация для планшетов */
@@ -628,6 +873,16 @@
         <div class="course-selection-screen" id="course-selection-screen">
             <div class="course-selection-content">
                 <h2>Wählen Sie Ihren Kurs</h2>
+                
+                <!-- Поле ввода имени -->
+                <div class="name-input-container">
+                    <label for="player-name">Ihr Name:</label>
+                    <input type="text" id="player-name" placeholder="Geben Sie Ihren Namen ein" maxlength="50">
+                </div>
+                
+                <!-- Кнопка статистики -->
+                <button class="stats-button" onclick="showStatistics()">📊 Statistik</button>
+                
                 <div class="course-options">
                     <div class="course-card" onclick="selectCourse('basic')">
                         <div class="course-icon">📚</div>
@@ -641,6 +896,19 @@
                         <p>150 Fragen zu den 17 Fußballregeln</p>
                         <p class="course-desc">Vertiefte Kenntnisse für erfahrene Schiedsrichter</p>
                     </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Статистика модальное окно -->
+        <div class="stats-modal" id="stats-modal">
+            <div class="stats-modal-content">
+                <div class="stats-header">
+                    <h2>📊 Spielstatistik</h2>
+                    <button class="close-stats" onclick="closeStatistics()">&times;</button>
+                </div>
+                <div class="stats-body" id="stats-body">
+                    <!-- Статистика будет загружена здесь -->
                 </div>
             </div>
         </div>
@@ -1478,6 +1746,12 @@
         function selectCourse(courseType) {
             currentCourseType = courseType;
             
+            // Сохраняем имя игрока в localStorage для текущей сессии
+            const playerName = document.getElementById('player-name').value.trim();
+            if (playerName) {
+                sessionStorage.setItem('currentPlayerName', playerName);
+            }
+            
             // Kursauswahl-Bildschirm verstecken
             document.getElementById('course-selection-screen').classList.add('hidden');
             
@@ -1764,8 +2038,167 @@
             }
         }
 
+        // Сохранение статистики пользователя
+        function saveUserStatistics() {
+            const playerName = document.getElementById('player-name').value.trim();
+            
+            // Если имя не введено, не сохраняем статистику
+            if (!playerName) {
+                return;
+            }
+            
+            // Получаем существующую статистику из localStorage
+            let allStats = JSON.parse(localStorage.getItem('footballQuizStats') || '{}');
+            
+            // Получаем или создаем статистику для этого пользователя
+            if (!allStats[playerName]) {
+                allStats[playerName] = {
+                    totalCorrect: 0,
+                    totalIncorrect: 0,
+                    totalGames: 0,
+                    games: []
+                };
+            }
+            
+            // Добавляем статистику текущей игры
+            const gameStats = {
+                date: new Date().toISOString(),
+                correct: gameState.totalCorrect,
+                incorrect: gameState.totalIncorrect,
+                courseType: currentCourseType,
+                rounds: gameState.roundStats
+            };
+            
+            allStats[playerName].games.push(gameStats);
+            allStats[playerName].totalCorrect += gameState.totalCorrect;
+            allStats[playerName].totalIncorrect += gameState.totalIncorrect;
+            allStats[playerName].totalGames += 1;
+            
+            // Сохраняем обратно в localStorage
+            localStorage.setItem('footballQuizStats', JSON.stringify(allStats));
+        }
+
+        // Показать статистику
+        function showStatistics() {
+            const modal = document.getElementById('stats-modal');
+            const statsBody = document.getElementById('stats-body');
+            
+            // Получаем статистику из localStorage
+            const allStats = JSON.parse(localStorage.getItem('footballQuizStats') || '{}');
+            
+            // Если статистики нет
+            if (Object.keys(allStats).length === 0) {
+                statsBody.innerHTML = '<div class="stats-empty">Noch keine Statistiken verfügbar.<br>Spielen Sie ein Spiel, um Statistiken zu sammeln!</div>';
+                modal.classList.add('active');
+                return;
+            }
+            
+            // Сортируем пользователей по общему количеству правильных ответов
+            const sortedUsers = Object.entries(allStats).sort((a, b) => {
+                return b[1].totalCorrect - a[1].totalCorrect;
+            });
+            
+            // Формируем HTML для статистики
+            let html = '';
+            
+            sortedUsers.forEach(([name, stats]) => {
+                const totalAnswers = stats.totalCorrect + stats.totalIncorrect;
+                const successRate = totalAnswers > 0 ? Math.round((stats.totalCorrect / totalAnswers) * 100) : 0;
+                
+                html += `
+                    <div class="stats-user">
+                        <div class="stats-user-name">${escapeHtml(name)}</div>
+                        <div class="stats-user-details">
+                            <div class="stats-detail-item">
+                                <div class="stats-detail-label">Richtige Antworten</div>
+                                <div class="stats-detail-value correct">${stats.totalCorrect}</div>
+                            </div>
+                            <div class="stats-detail-item">
+                                <div class="stats-detail-label">Falsche Antworten</div>
+                                <div class="stats-detail-value incorrect">${stats.totalIncorrect}</div>
+                            </div>
+                            <div class="stats-detail-item">
+                                <div class="stats-detail-label">Gesamt Spiele</div>
+                                <div class="stats-detail-value total">${stats.totalGames}</div>
+                            </div>
+                            <div class="stats-detail-item">
+                                <div class="stats-detail-label">Erfolgsquote</div>
+                                <div class="stats-detail-value total">${successRate}%</div>
+                            </div>
+                        </div>
+                        ${stats.games.length > 0 ? `
+                            <div class="stats-user-games">
+                                <strong>Letzte Spiele:</strong>
+                                ${stats.games.slice(-5).reverse().map(game => `
+                                    <div class="stats-game-item">
+                                        <span>${game.correct} richtig / ${game.incorrect} falsch (${game.courseType === 'advanced' ? 'Fortgeschrittenen' : 'Basis'})</span>
+                                        <span class="stats-game-date">${formatDate(game.date)}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+            
+            statsBody.innerHTML = html;
+            modal.classList.add('active');
+        }
+
+        // Закрыть статистику
+        function closeStatistics() {
+            document.getElementById('stats-modal').classList.remove('active');
+        }
+
+        // Закрыть статистику при клике вне модального окна
+        document.addEventListener('DOMContentLoaded', function() {
+            const statsModal = document.getElementById('stats-modal');
+            if (statsModal) {
+                statsModal.addEventListener('click', function(e) {
+                    if (e.target === statsModal) {
+                        closeStatistics();
+                    }
+                });
+            }
+            
+            // Загружаем сохраненное имя игрока
+            const savedName = sessionStorage.getItem('currentPlayerName');
+            const nameInput = document.getElementById('player-name');
+            if (savedName && nameInput) {
+                nameInput.value = savedName;
+            }
+        });
+
+        // Форматирование даты
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffTime = Math.abs(now - date);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 0) {
+                return 'Heute';
+            } else if (diffDays === 1) {
+                return 'Gestern';
+            } else if (diffDays < 7) {
+                return `vor ${diffDays} Tagen`;
+            } else {
+                return date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            }
+        }
+
+        // Экранирование HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
         // Ergebnisse anzeigen
         function showResults() {
+            // Сохраняем статистику перед показом результатов
+            saveUserStatistics();
+            
             document.getElementById('game-screen').style.display = 'none';
             document.getElementById('results-screen').classList.add('active');
             
