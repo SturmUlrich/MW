@@ -633,6 +633,7 @@
 <body>
     <div class="container">
         <a href="index.html" class="back-link">← Zurück zur Startseite</a>
+        <div id="save-indicator" style="display:none;position:fixed;bottom:16px;right:16px;background:#28a745;color:white;padding:6px 14px;border-radius:20px;font-size:0.8em;font-family:inherit;z-index:999;box-shadow:0 2px 8px rgba(0,0,0,0.2)">✓ Gespeichert</div>
         <h1 id="main-title">Kurse Schiedsrichter - Fußballregeln</h1>
         
         <!-- Kursauswahl-Bildschirm -->
@@ -1612,23 +1613,33 @@
             const isCorrect = selectedIndex === question.correctAnswer;
 
             // Antwort sofort in Datenbank speichern
-            fetch('/api/save-answer', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    sessionId: gameState.sessionId,
-                    course: currentCourseType || 'basic',
-                    round: gameState.currentRound,
-                    phase: gameState.currentPhase,
-                    questionId: question.id,
-                    questionText: question.question,
-                    selectedIdx: selectedIndex,
-                    correctIdx: question.correctAnswer,
-                    isCorrect: isCorrect
-                })
-            }).then(r => {
-                if (!r.ok) r.text().then(t => console.warn('save-answer error', r.status, t));
-            }).catch(e => console.warn('save-answer network error', e.message));
+            (function() {
+                var ind = document.getElementById('save-indicator');
+                fetch('/api/save-answer', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        sessionId: gameState.sessionId,
+                        course: currentCourseType || 'basic',
+                        round: gameState.currentRound,
+                        phase: gameState.currentPhase,
+                        questionId: question.id,
+                        questionText: question.question,
+                        selectedIdx: selectedIndex,
+                        correctIdx: question.correctAnswer,
+                        isCorrect: isCorrect
+                    })
+                }).then(function(r) {
+                    if (r.ok) {
+                        if (ind) { ind.style.display='block'; ind.style.background='#28a745'; ind.textContent='✓ Gespeichert'; setTimeout(function(){ind.style.display='none';},2000); }
+                    } else {
+                        r.text().then(function(t){ console.warn('save-answer error', r.status, t); if(ind){ind.style.display='block';ind.style.background='#dc3545';ind.textContent='✗ Fehler '+r.status;setTimeout(function(){ind.style.display='none';},4000);} });
+                    }
+                }).catch(function(e) {
+                    console.warn('save-answer network error', e.message);
+                    if(ind){ind.style.display='block';ind.style.background='#dc3545';ind.textContent='✗ Netz-Fehler';setTimeout(function(){ind.style.display='none';},4000);}
+                });
+            })();
 
             if (isCorrect) {
                 // Richtige Antwort
