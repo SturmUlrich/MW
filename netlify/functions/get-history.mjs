@@ -18,8 +18,9 @@ export default async (req) => {
 
   const sql = neon();
   let matches = [];
-  let quizResults = [];
+  let quizSessions = [];
 
+  // Matches (checklist completions)
   try {
     await sql`
       CREATE TABLE IF NOT EXISTS match_completions (
@@ -31,22 +32,56 @@ export default async (req) => {
     `;
     matches = await sql`SELECT * FROM match_completions ORDER BY completed_at DESC LIMIT 100`;
   } catch (e) {
-    console.error('matches fetch error:', e.message);
+    console.error('matches error:', e.message);
   }
 
+  // Quiz: group answers by session_id
   try {
     await sql`
-      CREATE TABLE IF NOT EXISTS quiz_results (
-        id SERIAL PRIMARY KEY, course TEXT, total_questions INT,
-        round_stats JSONB, played_at TIMESTAMPTZ DEFAULT NOW()
+      CREATE TABLE IF NOT EXISTS quiz_answers (
+        id SERIAL PRIMARY KEY, session_id TEXT, course TEXT,
+        round INT, phase TEXT, question_id INT, question_text TEXT,
+        selected_idx INT, correct_idx INT, is_correct BOOLEAN,
+        answered_at TIMESTAMPTZ DEFAULT NOW()
       )
     `;
-    quizResults = await sql`SELECT * FROM quiz_results ORDER BY played_at DESC LIMIT 100`;
+
+    // One row per session with aggregated stats + last answer time
+    const sessions = await sql`
+      SELECT
+        session_id,
+        course,
+        MIN(answered_at)                              AS started_at,
+        MAX(answered_at)                              AS last_answered_at,
+        COUNT(*)                                      AS total_answered,
+        SUM(CASE WHEN is_correct THEN 1 ELSE 0 END)  AS total_correct,
+        MAX(round)                                    AS max_round,
+        json_agg(
+          json_build_object(
+            'id',            id,
+            'round',         round,
+            'phase',         phase,
+            'question_id',   question_id,
+            'question_text', question_text,
+            'selected_idx',  selected_idx,
+            'correct_idx',   correct_idx,
+            'is_correct',    is_correct,
+            'answered_at',   answered_at
+          )
+          ORDER BY answered_at
+        ) AS answers
+      FROM quiz_answers
+      GROUP BY session_id, course
+      ORDER BY MAX(answered_at) DESC
+      LIMIT 50
+    `;
+
+    quizSessions = sessions;
   } catch (e) {
-    console.error('quiz fetch error:', e.message);
+    console.error('quiz error:', e.message);
   }
 
-  return new Response(JSON.stringify({ matches, quizResults }), {
+  return new Response(JSON.stringify({ matches, quizSessions }), {
     status: 200,
     headers: { 'Content-Type': 'application/json', ...corsHeaders() }
   });

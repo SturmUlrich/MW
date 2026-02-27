@@ -1505,6 +1505,10 @@
         }
 
         // Initialisierung des Spiels
+        function generateSessionId() {
+            return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+        }
+
         function initGame() {
             // Fragen basierend auf Kurs-Typ auswählen
             let questionsToUse;
@@ -1528,7 +1532,8 @@
                 roundStats: [],
                 isAnswering: false,
                 totalCorrect: 0,
-                totalIncorrect: 0
+                totalIncorrect: 0,
+                sessionId: generateSessionId()
             };
 
             // Fragen mischen
@@ -1604,7 +1609,26 @@
                 }
             });
 
-            if (selectedIndex === question.correctAnswer) {
+            const isCorrect = selectedIndex === question.correctAnswer;
+
+            // Antwort sofort in Datenbank speichern (fire-and-forget)
+            fetch('/api/save-answer', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    sessionId: gameState.sessionId,
+                    course: currentCourseType || 'basic',
+                    round: gameState.currentRound,
+                    phase: gameState.currentPhase,
+                    questionId: question.id,
+                    questionText: question.question,
+                    selectedIdx: selectedIndex,
+                    correctIdx: question.correctAnswer,
+                    isCorrect: isCorrect
+                })
+            }).catch(() => {});
+
+            if (isCorrect) {
                 // Richtige Antwort
                 gameState.greenCounter++;
                 
