@@ -235,9 +235,15 @@
     try {
       const res = await fetch(`/api/get-history?pwd=${encodeURIComponent(currentPwd)}`);
       if (res.status === 401) {
-        const errEl = document.getElementById('login-error');
-        errEl.textContent = 'Falsches Passwort';
-        errEl.classList.add('visible'); return;
+        document.getElementById('login-error').textContent = 'Falsches Passwort';
+        document.getElementById('login-error').classList.add('visible');
+        return;
+      }
+      if (!res.ok) {
+        const text = await res.text();
+        document.getElementById('login-error').textContent = 'Server-Fehler: ' + res.status + ' — ' + text.slice(0, 120);
+        document.getElementById('login-error').classList.add('visible');
+        return;
       }
       const data = await res.json();
       document.getElementById('login-section').style.display = 'none';
@@ -245,14 +251,14 @@
       renderQuizSessions(data.quizSessions || []);
       renderMatches(data.matches || []);
     } catch (err) {
-      const errEl = document.getElementById('login-error');
-      errEl.textContent = 'Verbindungsfehler: ' + err.message;
-      errEl.classList.add('visible');
+      document.getElementById('login-error').textContent = 'Verbindungsfehler: ' + err.message;
+      document.getElementById('login-error').classList.add('visible');
     }
   }
 
   /* ── Quiz sessions ── */
   function renderQuizSessions(sessions) {
+    window._sessionData = sessions;  // сохраняем для фильтрации
     const cardsEl = document.getElementById('quiz-stats-cards');
     const listEl  = document.getElementById('quiz-sessions-list');
 
@@ -407,12 +413,7 @@
     });
   }
 
-  // Store session data for filter function
-  const origRenderQuizSessions = renderQuizSessions;
-  function renderQuizSessions(sessions) {
-    window._sessionData = sessions;
-    origRenderQuizSessions(sessions);
-  }
+
 </script>
 </body>
 </html>
