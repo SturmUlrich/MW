@@ -1,0 +1,1914 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Interaktives Quiz zu den 17 Fußballregeln für Schiedsrichter">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Fußball Quiz">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <title>Kurse Schiedsrichter - Fußballregeln Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        *:focus {
+            outline: none;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            height: -webkit-fill-available;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px 40px 20px 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .back-link {
+            display: inline-block;
+            font-size: 0.9rem;
+            color: #667eea;
+            text-decoration: none;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        .back-link:hover { text-decoration: underline; }
+
+        .round-info {
+            display: none !important;
+        }
+
+        /* Kursauswahl-Bildschirm */
+        .course-selection-screen {
+            display: block;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .course-selection-screen.hidden {
+            display: none;
+        }
+
+        .course-selection-content h2 {
+            color: #333;
+            margin-bottom: 40px;
+            font-size: 2em;
+        }
+
+        .course-options {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: nowrap;
+            flex-direction: row;
+        }
+
+        .course-card {
+            background: white;
+            border: 3px solid #e0e0e0;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 280px;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .course-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .course-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .course-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .course-card p {
+            color: #666;
+            margin: 8px 0;
+            font-size: 0.95em;
+        }
+
+        .course-card p:first-of-type {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        .course-desc {
+            font-size: 0.9em !important;
+            font-style: italic;
+            color: #999 !important;
+        }
+
+        #counters {
+            display: none !important;
+        }
+
+        #counters.active {
+            display: flex !important;
+            justify-content: space-around;
+            align-items: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 15px;
+        }
+
+        #game-screen {
+            display: none;
+        }
+
+        #game-screen.active {
+            display: block;
+        }
+
+
+        .counter {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .counter-label {
+            font-size: 0.9em;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .counter-value {
+            font-size: 3em;
+            font-weight: bold;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        #green-counter {
+            color: #28a745;
+        }
+
+        #black-counter {
+            color: #000;
+        }
+
+        #red-counter {
+            color: #dc3545;
+        }
+
+        .question-container {
+            margin: 30px 0;
+            text-align: center;
+            padding-bottom: 0;
+            min-height: fit-content;
+            box-sizing: border-box;
+        }
+
+        .question-text {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            font-weight: 600;
+        }
+
+        .rule-badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin-bottom: 15px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option-btn {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .option-btn:hover {
+            background: #e9ecef;
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .option-btn.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .option-btn.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .results-screen {
+            text-align: center;
+            display: none;
+        }
+
+        .results-screen.active {
+            display: block;
+        }
+
+        .results-title {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .stats {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .restart-btn {
+            margin-top: 30px;
+            padding: 15px 40px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .restart-btn:hover {
+            background: #5568d3;
+            transform: scale(1.05);
+        }
+
+        .next-btn {
+            margin-top: 30px;
+            margin-bottom: 0;
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            visibility: hidden;
+            opacity: 0;
+            pointer-events: none;
+            width: 100%;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .next-btn.active {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .next-btn:hover {
+            background: #5568d3;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .counter-value.updated {
+            animation: pulse 0.5s ease;
+        }
+
+        /* Motivations-Modal */
+        .motivation-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .motivation-modal.active {
+            display: flex;
+        }
+
+        .motivation-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.4s ease;
+        }
+
+        .motivation-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .motivation-text {
+            font-size: 1.4em;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .motivation-content.encouragement .motivation-text {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #667eea;
+            font-style: normal;
+        }
+
+        .motivation-author {
+            font-size: 1em;
+            color: #666;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .motivation-close-btn {
+            padding: 12px 40px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .motivation-close-btn:hover {
+            background: #5568d3;
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Адаптивные стили для мобильных устройств */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 20px 15px 15px 15px;
+                max-width: 100%;
+                margin: 0;
+            }
+
+            h1 {
+                font-size: 1.5em;
+                margin-bottom: 20px;
+            }
+
+            .course-selection-content h2 {
+                font-size: 1.3em;
+                margin-bottom: 25px;
+            }
+
+            .course-options {
+                flex-direction: column;
+                gap: 15px;
+                align-items: center;
+            }
+
+            .course-card {
+                max-width: 100%;
+                width: 100%;
+                padding: 20px;
+            }
+
+            .course-icon {
+                font-size: 2.5em;
+                margin-bottom: 12px;
+            }
+
+            .course-card h3 {
+                font-size: 1.2em;
+                margin-bottom: 8px;
+            }
+
+            .course-card p {
+                font-size: 0.9em;
+                margin: 6px 0;
+            }
+
+            #counters.active {
+                flex-direction: row;
+                gap: 10px;
+                padding: 15px;
+                margin: 20px 0;
+            }
+
+            .counter {
+                flex: 1;
+                padding: 10px;
+            }
+
+            .counter-label {
+                font-size: 0.9em;
+            }
+
+            .counter-value {
+                font-size: 2em;
+            }
+
+            .question-container {
+                margin: 20px 0;
+            }
+
+            .rule-badge {
+                font-size: 0.75em;
+                padding: 4px 12px;
+                margin-bottom: 12px;
+            }
+
+            .question-text {
+                font-size: 1.1em;
+                margin-bottom: 20px;
+                padding: 0 10px;
+            }
+
+            .options {
+                gap: 12px;
+            }
+
+            .option-btn {
+                padding: 15px;
+                font-size: 0.95em;
+                min-height: 50px;
+                touch-action: manipulation;
+            }
+
+            .next-btn {
+                padding: 12px 25px;
+                font-size: 0.95em;
+                margin-top: 20px;
+                touch-action: manipulation;
+            }
+
+            .results-screen h2 {
+                font-size: 1.5em;
+            }
+
+            .results-screen p {
+                font-size: 1em;
+            }
+
+            .restart-btn {
+                padding: 12px 25px;
+                font-size: 1em;
+                touch-action: manipulation;
+            }
+
+            .motivation-content {
+                padding: 25px;
+                margin: 20px;
+            }
+
+            .motivation-icon {
+                font-size: 3em;
+            }
+
+            .motivation-text {
+                font-size: 1.1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+
+            .container {
+                padding: 15px 10px 10px 10px;
+                border-radius: 15px;
+            }
+
+            h1 {
+                font-size: 1.3em;
+                margin-bottom: 15px;
+            }
+
+            .course-selection-content h2 {
+                font-size: 1.2em;
+                margin-bottom: 20px;
+            }
+
+            .course-card {
+                padding: 15px;
+            }
+
+            .course-icon {
+                font-size: 2em;
+            }
+
+            .question-text {
+                font-size: 1em;
+            }
+
+            .option-btn {
+                padding: 12px;
+                font-size: 0.9em;
+            }
+
+            .counter-value {
+                font-size: 1.8em;
+            }
+        }
+
+        /* Горизонтальная ориентация для планшетов */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .course-options {
+                gap: 25px;
+            }
+
+            .course-card {
+                max-width: 320px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Zurück zur Startseite</a>
+        <h1 id="main-title">Kurse Schiedsrichter - Fußballregeln</h1>
+        
+        <!-- Kursauswahl-Bildschirm -->
+        <div class="course-selection-screen" id="course-selection-screen">
+            <div class="course-selection-content">
+                <h2>Wählen Sie Ihren Kurs</h2>
+                
+                <div class="course-options">
+                    <div class="course-card" onclick="selectCourse('basic')">
+                        <div class="course-icon">📚</div>
+                        <h3>Basis-Kurs</h3>
+                        <p>80 Fragen zu den 17 Fußballregeln</p>
+                        <p class="course-desc">Ideal für Anfänger und zur Auffrischung der Grundlagen</p>
+                    </div>
+                    <div class="course-card" onclick="selectCourse('advanced')">
+                        <div class="course-icon">🎓</div>
+                        <h3>Fortgeschrittenen-Kurs</h3>
+                        <p>150 Fragen zu den 17 Fußballregeln</p>
+                        <p class="course-desc">Vertiefte Kenntnisse für erfahrene Schiedsrichter</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="round-info" id="round-info" style="display: none;"></div>
+        
+        <div class="counters" id="counters">
+            <div class="counter">
+                <div class="counter-label">Richtig</div>
+                <div class="counter-value" id="green-counter">0</div>
+            </div>
+            <div class="counter">
+                <div class="counter-label">Verbleibend</div>
+                <div class="counter-value" id="black-counter">60</div>
+            </div>
+            <div class="counter">
+                <div class="counter-label">Falsch</div>
+                <div class="counter-value" id="red-counter">0</div>
+            </div>
+        </div>
+
+        <div id="game-screen" style="display: none;">
+            <div class="question-container">
+                <div class="rule-badge" id="rule-badge">Regel 1</div>
+                <div class="question-text" id="question-text"></div>
+                <div class="options" id="options-container"></div>
+                <button class="next-btn" id="next-btn">Weiter</button>
+            </div>
+        </div>
+
+        <div class="results-screen" id="results-screen">
+            <div class="results-title">Spiel beendet!</div>
+            <div class="stats" id="stats-container"></div>
+            <button class="restart-btn" onclick="restartGame()">Neu starten</button>
+        </div>
+
+        <!-- Motivations-Modal -->
+        <div class="motivation-modal" id="motivation-modal">
+            <div class="motivation-content">
+                <div class="motivation-icon" id="motivation-icon">⚽</div>
+                <div class="motivation-text" id="motivation-text"></div>
+                <div class="motivation-author" id="motivation-author"></div>
+                <button class="motivation-close-btn" onclick="closeMotivationModal()">Weiter</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 17 Fragen zu den Fußballregeln
+        const allQuestions = [
+            {
+                id: 1,
+                rule: 1,
+                ruleName: "Das Spielfeld",
+                question: "Wie breit muss ein Fußballfeld mindestens sein?",
+                options: ["60 Meter", "64 Meter", "68 Meter", "70 Meter"],
+                correctAnswer: 1
+            },
+            {
+                id: 2,
+                rule: 2,
+                ruleName: "Der Ball",
+                question: "Wie schwer muss ein Fußball bei Spielbeginn sein?",
+                options: ["350-400 Gramm", "400-450 Gramm", "410-450 Gramm", "450-500 Gramm"],
+                correctAnswer: 2
+            },
+            {
+                id: 3,
+                rule: 3,
+                ruleName: "Die Spieler",
+                question: "Wie viele Spieler dürfen maximal auf dem Feld sein?",
+                options: ["10", "11", "12", "13"],
+                correctAnswer: 1
+            },
+            {
+                id: 4,
+                rule: 4,
+                ruleName: "Die Ausrüstung der Spieler",
+                question: "Welche Ausrüstung ist für einen Spieler obligatorisch?",
+                options: ["Trikot, Hose, Stutzen, Schienbeinschoner, Schuhe", "Trikot, Hose, Stutzen, Schienbeinschoner", "Trikot, Hose, Stutzen, Schuhe", "Trikot, Hose, Stutzen"],
+                correctAnswer: 0
+            },
+            {
+                id: 5,
+                rule: 5,
+                ruleName: "Der Schiedsrichter",
+                question: "Wer hat die alleinige Entscheidungsgewalt auf dem Spielfeld?",
+                options: ["Der Hauptschiedsrichter", "Der Schiedsrichter-Assistent", "Der Vierte Offizielle", "Der VAR-Schiedsrichter"],
+                correctAnswer: 0
+            },
+            {
+                id: 6,
+                rule: 6,
+                ruleName: "Die weiteren Spieloffiziellen",
+                question: "Wie viele Schiedsrichter-Assistenten gibt es normalerweise?",
+                options: ["1", "2", "3", "4"],
+                correctAnswer: 1
+            },
+            {
+                id: 7,
+                rule: 7,
+                ruleName: "Die Dauer des Spiels",
+                question: "Wie lange dauert eine Halbzeit bei Erwachsenen?",
+                options: ["40 Minuten", "45 Minuten", "50 Minuten", "60 Minuten"],
+                correctAnswer: 1
+            },
+            {
+                id: 8,
+                rule: 8,
+                ruleName: "Beginn und Fortsetzung des Spiels",
+                question: "Wie beginnt ein Fußballspiel?",
+                options: ["Mit einem Anstoß", "Mit einem Einwurf", "Mit einem Abstoß", "Mit einem Freistoß"],
+                correctAnswer: 0
+            },
+            {
+                id: 9,
+                rule: 9,
+                ruleName: "Ball im Spiel und außer Spiel",
+                question: "Wann ist der Ball außer Spiel?",
+                options: ["Wenn er die Seitenlinie überschreitet", "Wenn er die Torlinie überschreitet", "Wenn der Schiedsrichter das Spiel unterbricht", "Alle genannten"],
+                correctAnswer: 3
+            },
+            {
+                id: 10,
+                rule: 10,
+                ruleName: "Wie ein Tor erzielt wird",
+                question: "Wann ist ein Tor gültig?",
+                options: ["Wenn der Ball die Torlinie überschreitet", "Wenn der Ball vollständig die Torlinie zwischen den Pfosten überschreitet", "Wenn der Ball den Torwart berührt", "Wenn der Ball ins Netz geht"],
+                correctAnswer: 1
+            },
+            {
+                id: 11,
+                rule: 11,
+                ruleName: "Abseits",
+                question: "Wann befindet sich ein Spieler im Abseits?",
+                options: ["Wenn er näher zur Torlinie ist als der Ball", "Wenn er näher zur Torlinie ist als der Ball und der vorletzte Gegenspieler", "Wenn er im Abseitsraum ist", "Wenn er den Torwart behindert"],
+                correctAnswer: 1
+            },
+            {
+                id: 12,
+                rule: 12,
+                ruleName: "Fouls und unsportliches Betragen",
+                question: "Was führt zu einem indirekten Freistoß?",
+                options: ["Gefährliches Spiel ohne Körperkontakt", "Handspiel im Strafraum", "Tritt gegen einen Gegner", "Stoß gegen einen Gegner"],
+                correctAnswer: 0
+            },
+            {
+                id: 13,
+                rule: 13,
+                ruleName: "Freistöße",
+                question: "Wie weit müssen die Gegenspieler beim Freistoß vom Ball entfernt sein?",
+                options: ["7 Meter", "9 Meter", "9,15 Meter", "10 Meter"],
+                correctAnswer: 2
+            },
+            {
+                id: 14,
+                rule: 14,
+                ruleName: "Strafstoß",
+                question: "Wie weit ist der Elfmeterpunkt von der Torlinie entfernt?",
+                options: ["9 Meter", "10 Meter", "11 Meter", "12 Meter"],
+                correctAnswer: 2
+            },
+            {
+                id: 15,
+                rule: 15,
+                ruleName: "Einwurf",
+                question: "Wie muss der Ball beim Einwurf geworfen werden?",
+                options: ["Mit beiden Händen über den Kopf", "Mit einer Hand", "Mit beiden Händen von hinten nach vorne", "Mit beiden Händen über den Kopf von hinten nach vorne"],
+                correctAnswer: 3
+            },
+            {
+                id: 16,
+                rule: 16,
+                ruleName: "Abstoß",
+                question: "Von wo wird ein Abstoß ausgeführt?",
+                options: ["Vom Elfmeterpunkt", "Vom Torraum", "Von der Torlinie", "Vom Strafraum"],
+                correctAnswer: 1
+            },
+            {
+                id: 17,
+                rule: 17,
+                ruleName: "Eckstoß",
+                question: "Wann wird ein Eckstoß gegeben?",
+                options: ["Wenn der Ball die Seitenlinie überschreitet", "Wenn der Ball die Torlinie überschreitet und zuletzt von der verteidigenden Mannschaft berührt wurde", "Wenn der Ball die Torlinie überschreitet und zuletzt von der angreifenden Mannschaft berührt wurde", "Wenn ein Foul im Strafraum passiert"],
+                correctAnswer: 1
+            },
+            // Zusätzliche Fragen zu Regel 1: Das Spielfeld
+            {
+                id: 18,
+                rule: 1,
+                ruleName: "Das Spielfeld",
+                question: "Wie lang darf ein Fußballfeld maximal sein?",
+                options: ["100 Meter", "110 Meter", "120 Meter", "130 Meter"],
+                correctAnswer: 2
+            },
+            {
+                id: 19,
+                rule: 1,
+                ruleName: "Das Spielfeld",
+                question: "Wie breit ist der Strafraum?",
+                options: ["16,5 Meter", "18 Meter", "20 Meter", "22 Meter"],
+                correctAnswer: 0
+            },
+            {
+                id: 20,
+                rule: 1,
+                ruleName: "Das Spielfeld",
+                question: "Wie lang ist der Strafraum?",
+                options: ["36 Meter", "40 Meter", "44 Meter", "48 Meter"],
+                correctAnswer: 1
+            },
+            // Zusätzliche Fragen zu Regel 2: Der Ball
+            {
+                id: 21,
+                rule: 2,
+                ruleName: "Der Ball",
+                question: "Wie groß muss der Umfang eines Fußballs sein?",
+                options: ["68-70 cm", "70-72 cm", "65-68 cm", "72-74 cm"],
+                correctAnswer: 0
+            },
+            {
+                id: 22,
+                rule: 2,
+                ruleName: "Der Ball",
+                question: "Was passiert, wenn der Ball während des Spiels platzt?",
+                options: ["Das Spiel wird sofort abgebrochen", "Der Schiedsrichter unterbricht das Spiel und lässt den Ball wechseln", "Das Spiel läuft weiter", "Es gibt einen Schiedsrichterball"],
+                correctAnswer: 1
+            },
+            // Zusätzliche Fragen zu Regel 3: Die Spieler
+            {
+                id: 23,
+                rule: 3,
+                ruleName: "Die Spieler",
+                question: "Wie viele Auswechslungen sind in einem Spiel erlaubt?",
+                options: ["3", "5", "7", "Unbegrenzt"],
+                correctAnswer: 1
+            },
+            {
+                id: 24,
+                rule: 3,
+                ruleName: "Die Spieler",
+                question: "Was passiert, wenn eine Mannschaft weniger als 7 Spieler hat?",
+                options: ["Das Spiel wird abgebrochen", "Das Spiel wird fortgesetzt", "Die Mannschaft bekommt einen Punktabzug", "Es gibt eine Verwarnung"],
+                correctAnswer: 0
+            },
+            {
+                id: 25,
+                rule: 3,
+                ruleName: "Die Spieler",
+                question: "Darf ein ausgewechselter Spieler wieder eingewechselt werden?",
+                options: ["Ja, einmal", "Ja, mehrmals", "Nein, nie", "Nur bei Verletzung"],
+                correctAnswer: 2
+            },
+            // Zusätzliche Fragen zu Regel 4: Die Ausrüstung
+            {
+                id: 26,
+                rule: 4,
+                ruleName: "Die Ausrüstung der Spieler",
+                question: "Darf ein Spieler Schmuck tragen?",
+                options: ["Ja, wenn er sicher ist", "Nein, grundsätzlich nicht", "Ja, aber nur Ohrringe", "Ja, wenn der Schiedsrichter zustimmt"],
+                correctAnswer: 1
+            },
+            {
+                id: 27,
+                rule: 4,
+                ruleName: "Die Ausrüstung der Spieler",
+                question: "Was passiert, wenn ein Spieler ohne Schienbeinschoner spielt?",
+                options: ["Er wird verwarnt", "Er wird des Feldes verwiesen", "Er muss das Spielfeld verlassen, um die Ausrüstung zu vervollständigen", "Das Spiel läuft weiter"],
+                correctAnswer: 2
+            },
+            // Zusätzliche Fragen zu Regel 5: Der Schiedsrichter
+            {
+                id: 28,
+                rule: 5,
+                ruleName: "Der Schiedsrichter",
+                question: "Kann der Schiedsrichter eine Entscheidung nach dem Spiel ändern?",
+                options: ["Ja, innerhalb von 5 Minuten", "Ja, wenn er einen Fehler erkannt hat", "Nein, nach Spielende nicht mehr", "Nur mit VAR-Unterstützung"],
+                correctAnswer: 2
+            },
+            {
+                id: 29,
+                rule: 5,
+                ruleName: "Der Schiedsrichter",
+                question: "Was ist die Hauptaufgabe des Schiedsrichters?",
+                options: ["Die Regeln durchzusetzen", "Das Spiel zu leiten", "Fairness zu gewährleisten", "Alle genannten"],
+                correctAnswer: 3
+            },
+            // VAR-Fragen (Video Assistant Referee)
+            {
+                id: 61,
+                rule: 5,
+                ruleName: "Der Schiedsrichter",
+                question: "Was bedeutet VAR?",
+                options: ["Video Assistant Referee", "Video Analysis Review", "Verification Assistant Referee", "Video Assistant Review"],
+                correctAnswer: 0
+            },
+            {
+                id: 62,
+                rule: 5,
+                ruleName: "Der Schiedsrichter",
+                question: "Wann kann VAR eingesetzt werden?",
+                options: ["Nur bei Toren", "Nur bei Strafstößen", "Bei Toren, Strafstößen, roten Karten und Verwechslungen", "Nur bei roten Karten"],
+                correctAnswer: 2
+            },
+            {
+                id: 63,
+                rule: 5,
+                ruleName: "Der Schiedsrichter",
+                question: "Wer entscheidet über den Einsatz von VAR?",
+                options: ["Der VAR-Schiedsrichter allein", "Der Hauptschiedsrichter", "Der VAR-Schiedsrichter empfiehlt, der Hauptschiedsrichter entscheidet", "Der vierte Offizielle"],
+                correctAnswer: 2
+            },
+            {
+                id: 64,
+                rule: 5,
+                ruleName: "Der Schiedsrichter",
+                question: "Was ist ein 'clear and obvious error'?",
+                options: ["Ein kleiner Fehler", "Ein offensichtlicher Fehler, den jeder sehen kann", "Ein Fehler, der nur mit VAR sichtbar ist", "Ein Fehler des VAR-Schiedsrichters"],
+                correctAnswer: 1
+            },
+            {
+                id: 65,
+                rule: 5,
+                ruleName: "Der Schiedsrichter",
+                question: "Was bedeutet 'on-field review'?",
+                options: ["Der Schiedsrichter schaut sich das Video am Spielfeldrand an", "Der VAR-Schiedsrichter prüft die Situation", "Der Schiedsrichter entscheidet ohne Video", "Der vierte Offizielle prüft die Situation"],
+                correctAnswer: 0
+            },
+            {
+                id: 66,
+                rule: 5,
+                ruleName: "Der Schiedsrichter",
+                question: "Kann VAR eine Entscheidung rückgängig machen?",
+                options: ["Ja, immer", "Nein, nie", "Nur wenn es ein klarer Fehler war", "Nur bei Toren"],
+                correctAnswer: 2
+            },
+            {
+                id: 67,
+                rule: 5,
+                ruleName: "Der Schiedsrichter",
+                question: "Wie signalisiert der Schiedsrichter eine VAR-Überprüfung?",
+                options: ["Mit einem Pfiff", "Mit einem Rechteckzeichen", "Mit einem Kreiszeichen", "Mit einem Handzeichen"],
+                correctAnswer: 1
+            },
+            {
+                id: 68,
+                rule: 5,
+                ruleName: "Der Schiedsrichter",
+                question: "Was passiert, wenn VAR technisch ausfällt?",
+                options: ["Das Spiel wird abgebrochen", "Das Spiel wird ohne VAR fortgesetzt", "Es gibt einen Schiedsrichterball", "Das Spiel wird verschoben"],
+                correctAnswer: 1
+            },
+            {
+                id: 69,
+                rule: 5,
+                ruleName: "Der Schiedsrichter",
+                question: "Kann VAR bei Abseits eingesetzt werden?",
+                options: ["Ja, immer", "Nein, nie", "Nur bei Toren", "Nur bei Strafstößen"],
+                correctAnswer: 2
+            },
+            {
+                id: 70,
+                rule: 5,
+                ruleName: "Der Schiedsrichter",
+                question: "Wie lange dauert eine VAR-Überprüfung normalerweise?",
+                options: ["Sofort", "Bis zu 1 Minute", "Bis zu 3 Minuten", "Unbegrenzt"],
+                correctAnswer: 2
+            },
+            // Zusätzliche Fragen zu Regel 6: Die weiteren Spieloffiziellen
+            {
+                id: 30,
+                rule: 6,
+                ruleName: "Die weiteren Spieloffiziellen",
+                question: "Was ist die Hauptaufgabe eines Schiedsrichter-Assistenten?",
+                options: ["Abseits zu erkennen", "Einwürfe zu entscheiden", "Auswechslungen zu überwachen", "Alle genannten"],
+                correctAnswer: 3
+            },
+            {
+                id: 31,
+                rule: 6,
+                ruleName: "Die weiteren Spieloffiziellen",
+                question: "Wer entscheidet bei einem Abseits, wenn der Assistent unsicher ist?",
+                options: ["Der Hauptschiedsrichter", "Der VAR", "Der Vierte Offizielle", "Es wird kein Abseits gegeben"],
+                correctAnswer: 0
+            },
+            // Zusätzliche Fragen zu Regel 7: Die Dauer des Spiels
+            {
+                id: 32,
+                rule: 7,
+                ruleName: "Die Dauer des Spiels",
+                question: "Wie viel Nachspielzeit kann maximal gegeben werden?",
+                options: ["5 Minuten", "Es gibt keine Obergrenze", "10 Minuten", "15 Minuten"],
+                correctAnswer: 1
+            },
+            {
+                id: 33,
+                rule: 7,
+                ruleName: "Die Dauer des Spiels",
+                question: "Was passiert bei Verlängerung, wenn es unentschieden steht?",
+                options: ["Elfmeterschießen", "Wiederholungsspiel", "Münzwurf", "Es bleibt unentschieden"],
+                correctAnswer: 0
+            },
+            {
+                id: 34,
+                rule: 7,
+                ruleName: "Die Dauer des Spiels",
+                question: "Wie lange dauert eine Halbzeitpause?",
+                options: ["10 Minuten", "15 Minuten", "20 Minuten", "Es gibt keine feste Zeit"],
+                correctAnswer: 1
+            },
+            // Zusätzliche Fragen zu Regel 8: Beginn und Fortsetzung
+            {
+                id: 35,
+                rule: 8,
+                ruleName: "Beginn und Fortsetzung des Spiels",
+                question: "Wer führt den Anstoß aus?",
+                options: ["Die Mannschaft, die das Los gewonnen hat", "Die Heimmannschaft", "Die Auswärtsmannschaft", "Der Schiedsrichter entscheidet"],
+                correctAnswer: 0
+            },
+            {
+                id: 36,
+                rule: 8,
+                ruleName: "Beginn und Fortsetzung des Spiels",
+                question: "Muss der Ball beim Anstoß nach vorne gespielt werden?",
+                options: ["Ja, immer", "Nein, er kann in jede Richtung gespielt werden", "Nur nach vorne oder zur Seite", "Nur nach vorne oder nach hinten"],
+                correctAnswer: 1
+            },
+            // Zusätzliche Fragen zu Regel 9: Ball im Spiel
+            {
+                id: 37,
+                rule: 9,
+                ruleName: "Ball im Spiel und außer Spiel",
+                question: "Wann ist der Ball im Spiel?",
+                options: ["Wenn er die Mittellinie überschreitet", "Wenn er sich auf dem Spielfeld befindet", "Wenn er vom Schiedsrichter freigegeben wurde", "Wenn er im Strafraum ist"],
+                correctAnswer: 1
+            },
+            {
+                id: 38,
+                rule: 9,
+                ruleName: "Ball im Spiel und außer Spiel",
+                question: "Was passiert, wenn der Ball die Decke berührt?",
+                options: ["Das Spiel läuft weiter", "Schiedsrichterball", "Freistoß für die Heimmannschaft", "Einwurf"],
+                correctAnswer: 1
+            },
+            // Zusätzliche Fragen zu Regel 10: Wie ein Tor erzielt wird
+            {
+                id: 39,
+                rule: 10,
+                ruleName: "Wie ein Tor erzielt wird",
+                question: "Zählt ein Tor, wenn der Ball von einem Schiedsrichter ins Tor gelenkt wird?",
+                options: ["Ja, immer", "Nein, nie", "Nur wenn es unbeabsichtigt war", "Nur bei VAR-Entscheidung"],
+                correctAnswer: 1
+            },
+            {
+                id: 40,
+                rule: 10,
+                ruleName: "Wie ein Tor erzielt wird",
+                question: "Kann ein Tor nach Abpfiff noch gegeben werden?",
+                options: ["Ja, wenn der Ball vor dem Pfiff im Tor war", "Nein, nie", "Nur bei VAR", "Nur wenn beide Mannschaften zustimmen"],
+                correctAnswer: 0
+            },
+            // Zusätzliche Fragen zu Regel 11: Abseits
+            {
+                id: 41,
+                rule: 11,
+                ruleName: "Abseits",
+                question: "Wann ist Abseits nicht strafbar?",
+                options: ["Bei einem Einwurf", "Bei einem Eckstoß", "Bei einem Abstoß", "Alle genannten"],
+                correctAnswer: 3
+            },
+            {
+                id: 42,
+                rule: 11,
+                ruleName: "Abseits",
+                question: "Wie wird Abseits signalisiert?",
+                options: ["Mit der Fahne nach oben", "Mit der Fahne waagerecht", "Mit der Fahne senkrecht nach oben", "Mit einem Pfiff"],
+                correctAnswer: 2
+            },
+            {
+                id: 43,
+                rule: 11,
+                ruleName: "Abseits",
+                question: "Ist ein Spieler im Abseits, wenn er auf gleicher Höhe mit dem vorletzten Gegenspieler ist?",
+                options: ["Ja", "Nein", "Nur wenn er den Ball berührt", "Nur wenn er aktiv am Spiel teilnimmt"],
+                correctAnswer: 1
+            },
+            // Zusätzliche Fragen zu Regel 12: Fouls
+            {
+                id: 44,
+                rule: 12,
+                ruleName: "Fouls und unsportliches Betragen",
+                question: "Was führt zu einem direkten Freistoß?",
+                options: ["Handspiel", "Gefährliches Spiel", "Tritt gegen einen Gegner", "Unsportliches Verhalten"],
+                correctAnswer: 2
+            },
+            {
+                id: 45,
+                rule: 12,
+                ruleName: "Fouls und unsportliches Betragen",
+                question: "Wie viele gelbe Karten führen zu einer roten Karte?",
+                options: ["1", "2", "3", "4"],
+                correctAnswer: 1
+            },
+            {
+                id: 46,
+                rule: 12,
+                ruleName: "Fouls und unsportliches Betragen",
+                question: "Was führt zu einem indirekten Freistoß?",
+                options: ["Ein Foul im Strafraum", "Gefährliches Spiel ohne Körperkontakt", "Ein Tritt", "Ein Stoß"],
+                correctAnswer: 1
+            },
+            {
+                id: 47,
+                rule: 12,
+                ruleName: "Fouls und unsportliches Betragen",
+                question: "Was passiert bei einer roten Karte?",
+                options: ["Verwarnung", "Feldverweis", "Spielunterbrechung", "Gelbe Karte"],
+                correctAnswer: 1
+            },
+            // Zusätzliche Fragen zu Regel 13: Freistöße
+            {
+                id: 48,
+                rule: 13,
+                ruleName: "Freistöße",
+                question: "Wie schnell muss ein Freistoß nach den FIFA-Regeln ausgeführt werden?",
+                options: ["Sofort", "Innerhalb von 4 Sekunden", "Innerhalb von 6 Sekunden", "Es gibt keine feste Zeitbegrenzung"],
+                correctAnswer: 3
+            },
+            {
+                id: 49,
+                rule: 13,
+                ruleName: "Freistöße",
+                question: "Darf der Ball beim indirekten Freistoß direkt ins Tor gehen?",
+                options: ["Ja, immer", "Nein, nie", "Nur wenn er von einem anderen Spieler berührt wurde", "Nur außerhalb des Strafraums"],
+                correctAnswer: 2
+            },
+            // Zusätzliche Fragen zu Regel 14: Strafstoß
+            {
+                id: 50,
+                rule: 14,
+                ruleName: "Strafstoß",
+                question: "Was darf der Torwart beim Elfmeter tun?",
+                options: ["Er darf sich nicht bewegen", "Er darf nur 1 Schritt machen", "Er darf sich auf der Torlinie bewegen, darf sie aber nicht verlassen", "Er darf sich frei im Torraum bewegen"],
+                correctAnswer: 2
+            },
+            {
+                id: 51,
+                rule: 14,
+                ruleName: "Strafstoß",
+                question: "Was passiert, wenn der Torwart zu früh von der Torlinie geht?",
+                options: ["Der Elfmeter wird wiederholt", "Der Elfmeter wird nicht wiederholt", "Gelbe Karte für den Torwart", "Indirekter Freistoß"],
+                correctAnswer: 0
+            },
+            {
+                id: 52,
+                rule: 14,
+                ruleName: "Strafstoß",
+                question: "Wie breit ist der Strafstoßpunkt?",
+                options: ["11 Meter", "9,15 Meter Radius", "16,5 Meter Radius", "Es gibt keinen Radius"],
+                correctAnswer: 1
+            },
+            // Zusätzliche Fragen zu Regel 15: Einwurf
+            {
+                id: 53,
+                rule: 15,
+                ruleName: "Einwurf",
+                question: "Von wo wird der Einwurf ausgeführt?",
+                options: ["Von der Stelle, wo der Ball die Linie überschritt", "Vom nächsten Eckpunkt", "Von der Mittellinie", "Vom Schiedsrichter bestimmt"],
+                correctAnswer: 0
+            },
+            {
+                id: 54,
+                rule: 15,
+                ruleName: "Einwurf",
+                question: "Darf der Torwart einen Einwurf ausführen?",
+                options: ["Ja, immer", "Nein, nie", "Nur in der eigenen Hälfte", "Nur wenn er außerhalb des Strafraums ist"],
+                correctAnswer: 0
+            },
+            {
+                id: 55,
+                rule: 15,
+                ruleName: "Einwurf",
+                question: "Was passiert bei einem falschen Einwurf?",
+                options: ["Wiederholung", "Einwurf für die andere Mannschaft", "Schiedsrichterball", "Freistoß"],
+                correctAnswer: 1
+            },
+            // Zusätzliche Fragen zu Regel 16: Abstoß
+            {
+                id: 56,
+                rule: 16,
+                ruleName: "Abstoß",
+                question: "Muss der Ball beim Abstoß den Strafraum verlassen?",
+                options: ["Ja, immer", "Nein, er kann im Strafraum bleiben", "Nur bei internationalen Spielen", "Nur wenn der Schiedsrichter es erlaubt"],
+                correctAnswer: 0
+            },
+            {
+                id: 57,
+                rule: 16,
+                ruleName: "Abstoß",
+                question: "Wer darf den Abstoß ausführen?",
+                options: ["Nur der Torwart", "Jeder Spieler der verteidigenden Mannschaft", "Nur Feldspieler", "Jeder Spieler"],
+                correctAnswer: 1
+            },
+            // Zusätzliche Fragen zu Regel 17: Eckstoß
+            {
+                id: 58,
+                rule: 17,
+                ruleName: "Eckstoß",
+                question: "Wie wird der Eckstoß ausgeführt?",
+                options: ["Mit dem Fuß", "Mit der Hand", "Mit dem Kopf", "Mit jedem Körperteil"],
+                correctAnswer: 0
+            },
+            {
+                id: 59,
+                rule: 17,
+                ruleName: "Eckstoß",
+                question: "Muss der Ball beim Eckstoß im Viertelkreis sein?",
+                options: ["Ja, der Ball muss im Viertelkreis liegen", "Nein, er kann daneben liegen", "Nur bei internationalen Spielen", "Nur wenn der Schiedsrichter es erlaubt"],
+                correctAnswer: 0
+            },
+            {
+                id: 60,
+                rule: 17,
+                ruleName: "Eckstoß",
+                question: "Wie weit müssen die Gegenspieler beim Eckstoß entfernt sein?",
+                options: ["5 Meter", "7 Meter", "9,15 Meter", "10 Meter"],
+                correctAnswer: 2
+            },
+            // Praktische Situationen
+            {
+                id: 71,
+                rule: 3,
+                ruleName: "Die Spieler",
+                question: "Was muss der Schiedsrichter tun, wenn ein Spieler verletzt ist?",
+                options: ["Das Spiel sofort unterbrechen", "Das Spiel weiterlaufen lassen", "Das Spiel unterbrechen, wenn der Ball im Spiel ist und der Spieler Hilfe braucht", "Nur bei schweren Verletzungen unterbrechen"],
+                correctAnswer: 2
+            },
+            {
+                id: 72,
+                rule: 3,
+                ruleName: "Die Spieler",
+                question: "Wie wird eine Auswechslung durchgeführt?",
+                options: ["Der Spieler läuft einfach aufs Feld", "Der Schiedsrichter muss informiert werden und die Auswechslung muss an der Mittellinie erfolgen", "Der Trainer entscheidet allein", "Der vierte Offizielle entscheidet"],
+                correctAnswer: 1
+            },
+            {
+                id: 73,
+                rule: 3,
+                ruleName: "Die Spieler",
+                question: "Was passiert, wenn ein Spieler ohne Erlaubnis das Spielfeld betritt?",
+                options: ["Gelbe Karte", "Rote Karte", "Verwarnung", "Spiel läuft weiter"],
+                correctAnswer: 0
+            },
+            {
+                id: 74,
+                rule: 12,
+                ruleName: "Fouls und unsportliches Betragen",
+                question: "Was passiert bei massiven Protesten gegen eine Entscheidung?",
+                options: ["Der Schiedsrichter ignoriert sie", "Gelbe Karte für den Kapitän", "Gelbe oder rote Karte je nach Schwere", "Das Spiel wird unterbrochen"],
+                correctAnswer: 2
+            },
+            {
+                id: 75,
+                rule: 5,
+                ruleName: "Der Schiedsrichter",
+                question: "Was muss der Schiedsrichter tun, wenn ein fremder Gegenstand auf dem Spielfeld liegt?",
+                options: ["Das Spiel sofort unterbrechen", "Das Spiel weiterlaufen lassen", "Den Gegenstand entfernen lassen, wenn er das Spiel beeinflusst", "Einen Freistoß geben"],
+                correctAnswer: 2
+            },
+            {
+                id: 76,
+                rule: 5,
+                ruleName: "Der Schiedsrichter",
+                question: "Was passiert, wenn der Ball während des Spiels platzt?",
+                options: ["Das Spiel läuft weiter", "Schiedsrichterball an der Stelle, wo der Ball platzt", "Abstoß", "Eckstoß"],
+                correctAnswer: 1
+            },
+            {
+                id: 77,
+                rule: 3,
+                ruleName: "Die Spieler",
+                question: "Was passiert, wenn ein Torwart verletzt ist und keine Auswechslung mehr möglich ist?",
+                options: ["Das Spiel wird abgebrochen", "Ein Feldspieler muss ins Tor", "Der Trainer muss ins Tor", "Es gibt einen Schiedsrichterball"],
+                correctAnswer: 1
+            },
+            {
+                id: 78,
+                rule: 12,
+                ruleName: "Fouls und unsportliches Betragen",
+                question: "Was passiert bei einer Simulation (Schwalbe)?",
+                options: ["Gelbe Karte", "Rote Karte", "Verwarnung", "Freistoß für die andere Mannschaft"],
+                correctAnswer: 0
+            },
+            {
+                id: 79,
+                rule: 5,
+                ruleName: "Der Schiedsrichter",
+                question: "Was muss der Schiedsrichter tun, wenn ein Spieler Blutungen hat?",
+                options: ["Das Spiel sofort unterbrechen", "Den Spieler das Spielfeld verlassen lassen, um die Blutung zu stoppen", "Das Spiel weiterlaufen lassen", "Gelbe Karte zeigen"],
+                correctAnswer: 1
+            },
+            {
+                id: 80,
+                rule: 3,
+                ruleName: "Die Spieler",
+                question: "Wie viele Auswechslungen sind bei Verlängerung erlaubt?",
+                options: ["3 zusätzliche", "5 zusätzliche", "Eine weitere Auswechslung", "Keine zusätzlichen"],
+                correctAnswer: 2
+            }
+        ];
+
+        // Zusätzliche Fragen für Fortgeschrittenen-Kurs (70 дополнительных вопросов)
+        const advancedQuestions = [
+            { id: 131, rule: 1, ruleName: "Das Spielfeld", question: "Wie breit ist der Torraum?", options: ["5,5 Meter", "6 Meter", "6,5 Meter", "7 Meter"], correctAnswer: 0 },
+            { id: 132, rule: 1, ruleName: "Das Spielfeld", question: "Wie lang ist der Torraum?", options: ["16 Meter", "18 Meter", "20 Meter", "22 Meter"], correctAnswer: 1 },
+            { id: 133, rule: 1, ruleName: "Das Spielfeld", question: "Wie groß ist der Radius des Mittelkreises?", options: ["8 Meter", "9 Meter", "9,15 Meter", "10 Meter"], correctAnswer: 2 },
+            { id: 134, rule: 1, ruleName: "Das Spielfeld", question: "Wie weit ist der Elfmeterpunkt vom Tor entfernt?", options: ["9 Meter", "10 Meter", "11 Meter", "12 Meter"], correctAnswer: 2 },
+            { id: 135, rule: 2, ruleName: "Der Ball", question: "Wie hoch darf der Druck im Ball sein?", options: ["0,6-1,1 bar", "0,7-1,2 bar", "0,8-1,3 bar", "0,9-1,4 bar"], correctAnswer: 0 },
+            { id: 136, rule: 2, ruleName: "Der Ball", question: "Darf der Ball während des Spiels gewechselt werden?", options: ["Ja, jederzeit", "Nein, nie", "Nur bei Beschädigung", "Nur mit Zustimmung beider Mannschaften"], correctAnswer: 2 },
+            { id: 137, rule: 2, ruleName: "Der Ball", question: "Was passiert, wenn der Ball während eines Angriffs platzt?", options: ["Das Spiel läuft weiter", "Schiedsrichterball", "Abstoß", "Freistoß für die angreifende Mannschaft"], correctAnswer: 1 },
+            { id: 138, rule: 3, ruleName: "Die Spieler", question: "Wie viele Spieler müssen mindestens auf dem Feld sein?", options: ["5", "6", "7", "8"], correctAnswer: 2 },
+            { id: 139, rule: 3, ruleName: "Die Spieler", question: "Darf ein Spieler ohne Zustimmung des Schiedsrichters das Feld verlassen?", options: ["Ja, jederzeit", "Nein, nur mit Zustimmung", "Nur bei Verletzung", "Nur bei Auswechslung"], correctAnswer: 1 },
+            { id: 140, rule: 3, ruleName: "Die Spieler", question: "Was passiert, wenn ein Spieler das Feld ohne Erlaubnis verlässt?", options: ["Gelbe Karte", "Rote Karte", "Verwarnung", "Spiel läuft weiter"], correctAnswer: 0 },
+            { id: 141, rule: 3, ruleName: "Die Spieler", question: "Wie viele Ersatzspieler sind erlaubt?", options: ["5", "7", "9", "12"], correctAnswer: 1 },
+            { id: 142, rule: 4, ruleName: "Die Ausrüstung der Spieler", question: "Darf ein Spieler eine Kappe tragen?", options: ["Ja, immer", "Nein, nie", "Nur bei Sonnenschein", "Nur wenn sie sicher ist"], correctAnswer: 3 },
+            { id: 143, rule: 4, ruleName: "Die Ausrüstung der Spieler", question: "Was passiert, wenn ein Spieler gefährliche Ausrüstung trägt?", options: ["Gelbe Karte", "Muss die Ausrüstung entfernen", "Rote Karte", "Spiel läuft weiter"], correctAnswer: 1 },
+            { id: 144, rule: 4, ruleName: "Die Ausrüstung der Spieler", question: "Müssen die Trikots der Mannschaften unterschiedlich sein?", options: ["Ja, immer", "Nein, nicht notwendig", "Nur bei Heimspielen", "Nur bei internationalen Spielen"], correctAnswer: 0 },
+            { id: 145, rule: 5, ruleName: "Der Schiedsrichter", question: "Kann der Schiedsrichter das Spiel wegen schlechten Wetters abbrechen?", options: ["Ja, jederzeit", "Nein, nie", "Nur bei Gewitter", "Nur wenn es gefährlich ist"], correctAnswer: 3 },
+            { id: 146, rule: 5, ruleName: "Der Schiedsrichter", question: "Wer entscheidet über Spielabbruch?", options: ["Der Schiedsrichter", "Der Trainer", "Die Mannschaftskapitäne", "Der Veranstalter"], correctAnswer: 0 },
+            { id: 147, rule: 5, ruleName: "Der Schiedsrichter", question: "Kann der Schiedsrichter eine Entscheidung während des Spiels ändern?", options: ["Ja, jederzeit", "Nein, nie", "Nur vor Wiederaufnahme", "Nur mit VAR"], correctAnswer: 2 },
+            { id: 148, rule: 6, ruleName: "Die weiteren Spieloffiziellen", question: "Wie viele vierte Offizielle gibt es?", options: ["0", "1", "2", "3"], correctAnswer: 1 },
+            { id: 149, rule: 6, ruleName: "Die weiteren Spieloffiziellen", question: "Was ist die Aufgabe des vierten Offiziellen?", options: ["Auswechslungen überwachen", "Nachspielzeit anzeigen", "Technische Zone überwachen", "Alle genannten"], correctAnswer: 3 },
+            { id: 150, rule: 6, ruleName: "Die weiteren Spieloffiziellen", question: "Kann ein Assistent den Schiedsrichter ersetzen?", options: ["Ja, automatisch", "Nein, nie", "Nur bei Verletzung", "Nur mit Zustimmung"], correctAnswer: 2 },
+            { id: 151, rule: 7, ruleName: "Die Dauer des Spiels", question: "Wie lange dauert eine Halbzeitpause maximal?", options: ["10 Minuten", "15 Minuten", "20 Minuten", "Unbegrenzt"], correctAnswer: 1 },
+            { id: 152, rule: 7, ruleName: "Die Dauer des Spiels", question: "Wer bestimmt die Nachspielzeit?", options: ["Der Schiedsrichter", "Der vierte Offizielle", "Die Mannschaftskapitäne", "Der Veranstalter"], correctAnswer: 0 },
+            { id: 153, rule: 7, ruleName: "Die Dauer des Spiels", question: "Kann die Nachspielzeit verlängert werden?", options: ["Ja, wenn nötig", "Nein, nie", "Nur bei Verletzungen", "Nur bei VAR-Einsatz"], correctAnswer: 0 },
+            { id: 154, rule: 7, ruleName: "Die Dauer des Spiels", question: "Wie lange dauert eine Verlängerung?", options: ["2x10 Minuten", "2x15 Minuten", "2x20 Minuten", "2x25 Minuten"], correctAnswer: 1 },
+            { id: 155, rule: 8, ruleName: "Beginn und Fortsetzung des Spiels", question: "Muss der Ball beim Anstoß still liegen?", options: ["Ja, immer", "Nein", "Nur bei Spielbeginn", "Nur nach Toren"], correctAnswer: 0 },
+            { id: 156, rule: 8, ruleName: "Beginn und Fortsetzung des Spiels", question: "Wie weit müssen die Gegenspieler beim Anstoß entfernt sein?", options: ["7 Meter", "9 Meter", "9,15 Meter", "10 Meter"], correctAnswer: 2 },
+            { id: 157, rule: 8, ruleName: "Beginn und Fortsetzung des Spiels", question: "Was passiert bei einem falschen Anstoß?", options: ["Wiederholung", "Indirekter Freistoß", "Schiedsrichterball", "Spiel läuft weiter"], correctAnswer: 0 },
+            { id: 158, rule: 9, ruleName: "Ball im Spiel und außer Spiel", question: "Ist der Ball im Spiel, wenn er von einem Pfosten zurückkommt?", options: ["Ja, immer", "Nein, nie", "Nur wenn er im Spielfeld bleibt", "Nur wenn er nicht die Linie überschreitet"], correctAnswer: 2 },
+            { id: 159, rule: 9, ruleName: "Ball im Spiel und außer Spiel", question: "Was passiert, wenn der Ball die Querlatte berührt?", options: ["Ball bleibt im Spiel", "Abstoß", "Eckstoß", "Schiedsrichterball"], correctAnswer: 0 },
+            { id: 160, rule: 9, ruleName: "Ball im Spiel und außer Spiel", question: "Ist der Ball im Spiel, wenn er die Torlinie nicht vollständig überschreitet?", options: ["Ja", "Nein", "Nur wenn er ins Tor geht", "Nur wenn der Schiedsrichter es entscheidet"], correctAnswer: 0 },
+            { id: 161, rule: 10, ruleName: "Wie ein Tor erzielt wird", question: "Zählt ein Tor, wenn der Ball von einem Schiedsrichter-Assistenten ins Tor gelenkt wird?", options: ["Ja", "Nein", "Nur wenn es unbeabsichtigt war", "Nur bei VAR"], correctAnswer: 1 },
+            { id: 162, rule: 10, ruleName: "Wie ein Tor erzielt wird", question: "Kann ein Tor nach Abpfiff gegeben werden?", options: ["Ja, wenn der Ball vor dem Pfiff im Tor war", "Nein, nie", "Nur bei VAR", "Nur bei Elfmeter"], correctAnswer: 0 },
+            { id: 163, rule: 10, ruleName: "Wie ein Tor erzielt wird", question: "Zählt ein Tor, wenn der Ball die Torlinie überschreitet, aber dann zurückkommt?", options: ["Ja, wenn er vollständig überschritten hat", "Nein", "Nur wenn der Schiedsrichter es sieht", "Nur bei VAR"], correctAnswer: 0 },
+            { id: 164, rule: 11, ruleName: "Abseits", question: "Ist ein Spieler im Abseits, wenn er den Ball von einem Gegenspieler erhält?", options: ["Ja", "Nein", "Nur wenn er im Abseitsraum ist", "Nur wenn er aktiv am Spiel teilnimmt"], correctAnswer: 1 },
+            { id: 165, rule: 11, ruleName: "Abseits", question: "Was ist eine Abseitsfalle?", options: ["Ein Fehler des Schiedsrichters", "Eine taktische Maßnahme", "Ein Regelverstoß", "Ein VAR-Einsatz"], correctAnswer: 1 },
+            { id: 166, rule: 11, ruleName: "Abseits", question: "Kann Abseits bei einem Abstoß gegeben werden?", options: ["Ja", "Nein", "Nur wenn der Ball im Strafraum ist", "Nur bei internationalen Spielen"], correctAnswer: 1 },
+            { id: 167, rule: 11, ruleName: "Abseits", question: "Wie viele Gegenspieler müssen zwischen Angreifer und Tor sein, damit kein Abseits vorliegt?", options: ["1", "2", "3", "4"], correctAnswer: 1 },
+            { id: 168, rule: 11, ruleName: "Abseits", question: "Ist Abseits strafbar, wenn der Spieler den Ball nicht berührt?", options: ["Ja, wenn er aktiv am Spiel teilnimmt", "Nein", "Nur wenn er den Torwart behindert", "Nur wenn er im Abseitsraum ist"], correctAnswer: 0 },
+            { id: 169, rule: 12, ruleName: "Fouls und unsportliches Betragen", question: "Was ist eine Notbremse?", options: ["Ein Foul, das eine klare Torchance verhindert", "Ein gefährliches Spiel", "Ein Handspiel", "Ein unsportliches Verhalten"], correctAnswer: 0 },
+            { id: 170, rule: 12, ruleName: "Fouls und unsportliches Betragen", question: "Was passiert bei einer Notbremse?", options: ["Gelbe Karte", "Rote Karte", "Indirekter Freistoß", "Verwarnung"], correctAnswer: 1 },
+            { id: 171, rule: 12, ruleName: "Fouls und unsportliches Betragen", question: "Was ist ein indirekter Freistoß im Strafraum?", options: ["Strafstoß", "Indirekter Freistoß vom Strafraumrand", "Abstoß", "Schiedsrichterball"], correctAnswer: 1 },
+            { id: 172, rule: 12, ruleName: "Fouls und unsportliches Betragen", question: "Darf ein Spieler den Ball absichtlich mit der Hand spielen?", options: ["Ja, wenn es taktisch ist", "Nein, nie", "Nur im Strafraum", "Nur bei Notwehr"], correctAnswer: 1 },
+            { id: 173, rule: 12, ruleName: "Fouls und unsportliches Betragen", question: "Was passiert bei unsportlichem Verhalten?", options: ["Gelbe Karte", "Rote Karte", "Verwarnung", "Freistoß"], correctAnswer: 0 },
+            { id: 174, rule: 13, ruleName: "Freistöße", question: "Muss der Ball beim Freistoß still liegen?", options: ["Ja, immer", "Nein", "Nur bei direkten Freistößen", "Nur bei indirekten Freistößen"], correctAnswer: 0 },
+            { id: 175, rule: 13, ruleName: "Freistöße", question: "Was passiert, wenn ein Gegenspieler zu nah am Ball steht?", options: ["Gelbe Karte", "Freistoß wird wiederholt", "Spiel läuft weiter", "Indirekter Freistoß"], correctAnswer: 1 },
+            { id: 176, rule: 13, ruleName: "Freistöße", question: "Darf der Ball beim Freistoß direkt ins Tor gehen?", options: ["Ja, bei direktem Freistoß", "Nein, nie", "Nur außerhalb des Strafraums", "Nur bei indirektem Freistoß"], correctAnswer: 0 },
+            { id: 177, rule: 14, ruleName: "Strafstoß", question: "Wie viele Schritte darf der Schütze beim Elfmeter machen?", options: ["Unbegrenzt", "3 Schritte", "5 Schritte", "Keine Begrenzung"], correctAnswer: 0 },
+            { id: 178, rule: 14, ruleName: "Strafstoß", question: "Was passiert, wenn der Schütze den Ball zweimal berührt?", options: ["Indirekter Freistoß", "Wiederholung", "Abstoß", "Eckstoß"], correctAnswer: 0 },
+            { id: 179, rule: 14, ruleName: "Strafstoß", question: "Darf der Torwart beim Elfmeter die Torlinie verlassen?", options: ["Ja, nach dem Schuss", "Nein, nie", "Nur wenn der Ball im Spiel ist", "Nur wenn er springt"], correctAnswer: 2 },
+            { id: 180, rule: 14, ruleName: "Strafstoß", question: "Was passiert, wenn ein Mitspieler des Schützen zu früh in den Strafraum läuft?", options: ["Wiederholung", "Indirekter Freistoß", "Abstoß", "Spiel läuft weiter"], correctAnswer: 1 },
+            { id: 181, rule: 14, ruleName: "Strafstoß", question: "Wie viele Spieler dürfen beim Elfmeter im Strafraum sein?", options: ["Nur Schütze und Torwart", "Alle Spieler", "Maximal 5", "Maximal 10"], correctAnswer: 1 },
+            { id: 182, rule: 15, ruleName: "Einwurf", question: "Müssen beide Füße beim Einwurf am Boden sein?", options: ["Ja, beide Füße", "Nein", "Nur ein Fuß", "Nur die Fersen"], correctAnswer: 0 },
+            { id: 183, rule: 15, ruleName: "Einwurf", question: "Kann ein Spieler direkt aus einem Einwurf ein Tor erzielen?", options: ["Ja", "Nein", "Nur wenn der Torwart fehlt", "Nur bei Abstoß"], correctAnswer: 1 },
+            { id: 184, rule: 15, ruleName: "Einwurf", question: "Wie weit müssen die Gegenspieler beim Einwurf entfernt sein?", options: ["2 Meter", "3 Meter", "5 Meter", "Keine Regel"], correctAnswer: 3 },
+            { id: 185, rule: 16, ruleName: "Abstoß", question: "Muss der Ball beim Abstoß den Strafraum vollständig verlassen haben?", options: ["Ja, vollständig", "Nein", "Nur teilweise", "Nur wenn er ins Aus geht"], correctAnswer: 0 },
+            { id: 186, rule: 16, ruleName: "Abstoß", question: "Kann ein Spieler direkt aus einem Abstoß ein Tor erzielen?", options: ["Ja", "Nein", "Nur im eigenen Tor", "Nur bei internationalen Spielen"], correctAnswer: 0 },
+            { id: 187, rule: 16, ruleName: "Abstoß", question: "Was passiert, wenn der Ball beim Abstoß nicht den Strafraum verlässt?", options: ["Wiederholung", "Eckstoß", "Schiedsrichterball", "Spiel läuft weiter"], correctAnswer: 0 },
+            { id: 188, rule: 17, ruleName: "Eckstoß", question: "Muss der Ball beim Eckstoß im Viertelkreis liegen?", options: ["Ja, vollständig", "Nein", "Nur teilweise", "Nur bei internationalen Spielen"], correctAnswer: 0 },
+            { id: 189, rule: 17, ruleName: "Eckstoß", question: "Kann ein Spieler direkt aus einem Eckstoß ein Tor erzielen?", options: ["Ja", "Nein", "Nur im eigenen Tor", "Nur wenn der Torwart fehlt"], correctAnswer: 0 },
+            { id: 190, rule: 17, ruleName: "Eckstoß", question: "Was passiert, wenn der Ball beim Eckstoß nicht im Viertelkreis liegt?", options: ["Wiederholung", "Abstoß", "Schiedsrichterball", "Spiel läuft weiter"], correctAnswer: 0 },
+            { id: 191, rule: 17, ruleName: "Eckstoß", question: "Wie weit ist der Viertelkreisradius beim Eckstoß?", options: ["0,5 Meter", "1 Meter", "1,5 Meter", "2 Meter"], correctAnswer: 1 },
+            // Erweiterte VAR-Fragen für Fortgeschrittenen-Kurs
+            { id: 192, rule: 5, ruleName: "Der Schiedsrichter", question: "Was ist die 'checking phase' beim VAR?", options: ["Die Überprüfung durch den VAR-Schiedsrichter", "Die Entscheidung des Hauptschiedsrichters", "Die Kommunikation zwischen Schiedsrichtern", "Die Videoanalyse"], correctAnswer: 0 },
+            { id: 193, rule: 5, ruleName: "Der Schiedsrichter", question: "Wann muss der Schiedsrichter eine 'on-field review' durchführen?", options: ["Bei jeder VAR-Empfehlung", "Nur bei Toren", "Wenn der VAR-Schiedsrichter eine Überprüfung empfiehlt", "Nur bei Strafstößen"], correctAnswer: 2 },
+            { id: 194, rule: 5, ruleName: "Der Schiedsrichter", question: "Was passiert, wenn VAR ein Abseits übersieht?", options: ["Das Tor zählt", "VAR kann nachträglich eingreifen, wenn der Ball noch im Spiel ist", "Das Spiel läuft weiter", "Es gibt einen Schiedsrichterball"], correctAnswer: 1 },
+            { id: 195, rule: 5, ruleName: "Der Schiedsrichter", question: "Kann VAR bei einem Handspiel außerhalb des Strafraums eingesetzt werden?", options: ["Ja, immer", "Nein, nie", "Nur wenn es zu einem Tor führt", "Nur bei Strafstößen"], correctAnswer: 2 },
+            { id: 196, rule: 5, ruleName: "Der Schiedsrichter", question: "Was ist die maximale Zeit für eine VAR-Überprüfung?", options: ["30 Sekunden", "1 Minute", "3 Minuten", "Es gibt keine feste Zeitbegrenzung"], correctAnswer: 3 },
+            { id: 197, rule: 5, ruleName: "Der Schiedsrichter", question: "Kann der Schiedsrichter eine VAR-Entscheidung ablehnen?", options: ["Ja, er hat die alleinige Entscheidungsgewalt", "Nein, VAR-Entscheidungen sind bindend", "Nur bei Abseits", "Nur bei Toren"], correctAnswer: 0 },
+            { id: 198, rule: 5, ruleName: "Der Schiedsrichter", question: "Was passiert, wenn VAR während eines Angriffs eine Überprüfung durchführt?", options: ["Das Spiel wird sofort unterbrochen", "Das Spiel läuft weiter, bis der Ball aus ist", "VAR wartet auf eine Spielunterbrechung", "Es gibt einen Schiedsrichterball"], correctAnswer: 2 },
+            { id: 199, rule: 5, ruleName: "Der Schiedsrichter", question: "Wie kommuniziert der VAR-Schiedsrichter mit dem Hauptschiedsrichter?", options: ["Über Funk", "Über Handzeichen", "Über den vierten Offiziellen", "Über eine Leinwand"], correctAnswer: 0 },
+            { id: 200, rule: 5, ruleName: "Der Schiedsrichter", question: "Was ist ein 'VAR review area'?", options: ["Der Bereich, wo der Schiedsrichter das Video anschaut", "Der Bereich, den VAR überprüft", "Der Strafraum", "Die Mittellinie"], correctAnswer: 0 }
+        ];
+
+        // Aktueller Kurs-Typ
+        let currentCourseType = null;
+
+        // Zitate großer Fußballer
+        const footballQuotes = [
+            { text: "Fußball ist wie Schach, nur ohne Würfel.", author: "Lukas Podolski" },
+            { text: "Fußball ist die schönste Nebensache der Welt.", author: "Sepp Herberger" },
+            { text: "Fußball ist ein einfaches Spiel: 22 Männer jagen 90 Minuten lang einem Ball nach, und am Ende gewinnen immer die Deutschen.", author: "Gary Lineker" },
+            { text: "Fußball ist die einzige Religion ohne Atheisten.", author: "Eduardo Galeano" },
+            { text: "Der Ball ist rund und das Spiel dauert 90 Minuten. Alles andere ist Theorie.", author: "Sepp Herberger" },
+            { text: "Fußball ist ein Spiel, bei dem 22 Menschen dem Ball nachlaufen und am Ende gewinnen immer die Deutschen.", author: "Gary Lineker" },
+            { text: "Fußball ist wie ein Ballett, nur ohne Musik, ohne Choreografie, und die Tänzer sind betrunken.", author: "Dave Barry" },
+            { text: "Fußball ist Leben, der Rest ist nur Zeitvertreib.", author: "Bill Shankly" },
+            { text: "Fußball ist ein Spiel, bei dem man mit dem Kopf denkt und mit den Füßen spielt.", author: "César Luis Menotti" },
+            { text: "Fußball ist die Sprache, die jeder versteht.", author: "Pelé" }
+        ];
+
+        // Motivierende Nachrichten bei falschen Antworten
+        const encouragementMessages = [
+            "Nicht aufgeben! Jeder Fehler ist eine Chance zu lernen.",
+            "Weiter so! Aus Fehlern wird man stärker.",
+            "Du schaffst das! Übung macht den Meister.",
+            "Bleib dran! Jeder große Schiedsrichter hat mal klein angefangen.",
+            "Nicht verzweifeln! Jede richtige Antwort bringt dich weiter.",
+            "Du bist auf dem richtigen Weg! Weiter kämpfen!",
+            "Fehler sind normal! Wichtig ist, dass du weitermachst.",
+            "Gib nicht auf! Mit jeder Frage lernst du dazu.",
+            "Du wirst besser! Lass dich nicht entmutigen.",
+            "Stark bleiben! Jede Herausforderung macht dich stärker."
+        ];
+
+        // Spielzustand
+        let gameState = {
+            currentRound: 1,
+            currentPhase: 'initial', // 'initial', 'review', 'final'
+            currentQuestionIndex: 0,
+            questions: [],
+            incorrectQuestions: [],
+            blackCounter: allQuestions.length,
+            greenCounter: 0,
+            redCounter: 0,
+            roundStats: [],
+            isAnswering: false,
+            totalCorrect: 0,  // Gesamtzahl richtiger Antworten (nicht hintereinander)
+            totalIncorrect: 0  // Gesamtzahl falscher Antworten (nicht hintereinander)
+        };
+
+        // Kurs auswählen
+        function selectCourse(courseType) {
+            currentCourseType = courseType;
+            
+            // Kursauswahl-Bildschirm verstecken
+            document.getElementById('course-selection-screen').classList.add('hidden');
+            
+            // Заголовок bleibt "1. Halbzeit" - wird durch updateRoundInfo() aktualisiert
+            
+            // Spiel-Elemente anzeigen
+            // round-info bleibt versteckt, da main-title die Info zeigt
+            document.getElementById('counters').classList.add('active');
+            document.getElementById('game-screen').style.display = 'block';
+            
+            // Spiel initialisieren
+            initGame();
+        }
+
+        // Initialisierung des Spiels
+        function initGame() {
+            // Fragen basierend auf Kurs-Typ auswählen
+            let questionsToUse;
+            if (currentCourseType === 'advanced') {
+                // Kombiniere Basis- und Fortgeschrittenen-Fragen
+                questionsToUse = [...allQuestions, ...advancedQuestions];
+            } else {
+                // Nur Basis-Fragen
+                questionsToUse = [...allQuestions];
+            }
+            
+            gameState = {
+                currentRound: 1,
+                currentPhase: 'initial',
+                currentQuestionIndex: 0,
+                questions: JSON.parse(JSON.stringify(questionsToUse)),
+                incorrectQuestions: [],
+                blackCounter: questionsToUse.length,
+                greenCounter: 0,
+                redCounter: 0,
+                roundStats: [],
+                isAnswering: false,
+                totalCorrect: 0,
+                totalIncorrect: 0
+            };
+
+            // Fragen mischen
+            shuffleArray(gameState.questions);
+            
+            // Schwarzen Zähler aktualisieren
+            document.getElementById('black-counter').textContent = questionsToUse.length;
+            
+            document.getElementById('results-screen').classList.remove('active');
+            document.getElementById('game-screen').style.display = 'block';
+            updateCounters();
+            updateRoundInfo();
+            loadQuestion();
+        }
+
+        // Array mischen (Fisher-Yates)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Frage laden
+        function loadQuestion() {
+            const container = document.getElementById('options-container');
+            const questionText = document.getElementById('question-text');
+            const ruleBadge = document.getElementById('rule-badge');
+            const nextBtn = document.getElementById('next-btn');
+
+            nextBtn.classList.remove('active');
+            gameState.isAnswering = false;
+
+            let currentQuestion;
+            if (gameState.currentPhase === 'initial') {
+                currentQuestion = gameState.questions[gameState.currentQuestionIndex];
+            } else {
+                currentQuestion = gameState.incorrectQuestions[gameState.currentQuestionIndex];
+            }
+
+            if (!currentQuestion) {
+                handleRoundCompletion();
+                return;
+            }
+
+            ruleBadge.textContent = `Regel ${currentQuestion.rule}: ${currentQuestion.ruleName}`;
+            questionText.textContent = currentQuestion.question;
+
+            container.innerHTML = '';
+            currentQuestion.options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = option;
+                btn.onclick = () => checkAnswer(index, currentQuestion);
+                container.appendChild(btn);
+            });
+        }
+
+        // Antwort prüfen
+        function checkAnswer(selectedIndex, question) {
+            if (gameState.isAnswering) return;
+            gameState.isAnswering = true;
+
+            const buttons = document.querySelectorAll('.option-btn');
+            const nextBtn = document.getElementById('next-btn');
+
+            buttons.forEach((btn, index) => {
+                btn.disabled = true;
+                if (index === question.correctAnswer) {
+                    btn.classList.add('correct');
+                } else if (index === selectedIndex) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            if (selectedIndex === question.correctAnswer) {
+                // Richtige Antwort
+                gameState.greenCounter++;
+                
+                if (gameState.currentPhase === 'initial') {
+                    // In der initialen Phase: schwarzer Zähler reduzieren
+                    gameState.blackCounter--;
+                } else if (gameState.currentPhase === 'review') {
+                    // In der Review-Phase: roter Zähler reduzieren (Frage war falsch, jetzt richtig)
+                    gameState.redCounter = Math.max(0, gameState.redCounter - 1);
+                }
+                
+                // Frage aus incorrectQuestions entfernen, falls vorhanden
+                const wasIncorrect = gameState.incorrectQuestions.find(q => q.id === question.id);
+                if (wasIncorrect) {
+                    gameState.incorrectQuestions = gameState.incorrectQuestions.filter(q => q.id !== question.id);
+                }
+                
+                updateCounters();
+                
+                // Erhöhe Gesamtzähler für richtige Antworten
+                gameState.totalCorrect++;
+                
+                // Prüfe ob nach 5 richtigen Antworten insgesamt eine Zitat zeigen
+                if (gameState.totalCorrect % 5 === 0 && gameState.totalCorrect > 0) {
+                    showMotivationMessage('quote');
+                    return; // Warte auf Schließen des Modals
+                }
+            } else {
+                // Falsche Antwort
+                if (gameState.currentPhase === 'initial') {
+                    // In der initialen Phase: schwarzer Zähler reduzieren
+                    gameState.blackCounter--;
+                    
+                    // Frage zu incorrectQuestions hinzufügen, falls noch nicht vorhanden
+                    const wasAlreadyIncorrect = gameState.incorrectQuestions.find(q => q.id === question.id);
+                    if (!wasAlreadyIncorrect) {
+                        gameState.incorrectQuestions.push(JSON.parse(JSON.stringify(question)));
+                        gameState.redCounter++;
+                    }
+                } else if (gameState.currentPhase === 'review') {
+                    // In der Review-Phase: Frage bleibt falsch, roter Zähler bleibt gleich
+                    // (Frage war bereits in incorrectQuestions)
+                }
+                
+                // Erhöhe Gesamtzähler für falsche Antworten
+                gameState.totalIncorrect++;
+                
+                updateCounters();
+                
+                // Prüfe ob nach 5 falschen Antworten insgesamt eine Motivationsnachricht zeigen
+                if (gameState.totalIncorrect % 5 === 0 && gameState.totalIncorrect > 0) {
+                    showMotivationMessage('encouragement');
+                    return; // Warte auf Schließen des Modals
+                }
+            }
+
+            nextBtn.classList.add('active');
+            nextBtn.onclick = () => {
+                nextBtn.onclick = null;
+                moveToNextQuestion();
+            };
+        }
+
+        // Zur nächsten Frage
+        function moveToNextQuestion() {
+            gameState.currentQuestionIndex++;
+
+            if (gameState.currentPhase === 'initial') {
+                if (gameState.currentQuestionIndex >= gameState.questions.length || gameState.blackCounter === 0) {
+                    // Alle Fragen beantwortet oder schwarzer Zähler = 0
+                    handleRoundCompletion();
+                } else {
+                    loadQuestion();
+                }
+            } else {
+                // Review-Phase: Prüfe ob noch falsche Fragen vorhanden sind
+                if (gameState.redCounter === 0) {
+                    // Alle falschen Fragen richtig beantwortet
+                    handleRoundCompletion();
+                } else if (gameState.currentQuestionIndex >= gameState.incorrectQuestions.length) {
+                    // Alle falschen Fragen durchgegangen, aber noch welche falsch
+                    // Beginne von vorne mit den verbleibenden falschen Fragen
+                    gameState.currentQuestionIndex = 0;
+                    shuffleArray(gameState.incorrectQuestions);
+                    loadQuestion();
+                } else {
+                    loadQuestion();
+                }
+            }
+        }
+
+        // Rundenabschluss behandeln
+        function handleRoundCompletion() {
+            if (gameState.currentPhase === 'initial') {
+                // Phase 1 abgeschlossen - alle Fragen beantwortet (blackCounter = 0)
+                if (gameState.redCounter === 0) {
+                    // Alle richtig beantwortet, Runde abgeschlossen
+                    completeRound();
+                } else {
+                    // Es gibt falsche Antworten, gehe zu Review-Phase
+                    // Schwarzer Zähler bleibt bei 0
+                    gameState.currentPhase = 'review';
+                    gameState.currentQuestionIndex = 0;
+                    shuffleArray(gameState.incorrectQuestions);
+                    updateCounters();
+                    updateRoundInfo();
+                    loadQuestion();
+                }
+            } else if (gameState.currentPhase === 'review') {
+                // Review-Phase abgeschlossen
+                if (gameState.redCounter === 0) {
+                    // Alle falschen Fragen richtig beantwortet
+                    completeRound();
+                } else {
+                    // Es gibt noch falsche Antworten, beginne von vorne
+                    gameState.currentQuestionIndex = 0;
+                    shuffleArray(gameState.incorrectQuestions);
+                    updateCounters();
+                    updateRoundInfo();
+                    loadQuestion();
+                }
+            }
+        }
+
+        // Runde abschließen
+        function completeRound() {
+            // Gesamtzahl Fragen basierend auf Kurs-Typ
+            let totalQuestions;
+            if (currentCourseType === 'advanced') {
+                totalQuestions = allQuestions.length + advancedQuestions.length;
+            } else {
+                totalQuestions = allQuestions.length;
+            }
+            
+            // Statistik speichern
+            gameState.roundStats.push({
+                round: gameState.currentRound,
+                totalQuestions: totalQuestions,
+                correctAnswers: gameState.greenCounter,
+                incorrectAnswers: gameState.redCounter
+            });
+
+            if (gameState.currentRound < 3) {
+                // Nächste Runde starten
+                gameState.currentRound++;
+                gameState.currentPhase = 'initial';
+                gameState.currentQuestionIndex = 0;
+                // Fragen basierend auf Kurs-Typ auswählen
+                let questionsToUse;
+                if (currentCourseType === 'advanced') {
+                    questionsToUse = [...allQuestions, ...advancedQuestions];
+                } else {
+                    questionsToUse = [...allQuestions];
+                }
+                
+                gameState.questions = JSON.parse(JSON.stringify(questionsToUse));
+                gameState.incorrectQuestions = [];
+                gameState.blackCounter = questionsToUse.length;
+                gameState.greenCounter = 0;
+                gameState.redCounter = 0;
+                // totalCorrect und totalIncorrect bleiben erhalten (werden nicht zurückgesetzt)
+                shuffleArray(gameState.questions);
+                updateCounters();
+                updateRoundInfo();
+                loadQuestion();
+            } else {
+                // Spiel beendet
+                showResults();
+            }
+        }
+
+        // Ergebnisse anzeigen
+        function showResults() {
+            document.getElementById('game-screen').style.display = 'none';
+            document.getElementById('results-screen').classList.add('active');
+            
+            const statsContainer = document.getElementById('stats-container');
+            statsContainer.innerHTML = '';
+            
+            gameState.roundStats.forEach(stat => {
+                const statDiv = document.createElement('div');
+                statDiv.className = 'stat-item';
+                statDiv.innerHTML = `
+                    <strong>Runde ${stat.round}:</strong>
+                    <span>${stat.correctAnswers} richtig / ${stat.incorrectAnswers} falsch</span>
+                `;
+                statsContainer.appendChild(statDiv);
+            });
+        }
+
+        // Zähler aktualisieren
+        function updateCounters() {
+            const greenCounter = document.getElementById('green-counter');
+            const blackCounter = document.getElementById('black-counter');
+            const redCounter = document.getElementById('red-counter');
+
+            greenCounter.textContent = gameState.greenCounter;
+            blackCounter.textContent = gameState.blackCounter;
+            redCounter.textContent = gameState.redCounter;
+
+            // Animation
+            [greenCounter, blackCounter, redCounter].forEach(counter => {
+                counter.classList.add('updated');
+                setTimeout(() => counter.classList.remove('updated'), 500);
+            });
+        }
+
+        // Rundeninfo aktualisieren
+        function updateRoundInfo() {
+            const mainTitle = document.getElementById('main-title');
+            let roundText = '';
+            
+            // Определяем название раунда (тайма)
+            if (gameState.currentRound === 1) {
+                roundText = '1. Halbzeit';
+            } else if (gameState.currentRound === 2) {
+                roundText = '2. Halbzeit';
+            } else if (gameState.currentRound === 3) {
+                roundText = 'Verlängerung';
+            }
+            
+            let phaseText = '';
+            if (gameState.currentPhase === 'initial') {
+                phaseText = '';
+            } else if (gameState.currentPhase === 'review') {
+                phaseText = ' - Wiederholung';
+            }
+            
+            // Обновляем только главный заголовок
+            mainTitle.textContent = `${roundText}${phaseText}`;
+        }
+
+        // Motivationsnachricht anzeigen
+        function showMotivationMessage(type) {
+            const modal = document.getElementById('motivation-modal');
+            const textEl = document.getElementById('motivation-text');
+            const authorEl = document.getElementById('motivation-author');
+            const iconEl = document.getElementById('motivation-icon');
+            const contentEl = modal.querySelector('.motivation-content');
+            
+            if (type === 'quote') {
+                // Zufälliges Zitat auswählen
+                const quote = footballQuotes[Math.floor(Math.random() * footballQuotes.length)];
+                textEl.textContent = `"${quote.text}"`;
+                authorEl.textContent = `— ${quote.author}`;
+                iconEl.textContent = '⚽';
+                contentEl.classList.remove('encouragement');
+            } else if (type === 'encouragement') {
+                // Zufällige Motivationsnachricht auswählen
+                const message = encouragementMessages[Math.floor(Math.random() * encouragementMessages.length)];
+                textEl.textContent = message;
+                authorEl.textContent = '';
+                iconEl.textContent = '💪';
+                contentEl.classList.add('encouragement');
+            }
+            
+            modal.classList.add('active');
+        }
+
+        // Motivationsmodal schließen
+        function closeMotivationModal() {
+            const modal = document.getElementById('motivation-modal');
+            modal.classList.remove('active');
+            
+            // Weiter zur nächsten Frage
+            const nextBtn = document.getElementById('next-btn');
+            if (nextBtn.classList.contains('active')) {
+                moveToNextQuestion();
+            } else {
+                // Falls nextBtn noch nicht aktiv ist, aktiviere es
+                updateCounters();
+                nextBtn.classList.add('active');
+                nextBtn.onclick = () => {
+                    nextBtn.onclick = null;
+                    moveToNextQuestion();
+                };
+            }
+        }
+
+        // Spiel neu starten (zurück zur Kursauswahl)
+        function restartGame() {
+            // Alle Bildschirme zurücksetzen
+            document.getElementById('course-selection-screen').classList.remove('hidden');
+            document.getElementById('main-title').textContent = 'Kurse Schiedsrichter - Fußballregeln';
+            document.getElementById('counters').classList.remove('active');
+            document.getElementById('game-screen').style.display = 'none';
+            document.getElementById('results-screen').classList.remove('active');
+            
+            currentCourseType = null;
+        }
+
+        // Service Worker registrieren für PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then((registration) => {
+                        console.log('Service Worker registriert:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log('Service Worker Registrierung fehlgeschlagen:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
+

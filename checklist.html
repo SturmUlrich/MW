@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="format-detection" content="telephone=no">
+  <title>Checkliste vor dem Ausrück — KVF Meißen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f3f0f5;
+      --card: #fff;
+      --accent: #5B2C6F;
+      --accent-light: #7D3C98;
+      --text: #1a1a1a;
+      --text-muted: #5a5a5a;
+      --border: #d4c5dc;
+      --checked: #5B2C6F;
+      --shadow: 0 2px 12px rgba(91, 44, 111, 0.12);
+      --radius: 12px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 1rem;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      color: #fff;
+      padding: 1.5rem 1.25rem;
+      border-radius: var(--radius);
+      margin-bottom: 1.25rem;
+      box-shadow: var(--shadow);
+    }
+    header h1 {
+      margin: 0 0 0.25rem;
+      font-size: 1.35rem;
+      font-weight: 700;
+    }
+    header p {
+      margin: 0;
+      opacity: 0.95;
+      font-size: 0.9rem;
+    }
+
+    .progress-bar {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 0.75rem 1rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .progress-bar .bar {
+      flex: 1;
+      height: 8px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-bar .fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+    .progress-bar .label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .btn {
+      font-family: inherit;
+      font-size: 0.9rem;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn:hover {
+      background: var(--border);
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    .btn-primary:hover {
+      background: var(--accent-light);
+      border-color: var(--accent-light);
+    }
+
+    section.block {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    section.block.locked {
+      display: none;
+    }
+    /* Свернутый блок (по клику на заголовок): скрыть содержимое */
+    section.block.collapsed .subtitle,
+    section.block.collapsed .check-item,
+    section.block.collapsed .form-grid {
+      display: none !important;
+    }
+    section.block.collapsed {
+      padding: 0.65rem 1.25rem;
+    }
+    section.block.collapsed h2 {
+      margin: 0;
+    }
+    section.block h2 {
+      cursor: pointer;
+      user-select: none;
+    }
+    section.block h2:hover {
+      opacity: 0.85;
+    }
+    /* Заполненный блок: только заголовок с галочкой */
+    section.block.completed .subtitle,
+    section.block.completed .check-item,
+    section.block.completed .form-grid {
+      display: none !important;
+    }
+    section.block.completed h2 {
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    section.block.completed h2::before {
+      content: '✓';
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.35em;
+      height: 1.35em;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 6px;
+      font-size: 0.85em;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    /* Раскрытый завершённый блок: снова показать содержимое для редактирования */
+    section.block.completed.expanded .subtitle,
+    section.block.completed.expanded .check-item,
+    section.block.completed.expanded .form-grid {
+      display: flex !important;
+    }
+    section.block.completed.expanded .form-grid {
+      display: grid !important;
+    }
+    section.block.completed.expanded .subtitle {
+      display: block !important;
+    }
+    section.block.completed.expanded {
+      padding: 1rem 1.25rem;
+    }
+    /* Раскрыть по клику: снова показать пункты/форму */
+    section.block.collapsed.expanded .subtitle,
+    section.block.collapsed.expanded .check-item,
+    section.block.collapsed.expanded .form-grid {
+      display: flex !important;
+    }
+    section.block.collapsed.expanded .form-grid {
+      display: grid !important;
+    }
+    section.block.collapsed.expanded .subtitle {
+      display: block !important;
+    }
+    section.block.collapsed.expanded {
+      padding: 1rem 1.25rem;
+    }
+    section.block h2 {
+      margin: 0 0 0.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+    section.block .subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .check-item {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 0.6rem;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid #eee;
+    }
+    .check-item:last-child { border-bottom: none; }
+    .check-item input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin: 0.15rem 0 0;
+      accent-color: var(--accent);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .check-item label {
+      cursor: pointer;
+      font-size: 0.95rem;
+      flex: 1;
+      min-width: 0;
+      user-select: none;
+    }
+    .check-item input:checked + label {
+      color: var(--text-muted);
+      text-decoration: line-through;
+    }
+
+    .check-item .sublist {
+      flex-basis: 100%;
+      width: 100%;
+      margin-left: 0;
+      margin-top: 0.35rem;
+      padding-left: calc(20px + 0.6rem);
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+    .form-row {
+      display: grid;
+      gap: 0.35rem;
+    }
+    .form-row label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .form-row input,
+    .form-row select {
+      font-family: inherit;
+      font-size: 0.95rem;
+      padding: 0.5rem 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--card);
+      color: var(--text);
+    }
+    /* Safari / iOS: 16px prevents zoom on focus; min-height for touch target */
+    .form-row input[type="date"],
+    .form-row input[type="time"] {
+      font-size: 16px;
+      min-height: 44px;
+      min-width: 0;
+    }
+    @supports (-webkit-touch-callout: none) {
+      .form-row input[type="date"],
+      .form-row input[type="time"] {
+        font-size: 16px !important;
+      }
+    }
+    .form-row input:focus,
+    .form-row select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(91, 44, 111, 0.15);
+    }
+
+    #summary-page {
+      display: none;
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow);
+    }
+    #summary-page.visible {
+      display: block;
+    }
+    #summary-page h2 {
+      margin: 0 0 1rem;
+      font-size: 1.15rem;
+      color: var(--accent);
+    }
+    .summary-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem 1rem;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid #eee;
+    }
+    .summary-row:last-child { border-bottom: none; }
+    .summary-row .key {
+      font-weight: 500;
+      color: var(--text-muted);
+      min-width: 10rem;
+    }
+    .summary-row .value {
+      color: var(--text);
+    }
+    .summary-actions {
+      margin-top: 1rem;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      padding: 1rem;
+    }
+
+    .checklist-phase {
+      margin-bottom: 2rem;
+    }
+    .checklist-phase:last-child {
+      margin-bottom: 0;
+    }
+    .checklist-phase-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin: 0 0 0.25rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--border);
+    }
+    .checklist-phase-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin: 0 0 1rem;
+    }
+
+    .home-summary {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow);
+    }
+    .home-summary h2 {
+      margin: 0 0 0.5rem;
+      font-size: 1.15rem;
+      color: var(--accent);
+    }
+    .home-summary .subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin: 0 0 1rem;
+    }
+    .home-summary-actions {
+      margin-top: 1rem;
+    }
+
+    .back-link {
+      display: inline-block;
+      font-size: 0.9rem;
+      color: var(--accent);
+      text-decoration: none;
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+    .back-link:hover { text-decoration: underline; }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .back-link { display: none !important; }
+      .progress-bar, .actions, .btn { display: none !important; }
+      section.block { box-shadow: none; border: 1px solid #ddd; }
+      .check-item input:checked + label { text-decoration: line-through; color: #333; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="index.html" class="back-link">← Zurück zur Startseite</a>
+    <header>
+      <h1>Checkliste vor dem Ausrück zum Spiel</h1>
+      <p>KVF Meißen · Saison 2025/2026 · Schiedsrichter</p>
+    </header>
+
+    <div class="progress-bar">
+      <div class="bar"><div class="fill" id="progressFill" style="width: 0%"></div></div>
+      <span class="label" id="progressLabel">0 / 25</span>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn btn-primary" id="btnShowSummary">Spielübersicht anzeigen</button>
+      <button type="button" class="btn" id="btnReset">Alles zurücksetzen</button>
+    </div>
+
+    <div id="checklist-container">
+
+    <div class="checklist-phase" data-phase="home">
+      <h3 class="checklist-phase-title">Zu Hause</h3>
+      <p class="checklist-phase-subtitle">Vorbereitung: Spieldaten eingeben, DFBnet prüfen, Regeln klären, Formulare bereithalten, Ausrüstung packen</p>
+
+      <div id="home-checklist">
+
+    <!-- 1. Spieldaten -->
+    <section class="block locked" data-block="0" id="block-0">
+      <h2>1. Spieldaten eingeben</h2>
+      <p class="subtitle">Angaben zum bevorstehenden Spiel (alle Pflichtfelder ausfüllen)</p>
+      <div class="form-grid">
+        <div class="form-row">
+          <label for="spielnummer">Spielnummer</label>
+          <input type="text" id="spielnummer" placeholder="z. B. aus DFBnet (siehe Spielbericht)" autocomplete="off">
+        </div>
+        <div class="form-row">
+          <label for="spielart">Spielart</label>
+          <select id="spielart">
+            <option value="">— wählen —</option>
+            <option value="Meisterschaftsspiel">Meisterschaftsspiel</option>
+            <option value="Pokalspiel">Pokalspiel</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label for="datum">Datum</label>
+          <input type="date" id="datum" lang="de" required>
+        </div>
+        <div class="form-row">
+          <label for="anstoss">Spielbeginn (Anstoß)</label>
+          <input type="time" id="anstoss" step="300" lang="de" required>
+        </div>
+        <div class="form-row">
+          <label for="spielort">Spielort / Adresse</label>
+          <input type="text" id="spielort" placeholder="Stadion, Straße, PLZ Ort">
+        </div>
+        <div class="form-row">
+          <label for="heimverein">Heimverein</label>
+          <input type="text" id="heimverein" placeholder="Name des Heimvereins">
+        </div>
+        <div class="form-row">
+          <label for="gastverein">Gastverein</label>
+          <input type="text" id="gastverein" placeholder="Name des Gastvereins">
+        </div>
+        <div class="form-row">
+          <label for="kategorie">Kategorie / Alter</label>
+          <select id="kategorie">
+            <option value="">— wählen —</option>
+            <option value="Männer">Männer</option>
+            <option value="Frauen/Mädchen">Frauen/Mädchen</option>
+            <option value="A-Junioren">A-Junioren</option>
+            <option value="B-Junioren">B-Junioren</option>
+            <option value="C-Junioren">C-Junioren</option>
+            <option value="D-Junioren">D-Junioren</option>
+            <option value="B-Juniorinnen">B-Juniorinnen</option>
+            <option value="C-Juniorinnen">C-Juniorinnen</option>
+            <option value="Alte Herren (SVFD)">Alte Herren (SVFD)</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label for="spielklasse">Spielklasse / Liga</label>
+          <select id="spielklasse">
+            <option value="">— wählen —</option>
+            <optgroup label="Meisterschaft (Übersicht SR 2025-26)">
+              <option value="Sachsenliga">Sachsenliga</option>
+              <option value="Sachsenklasse">Sachsenklasse</option>
+              <option value="Kreisoberliga">Kreisoberliga</option>
+              <option value="Kreisliga">Kreisliga</option>
+              <option value="Kreisliga A">Kreisliga A</option>
+              <option value="1. Kreisklasse">1. Kreisklasse</option>
+              <option value="2. Kreisklasse">2. Kreisklasse</option>
+              <option value="Stadtliga">Stadtliga</option>
+              <option value="Stadtklassen">Stadtklassen</option>
+            </optgroup>
+            <optgroup label="Pokal (Zusatzbericht)">
+              <option value="Landespokal">Landespokal</option>
+              <option value="Kreispokal">Kreispokal</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="form-row">
+          <label for="feldtyp">Feldtyp</label>
+          <select id="feldtyp">
+            <option value="">— wählen —</option>
+            <option value="Großfeld">Großfeld</option>
+            <option value="verk. Großfeld">verkürztes Großfeld (verk. Großfeld)</option>
+            <option value="Kleinfeld">Kleinfeld</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label for="hinweise">Hinweise (optional)</label>
+          <input type="text" id="hinweise" placeholder="Parkplatz, Ansprechpartner, etc.">
+        </div>
+      </div>
+    </section>
+
+    <!-- 0. DFBnet -->
+    <section class="block locked" data-block="1" id="block-1">
+      <h2>0. DFBnet & Verfügbarkeit (einmalig / laufend)</h2>
+      <div class="check-item">
+        <input type="checkbox" id="c0-1"><label for="c0-1">Erstlogin unter www.dfbnet.org mit Kennung und Initialpasswort; Passwort beim ersten Login geändert.</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c0-2"><label for="c0-2">Persönliche Daten in DFBnet geprüft und ggf. korrigiert.</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c0-3"><label for="c0-3">Unter „Termine“ alle Sperrtermine eingetragen (wann du nicht zur Verfügung stehst).</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c0-4"><label for="c0-4">Ansetzer bekannt: Markus Lederer, Carsten Röder, Martin Gläser.</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c0-5"><label for="c0-5">Bei Fragen: zuerst Obmann im Verein, sonst Schiedsrichterausschuss; optional WhatsApp-Community beigetreten.</label>
+      </div>
+    </section>
+
+    <!-- 1. Spielbestätigung -->
+    <section class="block locked" data-block="2" id="block-2">
+      <h2>1. Spielbestätigung & Einteilung prüfen</h2>
+      <div class="check-item">
+        <input type="checkbox" id="c1-1"><label for="c1-1">Spielbestätigung in DFBnet bzw. vom Schiedsrichterausschuss geprüft.</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c1-2"><label for="c1-2">Spielnummer, Datum, Anstoßzeit, Spielort notiert.</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c1-3"><label for="c1-3">Spielpaarung (Heim- und Gastverein) und Spielklasse bekannt (z. B. Kreisliga, B-Junioren Sachsenklasse).</label>
+      </div>
+    </section>
+
+    <!-- 2. Regeln -->
+    <section class="block locked" data-block="3" id="block-3">
+      <h2>2. Regeln für diese Spielklasse klären</h2>
+      <div class="check-item">
+        <input type="checkbox" id="c2-1"><label for="c2-1">In „Übersicht für SR 2025-26.pdf“ die Zeile zu deiner Spielklasse prüfen: Feldtyp, Spielerzahl (11, 9 oder 7), Spielzeit und Verlängerung, Spesen für SR und SRA, Temperaturgrenze und spezielle Hinweise.</label>
+        <div class="sublist">Feldtyp: Großfeld / verkürztes Großfeld / Kleinfeld · Spielzeit z. B. 2×45 min · Verlängerung z. B. 2×15 min · Spesen · unter -9 °C etc.</div>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c2-2"><label for="c2-2">Bei Kleinfeld / verk. Großfeld: „Übersicht Spielfeldgrößen“ oder Skizzen 08 / 09 ansehen (Maße, eingerückte Tore).</label>
+      </div>
+    </section>
+
+    <!-- 3. Kommunikation -->
+    <section class="block locked" data-block="4" id="block-4">
+      <h2>3. Kommunikation & Verhalten vorbereiten</h2>
+      <div class="check-item">
+        <input type="checkbox" id="c3-1"><label for="c3-1">Kapitänsdialog: Vor dem Spiel Mannschaften hinweisen — nur Kapitän spricht den SR an, Mindestabstand 4 m; bei Torwart-Kapitän Feldspieler für Ansprache benennen.</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c3-2"><label for="c3-2">DFB-STOPP-Konzept: Ablauf präsent (Zeichen, Spieler in Strafraum, Kapitäne + Trainer in Mittelkreis) für Rudelbildungen oder Eskalation.</label>
+      </div>
+    </section>
+
+    <!-- 4. Formulare -->
+    <section class="block locked" data-block="5" id="block-5">
+      <h2>4. Formulare & Kontakte bereithalten</h2>
+      <div class="check-item">
+        <input type="checkbox" id="c4-1"><label for="c4-1">Zusatzbericht_neu.pdf auf Gerät (Handy/Tablet/Laptop) oder ausgedruckt dabei.</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c4-2"><label for="c4-2">Hinweise_Zusatzbericht_neu.pdf gelesen: Spielnummer aus Spielbericht, alle Felder ausfüllen, neutral formulieren, vor dem Absenden speichern, dann in DFBnet anhängen und Kopie an Schiedsrichterausschuss.</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c4-3"><label for="c4-3">SR-Liste.pdf griffbereit für SRA oder Kollegen (Telefon/E-Mail).</label>
+      </div>
+    </section>
+
+    <!-- 5. Ausrüstung -->
+    <section class="block locked" data-block="6" id="block-6">
+      <h2>5. Ausrüstung & Anreise</h2>
+      <div class="check-item">
+        <input type="checkbox" id="c5-1"><label for="c5-1">Ausrüstung: Pfeife, Karten (gelb/rot), Uhr/Stoppuhr, Schreibunterlagen, ggf. gelbe Karte für SRA.</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c5-2"><label for="c5-2">Anreise: Adresse des Spielorts, Parkmöglichkeit, ausreichend Zeit vor Anstoß (z. B. 30–45 Min. vorher vor Ort).</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c5-3"><label for="c5-3">Wetter: Temperatur prüfen — bei Unterschreitung der Grenze (z. B. unter -9 °C) ggf. mit Verantwortlichen abstimmen (Spielabsage/Verlegung).</label>
+      </div>
+    </section>
+
+      </div><!-- Ende home-checklist -->
+
+      <div id="home-summary" class="home-summary" style="display: none;">
+        <h2>Spielübersicht</h2>
+        <p class="subtitle">Zusammenfassung für dein bevorstehendes Spiel — Vor Ort unten die Checkliste abhaken.</p>
+        <div id="home-summary-body"></div>
+        <div class="home-summary-actions">
+          <button type="button" class="btn" id="btnEditSpieldaten">Spieldaten bearbeiten</button>
+        </div>
+      </div>
+
+    </div><!-- Ende Zu Hause -->
+
+    <div class="checklist-phase" data-phase="field">
+      <h3 class="checklist-phase-title">Vor Ort / Auf dem Platz</h3>
+      <p class="checklist-phase-subtitle">Ankunft: Absprache mit SRA, Spielfeld prüfen, Kapitänsansprache vor dem Anpfiff</p>
+
+    <!-- 6. Kurz vor Anpfiff -->
+    <section class="block locked" data-block="7" id="block-7">
+      <h2>6. Kurz vor Anpfiff</h2>
+      <div class="check-item">
+        <input type="checkbox" id="c6-1"><label for="c6-1">Absprache mit SRA 1 (Zeichen, Blickkontakt).</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c6-2"><label for="c6-2">Absprache mit SRA 2 (Zeichen, Blickkontakt).</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c6-3"><label for="c6-3">Einwürfe und Ecken mit SRA abgesprochen.</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c6-4"><label for="c6-4">Kapitänsansprache: Mannschaften an Kapitänsdialog erinnern (nur Kapitän spricht SR an).</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c6-5"><label for="c6-5">Spielfeld: Linien geprüft.</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c6-6"><label for="c6-6">Spielfeld: Tore und Netz geprüft.</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c6-7"><label for="c6-7">Bei Kleinfeld/verk. Großfeld: Maße und eingerückte Tore im Kopf.</label>
+      </div>
+    </section>
+
+    </div><!-- Ende Vor Ort -->
+
+    </div>
+
+    <div id="summary-page">
+      <h2>Spielübersicht — alles bereit</h2>
+      <p class="subtitle">Zusammenfassung für dein bevorstehendes Spiel</p>
+      <div id="summary-body"></div>
+      <div class="summary-actions">
+        <button type="button" class="btn btn-primary" id="btnBack">Zurück zur Checkliste</button>
+      </div>
+    </div>
+
+    <footer>
+      DFBnet: www.dfbnet.org · Ansetzer: Markus Lederer, Carsten Röder, Martin Gläser<br>
+      Stand: Saison 2025/2026 · Kreisverband Meißen e.V.
+    </footer>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'kvf-sr-checklist';
+    const FORM_IDS = ['spielnummer','spielart','datum','anstoss','spielort','heimverein','gastverein','kategorie','spielklasse','feldtyp','hinweise'];
+    const allIds = [
+      'c0-1','c0-2','c0-3','c0-4','c0-5',
+      'c1-1','c1-2','c1-3',
+      'c2-1','c2-2',
+      'c3-1','c3-2',
+      'c4-1','c4-2','c4-3',
+      'c5-1','c5-2','c5-3',
+      'c6-1','c6-2','c6-3','c6-4','c6-5','c6-6','c6-7'
+    ];
+    const blockIds = [
+      [], // block 0 = form (Spieldaten)
+      ['c0-1','c0-2','c0-3','c0-4','c0-5'],
+      ['c1-1','c1-2','c1-3'],
+      ['c2-1','c2-2'],
+      ['c3-1','c3-2'],
+      ['c4-1','c4-2','c4-3'],
+      ['c5-1','c5-2','c5-3'],
+      ['c6-1','c6-2','c6-3','c6-4','c6-5','c6-6','c6-7']
+    ];
+    const total = allIds.length;
+
+    function isFormComplete() {
+      const required = ['spielnummer','spielart','datum','anstoss','spielort','heimverein','gastverein','kategorie','spielklasse','feldtyp'];
+      return required.every(id => {
+        const el = document.getElementById(id);
+        return el && String(el.value).trim() !== '';
+      });
+    }
+
+    function isBlockComplete(blockIndex) {
+      if (blockIndex === 0) return isFormComplete();
+      const ids = blockIds[blockIndex];
+      if (!ids || ids.length === 0) return false;
+      return ids.every(id => {
+        const el = document.getElementById(id);
+        return el && el.checked;
+      });
+    }
+
+    const SUMMARY_LABELS = {
+      spielnummer: 'Spielnummer',
+      spielart: 'Spielart',
+      datum: 'Datum',
+      anstoss: 'Spielbeginn (Anstoß)',
+      spielort: 'Spielort / Adresse',
+      heimverein: 'Heimverein',
+      gastverein: 'Gastverein',
+      kategorie: 'Kategorie / Alter',
+      spielklasse: 'Spielklasse / Liga',
+      feldtyp: 'Feldtyp',
+      hinweise: 'Hinweise'
+    };
+
+    function formatDate(val) {
+      if (!val) return '—';
+      const d = new Date(val + 'T12:00:00');
+      return d.toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
+    function formatTime(val) {
+      if (!val) return '—';
+      return val.slice(0, 5);
+    }
+
+    function renderSummary(targetId) {
+      const body = document.getElementById(targetId || 'summary-body');
+      if (!body) return;
+      const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      const fields = [
+        { id: 'spielnummer', fn: v => v },
+        { id: 'spielart', fn: v => v },
+        { id: 'datum', fn: formatDate },
+        { id: 'anstoss', fn: formatTime },
+        { id: 'spielort', fn: v => v },
+        { id: 'heimverein', fn: v => v },
+        { id: 'gastverein', fn: v => v },
+        { id: 'kategorie', fn: v => v },
+        { id: 'spielklasse', fn: v => v },
+        { id: 'feldtyp', fn: v => v },
+        { id: 'hinweise', fn: v => v || '—' }
+      ];
+      body.innerHTML = fields.map(({ id, fn }) => {
+        const el = document.getElementById(id);
+        const val = el ? fn(el.value) : '—';
+        const label = SUMMARY_LABELS[id] || id;
+        return `<div class="summary-row"><span class="key">${esc(label)}</span><span class="value">${esc(val)}</span></div>`;
+      }).join('');
+    }
+
+    function showSummaryPage() {
+      renderSummary('summary-body');
+      const summaryPage = document.getElementById('summary-page');
+      const checklistContainer = document.getElementById('checklist-container');
+      const progressBar = document.querySelector('.progress-bar');
+      const actions = document.querySelector('.actions');
+      if (summaryPage) summaryPage.classList.add('visible');
+      if (checklistContainer) checklistContainer.style.display = 'none';
+      if (progressBar) progressBar.style.display = 'none';
+      if (actions) actions.style.display = 'none';
+    }
+
+    function hideSummaryPage() {
+      document.getElementById('summary-page').classList.remove('visible');
+      document.getElementById('checklist-container').style.display = '';
+      const progressBar = document.querySelector('.progress-bar');
+      const actions = document.querySelector('.actions');
+      if (progressBar) progressBar.style.display = '';
+      if (actions) actions.style.display = '';
+    }
+
+    function updateBlockVisibility() {
+      for (let i = 0; i < blockIds.length; i++) {
+        const section = document.getElementById('block-' + i);
+        if (!section) continue;
+        const prevComplete = i === 0 || isBlockComplete(i - 1);
+        if (prevComplete) section.classList.remove('locked');
+        else section.classList.add('locked');
+        if (prevComplete) {
+          if (isBlockComplete(i)) {
+            section.classList.add('completed', 'collapsed');
+            section.classList.remove('expanded');
+          } else {
+            section.classList.remove('completed', 'expanded', 'collapsed');
+          }
+        }
+      }
+      const homeComplete = blockIds.length >= 7 && [0,1,2,3,4,5,6].every(i => isBlockComplete(i));
+      const homeChecklist = document.getElementById('home-checklist');
+      const homeSummary = document.getElementById('home-summary');
+      if (homeComplete && homeChecklist && homeSummary) {
+        homeChecklist.style.display = 'none';
+        homeSummary.style.display = 'block';
+        renderSummary('home-summary-body');
+      } else if (homeChecklist && homeSummary) {
+        homeChecklist.style.display = '';
+        homeSummary.style.display = 'none';
+      }
+    }
+
+    function setupTitleClicks() {
+      document.querySelectorAll('section.block h2').forEach(h2 => {
+        const section = h2.closest('section.block');
+        if (!section) return;
+        h2.addEventListener('click', () => {
+          if (section.classList.contains('completed')) {
+            section.classList.toggle('expanded');
+            if (section.classList.contains('expanded')) section.classList.remove('collapsed');
+          } else {
+            section.classList.toggle('collapsed');
+            if (section.classList.contains('collapsed')) section.classList.remove('expanded');
+          }
+        });
+      });
+    }
+
+    function load() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const state = JSON.parse(raw);
+          allIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el && state[id]) el.checked = true;
+          });
+          FORM_IDS.forEach(id => {
+            const el = document.getElementById(id);
+            if (el && state['f_' + id] !== undefined) el.value = state['f_' + id];
+          });
+        }
+      } catch (e) {}
+      updateBlockVisibility();
+      updateProgress();
+    }
+
+    function save() {
+      const state = {};
+      allIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) state[id] = el.checked;
+      });
+      FORM_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) state['f_' + id] = el.value;
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      updateBlockVisibility();
+      updateProgress();
+    }
+
+    function updateProgress() {
+      let n = 0;
+      allIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.checked) n++;
+      });
+      const fill = document.getElementById('progressFill');
+      const label = document.getElementById('progressLabel');
+      if (fill) fill.style.width = total ? (n / total * 100) + '%' : '0%';
+      if (label) label.textContent = n + ' / ' + total;
+    }
+
+    function reset() {
+      if (confirm('Alle Checkboxen und Spieldaten zurücksetzen?')) {
+        allIds.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.checked = false;
+        });
+        FORM_IDS.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.value = '';
+        });
+        localStorage.removeItem(STORAGE_KEY);
+        updateBlockVisibility();
+        updateProgress();
+      }
+    }
+
+    document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+      cb.addEventListener('change', save);
+    });
+    FORM_IDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', save);
+        el.addEventListener('change', save);
+      }
+    });
+    document.getElementById('btnReset').addEventListener('click', reset);
+    document.getElementById('btnShowSummary').addEventListener('click', showSummaryPage);
+    document.getElementById('btnBack').addEventListener('click', hideSummaryPage);
+    document.getElementById('btnEditSpieldaten').addEventListener('click', () => {
+      const homeChecklist = document.getElementById('home-checklist');
+      const homeSummary = document.getElementById('home-summary');
+      if (homeChecklist) homeChecklist.style.display = '';
+      if (homeSummary) homeSummary.style.display = 'none';
+    });
+
+    setupTitleClicks();
+    load();
+  </script>
+</body>
+</html>

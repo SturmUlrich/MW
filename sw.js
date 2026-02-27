@@ -3,6 +3,8 @@ const CACHE_NAME = 'fußball-quiz-v1';
 const urlsToCache = [
   './',
   './index.html',
+  './quiz.html',
+  './checklist.html',
   './manifest.json'
 ];
 
