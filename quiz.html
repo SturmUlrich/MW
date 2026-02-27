@@ -1789,10 +1789,21 @@
                 statDiv.className = 'stat-item';
                 statDiv.innerHTML = `
                     <strong>Runde ${stat.round}:</strong>
-                    <span>${stat.correctAnswers} richtig / ${stat.incorrectAnswers} falsch</span>
+                    <span>${stat.correctAnswers} richtig / ${stat.incorrectAnswers} falsch (${stat.totalQuestions} gesamt)</span>
                 `;
                 statsContainer.appendChild(statDiv);
             });
+
+            // Ergebnis in Datenbank speichern
+            fetch('/api/save-quiz', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    course: currentCourseType || 'basic',
+                    totalQuestions: gameState.roundStats.length > 0 ? gameState.roundStats[0].totalQuestions : 0,
+                    roundStats: gameState.roundStats
+                })
+            }).catch(err => console.warn('Quiz-Speichern fehlgeschlagen:', err));
         }
 
         // Zähler aktualisieren

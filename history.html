@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verlauf — Schiedsrichter</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      max-width: 900px;
+      width: 100%;
+      padding: 30px;
+      margin-top: 20px;
+    }
+    .back-link {
+      display: inline-block;
+      color: #667eea;
+      text-decoration: none;
+      font-size: 0.9em;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+    .back-link:hover { text-decoration: underline; }
+    h1 {
+      color: #333;
+      font-size: 1.6em;
+      margin-bottom: 6px;
+    }
+    .subtitle { color: #666; font-size: 0.9em; margin-bottom: 28px; }
+
+    /* Login */
+    #login-section { text-align: center; padding: 40px 20px; }
+    #login-section h2 { color: #333; margin-bottom: 24px; font-size: 1.3em; }
+    .login-form { display: inline-flex; flex-direction: column; gap: 14px; width: 100%; max-width: 320px; }
+    .login-form label { font-size: 0.85em; font-weight: 600; color: #555; text-align: left; }
+    .login-form input {
+      padding: 10px 14px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 1em;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    .login-form input:focus { outline: none; border-color: #667eea; }
+    .login-btn {
+      padding: 12px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1em;
+      font-family: inherit;
+      cursor: pointer;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+    .login-btn:hover { opacity: 0.9; }
+    .error-msg { color: #dc3545; font-size: 0.9em; display: none; }
+    .error-msg.visible { display: block; }
+
+    /* Data section */
+    #data-section { display: none; }
+    #data-section.visible { display: block; }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 0; border-bottom: 2px solid #e0e0e0; margin-bottom: 24px; }
+    .tab-btn {
+      padding: 10px 24px;
+      border: none;
+      background: none;
+      font-size: 0.95em;
+      font-family: inherit;
+      color: #666;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: color 0.2s;
+      font-weight: 500;
+    }
+    .tab-btn.active { color: #667eea; border-bottom-color: #667eea; }
+    .tab-btn:hover { color: #667eea; }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* Stats summary */
+    .stats-row {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .stat-card {
+      flex: 1;
+      min-width: 120px;
+      background: linear-gradient(135deg, #f5f3ff, #ede9fe);
+      border-radius: 12px;
+      padding: 14px 16px;
+      text-align: center;
+    }
+    .stat-card .num { font-size: 1.8em; font-weight: 700; color: #667eea; }
+    .stat-card .lbl { font-size: 0.8em; color: #666; margin-top: 2px; }
+
+    /* Table */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88em; }
+    thead th {
+      background: #f5f3ff;
+      color: #5B2C6F;
+      padding: 10px 12px;
+      text-align: left;
+      font-weight: 600;
+      border-bottom: 2px solid #d4c5dc;
+      white-space: nowrap;
+    }
+    tbody tr:nth-child(even) { background: #faf9ff; }
+    tbody tr:hover { background: #f0edff; }
+    tbody td { padding: 9px 12px; color: #333; border-bottom: 1px solid #eee; vertical-align: top; }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 0.8em;
+      font-weight: 600;
+    }
+    .badge-basic { background: #e3f2fd; color: #1565c0; }
+    .badge-advanced { background: #fce4ec; color: #880e4f; }
+    .badge-match { background: #e8f5e9; color: #2e7d32; }
+    .round-score { font-size: 0.85em; color: #555; }
+    .round-score strong { color: #333; }
+
+    .empty-msg { text-align: center; color: #aaa; padding: 40px 20px; font-size: 0.95em; }
+    .loading { text-align: center; color: #667eea; padding: 40px; font-size: 0.95em; }
+
+    @media (max-width: 600px) {
+      .container { padding: 20px 14px; }
+      .tab-btn { padding: 8px 14px; font-size: 0.85em; }
+      table { font-size: 0.8em; }
+      thead th, tbody td { padding: 8px 8px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <a href="index.html" class="back-link">← Zurück zur Startseite</a>
+  <h1>Verlauf &amp; Statistiken</h1>
+  <p class="subtitle">Gespeicherte Spiele und Quizergebnisse</p>
+
+  <!-- Login -->
+  <div id="login-section">
+    <h2>🔒 Zugang</h2>
+    <div class="login-form">
+      <label for="inp-user">Benutzername</label>
+      <input type="text" id="inp-user" placeholder="Benutzername" autocomplete="username">
+      <label for="inp-pwd">Passwort</label>
+      <input type="password" id="inp-pwd" placeholder="Passwort" autocomplete="current-password">
+      <button class="login-btn" onclick="doLogin()">Anmelden</button>
+      <span class="error-msg" id="login-error">Falsches Passwort</span>
+    </div>
+  </div>
+
+  <!-- Data -->
+  <div id="data-section">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('matches')">⚽ Spiele</button>
+      <button class="tab-btn" onclick="switchTab('quiz')">📝 Quiz</button>
+    </div>
+
+    <!-- Matches Tab -->
+    <div class="tab-panel active" id="tab-matches">
+      <div class="stats-row" id="match-stats"></div>
+      <div class="table-wrap">
+        <table id="matches-table">
+          <thead>
+            <tr>
+              <th>Datum</th>
+              <th>Anstoß</th>
+              <th>Heimverein</th>
+              <th>Gastverein</th>
+              <th>Liga</th>
+              <th>Ort</th>
+              <th>Kategorie</th>
+              <th>Gespeichert</th>
+            </tr>
+          </thead>
+          <tbody id="matches-tbody">
+            <tr><td colspan="8" class="loading">Lädt…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Quiz Tab -->
+    <div class="tab-panel" id="tab-quiz">
+      <div class="stats-row" id="quiz-stats"></div>
+      <div class="table-wrap">
+        <table id="quiz-table">
+          <thead>
+            <tr>
+              <th>Datum</th>
+              <th>Kurs</th>
+              <th>Fragen</th>
+              <th>Runde 1</th>
+              <th>Runde 2</th>
+              <th>Runde 3</th>
+            </tr>
+          </thead>
+          <tbody id="quiz-tbody">
+            <tr><td colspan="6" class="loading">Lädt…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentPwd = '';
+
+  function doLogin() {
+    const user = document.getElementById('inp-user').value.trim();
+    const pwd = document.getElementById('inp-pwd').value;
+    const errorEl = document.getElementById('login-error');
+
+    if (!user || !pwd) {
+      errorEl.textContent = 'Bitte alle Felder ausfüllen';
+      errorEl.classList.add('visible');
+      return;
+    }
+
+    errorEl.classList.remove('visible');
+    currentPwd = pwd;
+    loadData();
+  }
+
+  document.getElementById('inp-pwd').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doLogin();
+  });
+
+  async function loadData() {
+    try {
+      const res = await fetch(`/api/get-history?pwd=${encodeURIComponent(currentPwd)}`);
+      if (res.status === 401) {
+        document.getElementById('login-error').textContent = 'Falsches Passwort';
+        document.getElementById('login-error').classList.add('visible');
+        return;
+      }
+      const data = await res.json();
+      document.getElementById('login-section').style.display = 'none';
+      document.getElementById('data-section').classList.add('visible');
+      renderMatches(data.matches || []);
+      renderQuiz(data.quizResults || []);
+    } catch (err) {
+      document.getElementById('login-error').textContent = 'Verbindungsfehler: ' + err.message;
+      document.getElementById('login-error').classList.add('visible');
+    }
+  }
+
+  function fmtDate(str) {
+    if (!str) return '—';
+    try {
+      return new Date(str).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    } catch { return str; }
+  }
+  function fmtTime(str) {
+    if (!str) return '—';
+    return str.slice(0, 5);
+  }
+  function esc(s) {
+    return String(s || '—').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function renderMatches(matches) {
+    const statsEl = document.getElementById('match-stats');
+    statsEl.innerHTML = `
+      <div class="stat-card"><div class="num">${matches.length}</div><div class="lbl">Spiele gesamt</div></div>
+    `;
+
+    const tbody = document.getElementById('matches-tbody');
+    if (!matches.length) {
+      tbody.innerHTML = '<tr><td colspan="8" class="empty-msg">Noch keine Spiele gespeichert</td></tr>';
+      return;
+    }
+    tbody.innerHTML = matches.map(m => `
+      <tr>
+        <td>${esc(m.datum)}</td>
+        <td>${esc(m.anstoss ? m.anstoss.slice(0,5) : '—')}</td>
+        <td><strong>${esc(m.heimverein)}</strong></td>
+        <td><strong>${esc(m.gastverein)}</strong></td>
+        <td>${esc(m.spielklasse)}</td>
+        <td>${esc(m.spielort)}</td>
+        <td>${esc(m.kategorie)}</td>
+        <td style="color:#aaa;font-size:0.8em">${fmtDate(m.completed_at)}</td>
+      </tr>
+    `).join('');
+  }
+
+  function renderQuiz(results) {
+    const statsEl = document.getElementById('quiz-stats');
+    const totalPlayed = results.length;
+    const avgCorrect = totalPlayed > 0
+      ? Math.round(results.reduce((acc, r) => {
+          const stats = Array.isArray(r.round_stats) ? r.round_stats : [];
+          if (!stats.length) return acc;
+          const last = stats[stats.length - 1];
+          const pct = last.totalQuestions > 0 ? (last.correctAnswers / last.totalQuestions * 100) : 0;
+          return acc + pct;
+        }, 0) / totalPlayed)
+      : 0;
+
+    statsEl.innerHTML = `
+      <div class="stat-card"><div class="num">${totalPlayed}</div><div class="lbl">Quiz gespielt</div></div>
+      <div class="stat-card"><div class="num">${avgCorrect}%</div><div class="lbl">Ø Korrekt (letzte Runde)</div></div>
+    `;
+
+    const tbody = document.getElementById('quiz-tbody');
+    if (!results.length) {
+      tbody.innerHTML = '<tr><td colspan="6" class="empty-msg">Noch keine Quizergebnisse gespeichert</td></tr>';
+      return;
+    }
+    tbody.innerHTML = results.map(r => {
+      const stats = Array.isArray(r.round_stats) ? r.round_stats : [];
+      const courseLabel = r.course === 'advanced' ? 'Aufbaukurs' : 'Basiskurs';
+      const courseBadge = r.course === 'advanced' ? 'badge-advanced' : 'badge-basic';
+      const renderRound = (n) => {
+        const s = stats.find(x => x.round === n);
+        if (!s) return '<td style="color:#ccc">—</td>';
+        const pct = s.totalQuestions > 0 ? Math.round(s.correctAnswers / s.totalQuestions * 100) : 0;
+        return `<td><span class="round-score"><strong>${s.correctAnswers}</strong> / ${s.totalQuestions}</span><br><span style="color:${pct>=80?'#28a745':pct>=60?'#fd7e14':'#dc3545'};font-size:0.8em;font-weight:600">${pct}%</span></td>`;
+      };
+      return `
+        <tr>
+          <td>${fmtDate(r.played_at)}</td>
+          <td><span class="badge ${courseBadge}">${courseLabel}</span></td>
+          <td>${esc(r.total_questions)}</td>
+          ${renderRound(1)}
+          ${renderRound(2)}
+          ${renderRound(3)}
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function switchTab(name) {
+    document.querySelectorAll('.tab-btn').forEach((b, i) => {
+      b.classList.toggle('active', (i === 0 && name === 'matches') || (i === 1 && name === 'quiz'));
+    });
+    document.querySelectorAll('.tab-panel').forEach((p, i) => {
+      p.classList.toggle('active', (i === 0 && name === 'matches') || (i === 1 && name === 'quiz'));
+    });
+  }
+</script>
+</body>
+</html>

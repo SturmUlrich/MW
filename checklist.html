@@ -665,6 +665,7 @@
   <script>
     const STORAGE_KEY = 'kvf-sr-checklist';
     const FORM_IDS = ['spielnummer','spielart','datum','anstoss','spielort','heimverein','gastverein','kategorie','spielklasse','feldtyp','hinweise'];
+    let matchSaved = false;
     const allIds = [
       'c0-1','c0-2','c0-3','c0-4','c0-5',
       'c1-1','c1-2','c1-3',
@@ -790,6 +791,12 @@
           }
         }
       }
+      const allBlocksComplete = blockIds.every((_, i) => isBlockComplete(i));
+      if (allBlocksComplete && !matchSaved) {
+        matchSaved = true;
+        saveMatchToServer();
+      }
+
       const homeComplete = blockIds.length >= 7 && [0,1,2,3,4,5,6].every(i => isBlockComplete(i));
       const homeChecklist = document.getElementById('home-checklist');
       const homeSummary = document.getElementById('home-summary');
@@ -865,6 +872,19 @@
       if (label) label.textContent = n + ' / ' + total;
     }
 
+    function saveMatchToServer() {
+      const formData = {};
+      FORM_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        formData[id] = el ? el.value : '';
+      });
+      fetch('/api/save-match', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      }).catch(err => console.warn('Speichern fehlgeschlagen:', err));
+    }
+
     function reset() {
       if (confirm('Alle Checkboxen und Spieldaten zurücksetzen?')) {
         allIds.forEach(id => {
@@ -876,6 +896,7 @@
           if (el) el.value = '';
         });
         localStorage.removeItem(STORAGE_KEY);
+        matchSaved = false;
         updateBlockVisibility();
         updateProgress();
       }
