@@ -4,3 +4,16 @@
 [functions]
   node_bundler = "esbuild"
   directory = "netlify/functions"
+
+# HTML files — never cache, always get fresh version
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+    Pragma = "no-cache"
+
+# API functions — never cache
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Cache-Control = "no-store"
