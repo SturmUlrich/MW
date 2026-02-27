@@ -791,15 +791,14 @@
           }
         }
       }
-      const allBlocksComplete = blockIds.every((_, i) => isBlockComplete(i));
-      if (allBlocksComplete && !matchSaved) {
+      const homeComplete = blockIds.length >= 7 && [0,1,2,3,4,5,6].every(i => isBlockComplete(i));
+      const homeChecklist = document.getElementById('home-checklist');
+      const homeSummary = document.getElementById('home-summary');
+      if (homeComplete && !matchSaved) {
         matchSaved = true;
         saveMatchToServer();
       }
 
-      const homeComplete = blockIds.length >= 7 && [0,1,2,3,4,5,6].every(i => isBlockComplete(i));
-      const homeChecklist = document.getElementById('home-checklist');
-      const homeSummary = document.getElementById('home-summary');
       if (homeComplete && homeChecklist && homeSummary) {
         homeChecklist.style.display = 'none';
         homeSummary.style.display = 'block';
@@ -882,7 +881,10 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
-      }).catch(err => console.warn('Speichern fehlgeschlagen:', err));
+      }).then(r => {
+        if (!r.ok) r.text().then(t => console.warn('save-match error', r.status, t));
+        else console.log('Spiel gespeichert ✓');
+      }).catch(err => console.warn('save-match Netzwerkfehler:', err.message));
     }
 
     function reset() {
