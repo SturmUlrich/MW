@@ -218,6 +218,19 @@
     if (e.key === 'Enter') doLogin();
   });
 
+  async function testDb() {
+    const pre = document.getElementById('db-test-result');
+    pre.style.display = 'block';
+    pre.textContent = 'Teste Verbindung…';
+    try {
+      const res = await fetch('/api/ping');
+      const data = await res.json();
+      pre.textContent = JSON.stringify(data, null, 2);
+    } catch(e) {
+      pre.textContent = 'Fehler: ' + e.message;
+    }
+  }
+
   function doLogin() {
     const user = document.getElementById('inp-user').value.trim();
     const pwd  = document.getElementById('inp-pwd').value;
@@ -231,25 +244,52 @@
     loadData();
   }
 
+  function showGlobalError(msg) {
+    let el = document.getElementById('global-error');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'global-error';
+      el.style.cssText = 'background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:12px 16px;margin-bottom:16px;color:#856404;font-size:0.9em;word-break:break-all;';
+      document.getElementById('data-section').prepend(el);
+    }
+    el.textContent = '⚠️ ' + msg;
+    el.style.display = 'block';
+  }
+
   async function loadData() {
     try {
       const res = await fetch(`/api/get-history?pwd=${encodeURIComponent(currentPwd)}`);
+      const text = await res.text();
+      let data;
+      try { data = JSON.parse(text); } catch { data = {}; }
+
       if (res.status === 401) {
         document.getElementById('login-error').textContent = 'Falsches Passwort';
         document.getElementById('login-error').classList.add('visible');
         return;
       }
-      if (!res.ok) {
-        const text = await res.text();
-        document.getElementById('login-error').textContent = 'Server-Fehler: ' + res.status + ' — ' + text.slice(0, 120);
+      if (res.status === 503) {
+        document.getElementById('login-error').textContent = data.error || 'Server-Konfigurationsfehler';
         document.getElementById('login-error').classList.add('visible');
         return;
       }
-      const data = await res.json();
+      if (!res.ok) {
+        document.getElementById('login-error').textContent = 'Server-Fehler ' + res.status + ': ' + text.slice(0, 200);
+        document.getElementById('login-error').classList.add('visible');
+        return;
+      }
+
       document.getElementById('login-section').style.display = 'none';
       document.getElementById('data-section').classList.add('visible');
-      renderQuizSessions(data.quizSessions || []);
-      renderMatches(data.matches || []);
+
+      if (data.dbError) showGlobalError('DB-Fehler: ' + data.dbError);
+
+      try { renderQuizSessions(data.quizSessions || []); }
+      catch(e) { showGlobalError('Quiz-Render-Fehler: ' + e.message); }
+
+      try { renderMatches(data.matches || []); }
+      catch(e) { showGlobalError('Match-Render-Fehler: ' + e.message); }
+
     } catch (err) {
       document.getElementById('login-error').textContent = 'Verbindungsfehler: ' + err.message;
       document.getElementById('login-error').classList.add('visible');

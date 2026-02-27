@@ -9,7 +9,17 @@ export default async (req) => {
   const pwd = url.searchParams.get('pwd') || '';
   const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
 
-  if (!ADMIN_PASSWORD || pwd !== ADMIN_PASSWORD) {
+  // Если ADMIN_PASSWORD не задан — возвращаем явную ошибку
+  if (!ADMIN_PASSWORD) {
+    return new Response(JSON.stringify({
+      error: 'ADMIN_PASSWORD env variable is not set in Netlify. Go to Site configuration → Environment variables and add ADMIN_PASSWORD.'
+    }), {
+      status: 503,
+      headers: { 'Content-Type': 'application/json', ...corsHeaders() }
+    });
+  }
+
+  if (pwd !== ADMIN_PASSWORD) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), {
       status: 401,
       headers: { 'Content-Type': 'application/json', ...corsHeaders() }
@@ -19,8 +29,8 @@ export default async (req) => {
   const sql = neon();
   let matches = [];
   let quizSessions = [];
+  let dbError = null;
 
-  // Matches (checklist completions)
   try {
     await sql`
       CREATE TABLE IF NOT EXISTS match_completions (
@@ -32,10 +42,10 @@ export default async (req) => {
     `;
     matches = await sql`SELECT * FROM match_completions ORDER BY completed_at DESC LIMIT 100`;
   } catch (e) {
-    console.error('matches error:', e.message);
+    dbError = 'match_completions: ' + e.message;
+    console.error(dbError);
   }
 
-  // Quiz: group answers by session_id
   try {
     await sql`
       CREATE TABLE IF NOT EXISTS quiz_answers (
@@ -45,8 +55,6 @@ export default async (req) => {
         answered_at TIMESTAMPTZ DEFAULT NOW()
       )
     `;
-
-    // One row per session with aggregated stats + last answer time
     const sessions = await sql`
       SELECT
         session_id,
@@ -75,13 +83,13 @@ export default async (req) => {
       ORDER BY MAX(answered_at) DESC
       LIMIT 50
     `;
-
     quizSessions = sessions;
   } catch (e) {
+    dbError = (dbError ? dbError + ' | ' : '') + 'quiz_answers: ' + e.message;
     console.error('quiz error:', e.message);
   }
 
-  return new Response(JSON.stringify({ matches, quizSessions }), {
+  return new Response(JSON.stringify({ matches, quizSessions, dbError }), {
     status: 200,
     headers: { 'Content-Type': 'application/json', ...corsHeaders() }
   });
